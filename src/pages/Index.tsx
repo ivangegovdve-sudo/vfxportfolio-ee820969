@@ -1,13 +1,29 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Navigation from "@/components/cv/Navigation";
+import HeroSection from "@/components/cv/HeroSection";
+import AboutSection from "@/components/cv/AboutSection";
+import ExperienceSection from "@/components/cv/ExperienceSection";
+import SkillsSection from "@/components/cv/SkillsSection";
+import EducationSection from "@/components/cv/EducationSection";
+import ContactSection from "@/components/cv/ContactSection";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <>
+      <Navigation />
+      <main>
+        <HeroSection />
+        <AboutSection />
+        <ExperienceSection />
+        <SkillsSection />
+        <EducationSection />
+        <ContactSection />
+      </main>
+      <footer className="section-container py-8 text-center">
+        <p className="text-xs text-muted-foreground">
+          © {new Date().getFullYear()} — Built with care
+        </p>
+      </footer>
+    </>
   );
 };
 
