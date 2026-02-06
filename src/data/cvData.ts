@@ -82,6 +82,35 @@ const cvData: CVData = {
   },
   experience: [
     {
+      id: "exp-dopamine",
+      role: "Senior Animator → Animation Lead",
+      company: "Dopamine (Red Tiger)",
+      location: "Sofia, Bulgaria",
+      startDate: "Mar 2021",
+      endDate: "Present",
+      description:
+        "Joined as Senior Animator producing high-quality 2D animation, VFX, and in-engine implementation for premium slot games published under the Red Tiger brand. Progressed into Animation Lead, taking ownership of animation execution and quality across a full game development team — balancing hands-on production with leadership.",
+      highlights: [
+        "Leading and coordinating animation work within a multidisciplinary game team",
+        "Defining and maintaining animation quality standards and visual consistency",
+        "Hands-on production of animations and VFX for slot games",
+        "Close collaboration with game designers, developers, and artists",
+        "Supporting and improving animation pipelines and workflows",
+        "Additional titles: Beriched, Athens MegaWays, Astros, Gonzita's Quest, Dragon's Mirror, Dracula Awakening, Gold Mine Mistress, Piggy Riches MegaWays, Fa Fa Babies 2, Bounty Raid 2, Wolfkin, Reel Keeper Power Reels, Majestic Mysteries Power Reels, Jingle Ways MegaWays, Hansel & Gretel Candy House, Big Cat Rescue MegaWays, Roman Emperors, The Good The Bad and The Rich, Alexander the Great, ShahMat",
+      ],
+      tags: ["Animation Lead", "2D Animation", "VFX", "Slot Games", "Red Tiger"],
+      links: [
+        { label: "Monsters Unchained", url: "https://www.redtiger.com/games/monsters-unchained" },
+        { label: "Cake and Ice Cream", url: "https://www.redtiger.com/games/cake-and-ice-cream" },
+        { label: "Bass Boss", url: "https://www.redtiger.com/games/bass-boss" },
+        { label: "Cai Shen 168", url: "https://www.redtiger.com/games/cai-shen-168" },
+        { label: "Piñatas & Ponies", url: "https://www.redtiger.com/games/pinatas-and-ponies" },
+        { label: "Dear Santa", url: "https://www.redtiger.com/games/dear-santa" },
+        { label: "Happy Apples", url: "https://www.redtiger.com/games/happy-apples" },
+        { label: "Judgment Day MegaWays", url: "https://www.redtiger.com/games/judgment-day-megaways" },
+      ],
+    },
+    {
       id: "exp-freelance",
       role: "Animation, Compositing & VFX Artist",
       company: "Freelance",
