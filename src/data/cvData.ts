@@ -37,6 +37,14 @@ export interface EducationItem {
   description?: string;
 }
 
+export interface PortfolioItem {
+  id: string;
+  title: string;
+  descriptor: string;
+  url: string;
+  ctaLabel?: string;
+}
+
 export interface CVData {
   hero: {
     name: string;
@@ -49,6 +57,7 @@ export interface CVData {
     paragraphs: string[];
   };
   experience: ExperienceItem[];
+  portfolio: PortfolioItem[];
   skills: {
     technical: SkillCategory[];
     personal: string[];
@@ -76,7 +85,7 @@ const cvData: CVData = {
   },
   about: {
     paragraphs: [
-      "VFX compositor and animator with experience across animated series, feature projects, commercials, and music videos. Skilled in Adobe After Effects, Character Animator, Boris FX Mocha, 3ds Max, and a broad range of compositing and animation tools.",
+      "Animation Lead and VFX professional with a track record spanning animated series, casino game development, commercials, and music videos. Experienced in leading animation teams, defining quality standards, and delivering visually polished content under tight deadlines.",
       "Comfortable working in fast-paced studio environments as well as independently on freelance projects. Experienced in multicultural teams and international productions. Always looking for the next compelling visual challenge.",
     ],
   },
@@ -99,16 +108,6 @@ const cvData: CVData = {
         "Additional titles: Beriched, Athens MegaWays, Astros, Gonzita's Quest, Dragon's Mirror, Dracula Awakening, Gold Mine Mistress, Piggy Riches MegaWays, Fa Fa Babies 2, Bounty Raid 2, Wolfkin, Reel Keeper Power Reels, Majestic Mysteries Power Reels, Jingle Ways MegaWays, Hansel & Gretel Candy House, Big Cat Rescue MegaWays, Roman Emperors, The Good The Bad and The Rich, Alexander the Great, ShahMat",
       ],
       tags: ["Animation Lead", "2D Animation", "VFX", "Slot Games", "Red Tiger"],
-      links: [
-        { label: "Monsters Unchained", url: "https://www.redtiger.com/games/monsters-unchained" },
-        { label: "Cake and Ice Cream", url: "https://www.redtiger.com/games/cake-and-ice-cream" },
-        { label: "Bass Boss", url: "https://www.redtiger.com/games/bass-boss" },
-        { label: "Cai Shen 168", url: "https://www.redtiger.com/games/cai-shen-168" },
-        { label: "Piñatas & Ponies", url: "https://www.redtiger.com/games/pinatas-and-ponies" },
-        { label: "Dear Santa", url: "https://www.redtiger.com/games/dear-santa" },
-        { label: "Happy Apples", url: "https://www.redtiger.com/games/happy-apples" },
-        { label: "Judgment Day MegaWays", url: "https://www.redtiger.com/games/judgment-day-megaways" },
-      ],
     },
     {
       id: "exp-freelance",
@@ -230,32 +229,40 @@ const cvData: CVData = {
       tags: ["Logistics", "Inventory", "Team Coordination"],
     },
   ],
+  portfolio: [
+    { id: "pf-monsters", title: "Monsters Unchained", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/monsters-unchained", ctaLabel: "Play Here" },
+    { id: "pf-cake", title: "Cake and Ice Cream", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/cake-and-ice-cream", ctaLabel: "Play Here" },
+    { id: "pf-bass", title: "Bass Boss", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/bass-boss", ctaLabel: "Play Here" },
+    { id: "pf-caishen", title: "Cai Shen 168", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/cai-shen-168", ctaLabel: "Play Here" },
+    { id: "pf-pinatas", title: "Piñatas & Ponies", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/pinatas-and-ponies", ctaLabel: "Play Here" },
+    { id: "pf-santa", title: "Dear Santa", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/dear-santa", ctaLabel: "Play Here" },
+    { id: "pf-happy", title: "Happy Apples", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/happy-apples", ctaLabel: "Play Here" },
+    { id: "pf-judgment", title: "Judgment Day MegaWays", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/judgment-day-megaways", ctaLabel: "Play Here" },
+    { id: "pf-showreel", title: "Showreel", descriptor: "Animation & VFX Reel", url: "https://youtu.be/ogwVYZrWI6s", ctaLabel: "Watch" },
+    { id: "pf-brainfreeze", title: "Brain Freeze", descriptor: "Animation · National Geographic", url: "https://vimeo.com/283914588", ctaLabel: "Watch" },
+    { id: "pf-rescue", title: "Rescue Heroes", descriptor: "Animation · Fisher-Price", url: "https://www.youtube.com/watch?v=SOjHSKbRVCQ", ctaLabel: "Watch" },
+    { id: "pf-souvenir", title: "Souvenir", descriptor: "Music Video · VFX", url: "https://youtu.be/C8Mwkhu3iq4", ctaLabel: "Watch" },
+    { id: "pf-authors", title: "In Author's Hands", descriptor: "Short Film · VFX", url: "https://youtu.be/pInnrhghaxY", ctaLabel: "Watch" },
+    { id: "pf-arcana", title: "Arcana Magica", descriptor: "Kickstarter Promo · Animation", url: "https://www.youtube.com/watch?v=qeevdrluvnA", ctaLabel: "Watch" },
+  ],
   skills: {
     technical: [
       {
+        category: "Adobe",
+        skills: [
+          "After Effects",
+          "Animate",
+          "Photoshop",
+          "Character Animator",
+        ],
+      },
+      {
+        category: "Animation & 3D",
+        skills: ["Spine 2D (Esoteric Software)", "Blender"],
+      },
+      {
         category: "Compositing & VFX",
-        skills: [
-          "Adobe After Effects",
-          "Boris FX Mocha",
-          "Particle Systems",
-          "Adobe Character Animator",
-        ],
-      },
-      {
-        category: "3D & Animation",
-        skills: ["3ds Max"],
-      },
-      {
-        category: "Edit & Post",
-        skills: ["Adobe Premiere", "Adobe Photoshop"],
-      },
-      {
-        category: "IT & Infrastructure",
-        skills: [
-          "MS Office",
-          "LAN / WAN",
-          "Peripheral Device Installation",
-        ],
+        skills: ["Boris FX Mocha", "Particle Systems"],
       },
     ],
     personal: [
