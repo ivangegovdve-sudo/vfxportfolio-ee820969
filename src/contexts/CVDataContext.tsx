@@ -1,0 +1,52 @@
+import { createContext, useContext, useState, useCallback, ReactNode, useEffect } from "react";
+import defaultCvData, { CVData } from "@/data/cvData";
+
+interface CVDataContextValue {
+  data: CVData;
+  updateData: (updater: (prev: CVData) => CVData) => void;
+  resetData: () => void;
+  editorOpen: boolean;
+  setEditorOpen: (open: boolean) => void;
+}
+
+const STORAGE_KEY = "cv-data-custom";
+
+const CVDataContext = createContext<CVDataContextValue | null>(null);
+
+function loadFromStorage(): CVData {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw) as CVData;
+  } catch {}
+  return defaultCvData;
+}
+
+export function CVDataProvider({ children }: { children: ReactNode }) {
+  const [data, setData] = useState<CVData>(loadFromStorage);
+  const [editorOpen, setEditorOpen] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }, [data]);
+
+  const updateData = useCallback((updater: (prev: CVData) => CVData) => {
+    setData((prev) => updater(prev));
+  }, []);
+
+  const resetData = useCallback(() => {
+    setData(defaultCvData);
+    localStorage.removeItem(STORAGE_KEY);
+  }, []);
+
+  return (
+    <CVDataContext.Provider value={{ data, updateData, resetData, editorOpen, setEditorOpen }}>
+      {children}
+    </CVDataContext.Provider>
+  );
+}
+
+export function useCvData() {
+  const ctx = useContext(CVDataContext);
+  if (!ctx) throw new Error("useCvData must be used within CVDataProvider");
+  return ctx;
+}

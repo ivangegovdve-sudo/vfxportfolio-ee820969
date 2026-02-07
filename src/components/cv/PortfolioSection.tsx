@@ -1,8 +1,10 @@
-import cvData from "@/data/cvData";
+import { useCvData } from "@/contexts/CVDataContext";
 import AnimatedSection from "./AnimatedSection";
 import { ExternalLink } from "lucide-react";
 
 const PortfolioSection = () => {
+  const { data } = useCvData();
+
   return (
     <section id="portfolio" className="section-spacing bg-card">
       <div className="section-container">
@@ -11,7 +13,7 @@ const PortfolioSection = () => {
         </AnimatedSection>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {cvData.portfolio.map((item, i) => (
+          {data.portfolio.map((item, i) => (
             <AnimatedSection key={item.id} delay={0.05 * i}>
               <a
                 href={item.url}

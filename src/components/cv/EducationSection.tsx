@@ -1,8 +1,10 @@
-import cvData from "@/data/cvData";
+import { useCvData } from "@/contexts/CVDataContext";
 import AnimatedSection from "./AnimatedSection";
 import { GraduationCap } from "lucide-react";
 
 const EducationSection = () => {
+  const { data } = useCvData();
+
   return (
     <section id="education" className="section-spacing bg-card">
       <div className="section-container">
@@ -11,7 +13,7 @@ const EducationSection = () => {
         </AnimatedSection>
 
         <div className="space-y-8">
-          {cvData.education.map((edu, i) => (
+          {data.education.map((edu, i) => (
             <AnimatedSection key={edu.id} delay={0.1 * (i + 1)}>
               <div className="flex gap-4">
                 <div className="shrink-0 mt-1">

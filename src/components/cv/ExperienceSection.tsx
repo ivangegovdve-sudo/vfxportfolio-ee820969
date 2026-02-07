@@ -1,8 +1,10 @@
-import cvData from "@/data/cvData";
+import { useCvData } from "@/contexts/CVDataContext";
 import AnimatedSection from "./AnimatedSection";
 import { ExternalLink } from "lucide-react";
 
 const ExperienceSection = () => {
+  const { data } = useCvData();
+
   return (
     <section id="experience" className="section-spacing bg-card">
       <div className="section-container">
@@ -11,13 +13,13 @@ const ExperienceSection = () => {
         </AnimatedSection>
 
         <div className="space-y-0">
-          {cvData.experience.map((exp, i) => (
+          {data.experience.map((exp, i) => (
             <AnimatedSection key={exp.id} delay={0.05 * i}>
               <div className="relative pl-8 pb-12 last:pb-0 group">
                 {/* Timeline */}
                 <div className="absolute left-0 top-1.5">
                   <div className="timeline-dot group-hover:scale-125 transition-transform" />
-                  {i < cvData.experience.length - 1 && <div className="timeline-line" />}
+                  {i < data.experience.length - 1 && <div className="timeline-line" />}
                 </div>
 
                 {/* Content */}

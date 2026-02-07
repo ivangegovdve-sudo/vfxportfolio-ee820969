@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
-import cvData from "@/data/cvData";
+import { useCvData } from "@/contexts/CVDataContext";
 import { User } from "lucide-react";
 
 const HeroSection = () => {
-  const { name, title, subtitle, photoUrl } = cvData.hero;
+  const { data } = useCvData();
+  const { name, title, subtitle, photoUrl } = data.hero;
 
   return (
     <section className="hero-gradient min-h-[80vh] flex items-center pt-14">

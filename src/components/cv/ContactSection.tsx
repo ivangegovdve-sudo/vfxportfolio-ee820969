@@ -1,9 +1,10 @@
-import cvData from "@/data/cvData";
+import { useCvData } from "@/contexts/CVDataContext";
 import AnimatedSection from "./AnimatedSection";
 import { Mail, MapPin, ExternalLink } from "lucide-react";
 
 const ContactSection = () => {
-  const { email, location, links } = cvData.contact;
+  const { data } = useCvData();
+  const { email, location, links } = data.contact;
 
   return (
     <section id="contact" className="section-spacing">

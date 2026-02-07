@@ -1,7 +1,9 @@
-import cvData from "@/data/cvData";
+import { useCvData } from "@/contexts/CVDataContext";
 import AnimatedSection from "./AnimatedSection";
 
 const SkillsSection = () => {
+  const { data } = useCvData();
+
   return (
     <section id="skills" className="section-spacing">
       <div className="section-container">
@@ -17,7 +19,7 @@ const SkillsSection = () => {
                 Technical
               </h3>
             </AnimatedSection>
-            {cvData.skills.technical.map((cat, i) => (
+            {data.skills.technical.map((cat, i) => (
               <AnimatedSection key={cat.category} delay={0.08 * (i + 1)}>
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
@@ -44,7 +46,7 @@ const SkillsSection = () => {
             </AnimatedSection>
             <AnimatedSection delay={0.1}>
               <div className="flex flex-wrap gap-2">
-                {cvData.skills.personal.map((skill) => (
+                {data.skills.personal.map((skill) => (
                   <span
                     key={skill}
                     className="inline-block px-3 py-1.5 text-xs font-medium rounded-full border border-border text-foreground/80"
@@ -61,7 +63,7 @@ const SkillsSection = () => {
                 Languages
               </h3>
               <div className="space-y-3">
-                {cvData.languages.map((lang) => (
+                {data.languages.map((lang) => (
                   <div key={lang.language} className="flex items-center gap-3">
                     <span className="text-sm font-medium text-foreground w-24">
                       {lang.language}
