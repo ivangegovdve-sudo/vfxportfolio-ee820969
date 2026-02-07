@@ -6,10 +6,12 @@ import PortfolioSection from "@/components/cv/PortfolioSection";
 import SkillsSection from "@/components/cv/SkillsSection";
 import EducationSection from "@/components/cv/EducationSection";
 import ContactSection from "@/components/cv/ContactSection";
+import ContentEditor from "@/components/editor/ContentEditor";
 
 const Index = () => {
   return (
     <>
+      <ContentEditor />
       <Navigation />
       <main>
         <HeroSection />
