@@ -299,10 +299,10 @@ const cvData: CVData = {
     },
   ],
   contact: {
-    email: "ivan.gegov@email.com",
+    email: "ivangegov.dve@gmail.com",
     location: "Sofia, Bulgaria",
     links: [
-      { label: "Email", url: "mailto:ivan.gegov@email.com" },
+      { label: "Email", url: "mailto:ivangegov.dve@gmail.com" },
       { label: "YouTube", url: "https://youtu.be/ogwVYZrWI6s" },
       { label: "Vimeo", url: "https://vimeo.com/283914588" },
     ],
