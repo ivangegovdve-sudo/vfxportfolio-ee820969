@@ -1,7 +1,3 @@
-import authRightsThumbnail from "./assets/AuthRights.png";
-import natGeoExplorerAcademyThumbnail from "./assets/natGeoExplorerAcademy.png";
-import rescueHeroesThumbnail from "./assets/RescueHeroes.png";
-import suvenirThumbnail from "./assets/miro_end.png";
 
 // ============================================================
 // CV DATA MODEL — Edit this file to update all CV content.
@@ -97,7 +93,7 @@ const cvData: CVData = {
     subtitle:
       "Bringing stories to life through visual effects, compositing, and motion",
     photoUrl:
-      "/src/data/assets/slackPic.png",
+      "/assets/slackPic.png",
   },
   about: {
     paragraphs: [
@@ -263,7 +259,7 @@ const cvData: CVData = {
       url: "https://vimeo.com/283914588",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: natGeoExplorerAcademyThumbnail,
+      thumbnail: "/assets/natGeoExplorerAcademy.png",
     },
     {
       id: "pf-rescue",
@@ -272,7 +268,7 @@ const cvData: CVData = {
       url: "https://www.youtube.com/watch?v=SOjHSKbRVCQ",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: rescueHeroesThumbnail,
+      thumbnail: "/assets/RescueHeroes.png",
     },
     {
       id: "pf-arcana",
@@ -291,7 +287,7 @@ const cvData: CVData = {
       url: "https://youtu.be/C8Mwkhu3iq4",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: suvenirThumbnail,
+      thumbnail: "/assets/miro_end.png",
     },
     {
       id: "pf-authors",
@@ -300,7 +296,7 @@ const cvData: CVData = {
       url: "https://youtu.be/pInnrhghaxY",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: authRightsThumbnail,
+      thumbnail: "/assets/AuthRights.png",
     },
     {
       id: "pf-redtiger",
