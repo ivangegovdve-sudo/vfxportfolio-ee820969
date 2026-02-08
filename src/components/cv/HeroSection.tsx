@@ -1,10 +1,24 @@
 import { motion } from "framer-motion";
 import { useCvData } from "@/contexts/CVDataContext";
 import { User } from "lucide-react";
+import { useEffect, useState } from "react";
+
+const FALLBACK_PHOTO_URL = "/placeholder.svg";
 
 const HeroSection = () => {
   const { data } = useCvData();
   const { name, title, subtitle, photoUrl } = data.hero;
+  const [currentPhotoUrl, setCurrentPhotoUrl] = useState(photoUrl || "");
+
+  useEffect(() => {
+    setCurrentPhotoUrl(photoUrl || "");
+  }, [photoUrl]);
+
+  const handleImageError = () => {
+    if (currentPhotoUrl !== FALLBACK_PHOTO_URL) {
+      setCurrentPhotoUrl(FALLBACK_PHOTO_URL);
+    }
+  };
 
   return (
     <section className="hero-gradient min-h-[80vh] flex items-center pt-14">
@@ -17,10 +31,11 @@ const HeroSection = () => {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="shrink-0"
           >
-            {photoUrl ? (
+            {currentPhotoUrl ? (
               <img
-                src={photoUrl}
+                src={currentPhotoUrl}
                 alt={name}
+                onError={handleImageError}
                 className="w-40 h-40 md:w-52 md:h-52 rounded-full object-cover border-4 border-primary/20 shadow-lg"
               />
             ) : (
