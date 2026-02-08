@@ -54,11 +54,7 @@ function normalizeThumbnail(thumbnail?: string): string {
 }
 
 function withPortfolioThumbnails(data: CVData): CVData {
-  const defaultThumbById = new Map(
-    defaultCvData.portfolio.map((item) => [item.id, normalizeThumbnail(item.thumbnail)])
-  );
-  const requiredDefaultThumbnails = new Set(["pf-showreel", "pf-redtiger"]);
-
+  const defaultThumbById = new Map(defaultCvData.portfolio.map((item) => [item.id, item.thumbnail]));
   return {
     ...data,
     hero: {
@@ -66,13 +62,15 @@ function withPortfolioThumbnails(data: CVData): CVData {
       photoUrl: defaultCvData.hero.photoUrl,
     },
     portfolio: data.portfolio.map((item) => {
-      const thumbnail = requiredDefaultThumbnails.has(item.id)
-        ? defaultThumbById.get(item.id) || ""
-        : item.thumbnail || defaultThumbById.get(item.id) || "";
+      const raw =
+        item.thumbnail ??
+        defaultThumbById.get(item.id) ??
+        "";
 
-      if (thumbnail && !thumbnail.startsWith("/") && !thumbnail.startsWith("http")) {
-        console.error("INVALID THUMBNAIL PATH:", thumbnail, item.id);
-      }
+      const thumbnail =
+        raw.startsWith("http") || raw.startsWith("/")
+          ? raw
+          : `/assets/${raw.replace(/^\.?\/*assets\//, "")}`;
 
       return {
         ...item,
