@@ -31,20 +31,28 @@ const CVDataContext = createContext<CVDataContextValue>(defaultContextValue);
 
 function withPortfolioThumbnails(data: CVData): CVData {
   const defaultThumbById = new Map(defaultCvData.portfolio.map((item) => [item.id, item.thumbnail]));
-  const requiredDefaultThumbnails = new Set(["pf-showreel", "pf-redtiger"]);
-
   return {
     ...data,
     hero: {
       ...data.hero,
       photoUrl: defaultCvData.hero.photoUrl,
     },
-    portfolio: data.portfolio.map((item) => ({
-      ...item,
-      thumbnail: requiredDefaultThumbnails.has(item.id)
-        ? defaultThumbById.get(item.id) || ""
-        : item.thumbnail || defaultThumbById.get(item.id) || "",
-    })),
+    portfolio: data.portfolio.map((item) => {
+      const raw =
+        item.thumbnail ??
+        defaultThumbById.get(item.id) ??
+        "";
+
+      const thumbnail =
+        raw.startsWith("http") || raw.startsWith("/")
+          ? raw
+          : `/assets/${raw.replace(/^\.?\/*assets\//, "")}`;
+
+      return {
+        ...item,
+        thumbnail,
+      };
+    }),
   };
 }
 
