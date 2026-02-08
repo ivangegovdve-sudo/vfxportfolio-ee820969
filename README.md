@@ -17,6 +17,37 @@ npm install
 npm run dev
 ```
 
+## CI install policy
+
+Use `npm ci` in CI **only when** `package-lock.json` is in sync with `package.json`.
+
+```sh
+npm ci
+```
+
+If `npm ci` reports lockfile drift (missing packages, invalid/mismatched entries), regenerate the lockfile locally with:
+
+```sh
+npm install
+git add package-lock.json
+git commit -m "chore: sync package-lock with package.json"
+```
+
+## Registry fallback (403 / restricted network)
+
+If your environment blocks the default registry (for example 403 errors while resolving packages):
+
+```sh
+npm config set registry https://registry.npmjs.org/
+# or set an internal mirror allowed by your network policy
+```
+
+Then retry install. In fully offline environments, use the npm cache when available:
+
+```sh
+npm install --offline
+```
+
 ## Build
 
 ```sh
