@@ -97,7 +97,7 @@ const cvData: CVData = {
     subtitle:
       "Bringing stories to life through visual effects, compositing, and motion",
     photoUrl:
-      "https://github.com/ivangegovdve-sudo/vfxportfolio-ee820969/blob/main/src/data/assets/slackPic.png?raw=true",
+      "/src/data/assets/slackPic.png",
   },
   about: {
     paragraphs: [
