@@ -39,12 +39,20 @@ function withPortfolioThumbnails(data: CVData): CVData {
       ...data.hero,
       photoUrl: defaultCvData.hero.photoUrl,
     },
-    portfolio: data.portfolio.map((item) => ({
-      ...item,
-      thumbnail: requiredDefaultThumbnails.has(item.id)
+    portfolio: data.portfolio.map((item) => {
+      const thumbnail = requiredDefaultThumbnails.has(item.id)
         ? defaultThumbById.get(item.id) || ""
-        : item.thumbnail || defaultThumbById.get(item.id) || "",
-    })),
+        : item.thumbnail || defaultThumbById.get(item.id) || "";
+
+      if (thumbnail && !thumbnail.startsWith("/") && !thumbnail.startsWith("http")) {
+        console.error("INVALID THUMBNAIL PATH:", thumbnail, item.id);
+      }
+
+      return {
+        ...item,
+        thumbnail,
+      };
+    }),
   };
 }
 
