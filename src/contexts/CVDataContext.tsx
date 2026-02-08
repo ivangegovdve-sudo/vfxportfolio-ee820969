@@ -1,4 +1,12 @@
-import { createContext, useContext, useState, useCallback, ReactNode, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  ReactNode,
+  useEffect,
+  useMemo,
+} from "react";
 import defaultCvData, { CVData } from "@/data/cvData";
 
 interface CVDataContextValue {
@@ -11,7 +19,15 @@ interface CVDataContextValue {
 
 const STORAGE_KEY = "cv-data-v2";
 
-const CVDataContext = createContext<CVDataContextValue | null>(null);
+const defaultContextValue: CVDataContextValue = {
+  data: withPortfolioThumbnails(defaultCvData),
+  updateData: () => {},
+  resetData: () => {},
+  editorOpen: false,
+  setEditorOpen: () => {},
+};
+
+const CVDataContext = createContext<CVDataContextValue>(defaultContextValue);
 
 function withPortfolioThumbnails(data: CVData): CVData {
   const defaultThumbById = new Map(defaultCvData.portfolio.map((item) => [item.id, item.thumbnail]));
@@ -62,15 +78,18 @@ export function CVDataProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem(STORAGE_KEY);
   }, []);
 
-  return (
-    <CVDataContext.Provider value={{ data, updateData, resetData, editorOpen, setEditorOpen }}>
-      {children}
-    </CVDataContext.Provider>
+  const stableValue = useMemo(
+    () => ({ data, updateData, resetData, editorOpen, setEditorOpen }),
+    [data, updateData, resetData, editorOpen]
   );
+
+  return <CVDataContext.Provider value={stableValue}>{children}</CVDataContext.Provider>;
 }
 
 export function useCvData() {
-  const ctx = useContext(CVDataContext);
-  if (!ctx) throw new Error("useCvData must be used within CVDataProvider");
-  return ctx;
+  const contextValue = useContext(CVDataContext);
+  if (contextValue === defaultContextValue) {
+    throw new Error("useCvData must be used within CVDataProvider");
+  }
+  return contextValue;
 }
