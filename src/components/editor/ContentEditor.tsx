@@ -1,7 +1,21 @@
 import { useCvData } from "@/contexts/CVDataContext";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Pencil, X, RotateCcw, User, FileText, Briefcase, FolderOpen, Wrench, GraduationCap, Mail, Download } from "lucide-react";
+import {
+  Pencil,
+  X,
+  RotateCcw,
+  User,
+  FileText,
+  Briefcase,
+  FolderOpen,
+  Wrench,
+  GraduationCap,
+  Mail,
+  Download,
+  PanelLeftClose,
+  PanelLeftOpen,
+} from "lucide-react";
 import { useState, useRef, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import HeroEditor from "./HeroEditor";
@@ -27,6 +41,7 @@ type TabId = (typeof tabs)[number]["id"];
 const MIN_WIDTH = 280;
 const MAX_WIDTH = 560;
 const DEFAULT_WIDTH = 320;
+const COLLAPSED_WIDTH = 56;
 
 const ContentEditor = () => {
   const { data, editorOpen, setEditorOpen, resetData } = useCvData();
@@ -39,7 +54,7 @@ const ContentEditor = () => {
 
   const exportCvData = useCallback(() => {
     const fileContents = [
-      "import type { CVData } from \"./cvData\";",
+      'import type { CVData } from "./cvData";',
       "",
       `const cvData: CVData = ${JSON.stringify(data, null, 2)};`,
       "",
@@ -51,14 +66,13 @@ const ContentEditor = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "cvData.export.ts";
+    link.download = "cvData.ts";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   }, [data]);
 
-  // Don't render anything for public visitors
   if (!isEditMode) return null;
 
   if (!editorOpen) {
@@ -106,6 +120,7 @@ function EditorPanel({
   exportCvData,
 }: EditorPanelProps) {
   const isDragging = useRef(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const startResize = useCallback(
     (e: React.MouseEvent) => {
@@ -138,71 +153,85 @@ function EditorPanel({
   return (
     <div
       className="fixed inset-y-0 left-0 z-50 bg-background border-r border-border shadow-xl flex"
-      style={{ width: panelWidth }}
+      style={{ width: isCollapsed ? COLLAPSED_WIDTH : panelWidth }}
     >
-      {/* Main panel content */}
       <div className="flex flex-col flex-1 min-w-0">
-        {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-          <h2 className="font-display font-semibold text-sm text-foreground">Content Editor</h2>
+          {!isCollapsed && <h2 className="font-display font-semibold text-sm text-foreground">Content Editor</h2>}
           <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={exportCvData} title="Export CV Data">
-              <Download className="w-4 h-4" />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setIsCollapsed((prev) => !prev)}
+              title={isCollapsed ? "Expand editor" : "Collapse editor"}
+            >
+              {isCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
             </Button>
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={resetData} title="Reset to defaults">
-              <RotateCcw className="w-4 h-4" />
-            </Button>
+            {!isCollapsed && (
+              <>
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={exportCvData} title="Export CV Data">
+                  <Download className="w-4 h-4" />
+                </Button>
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={resetData} title="Reset to defaults">
+                  <RotateCcw className="w-4 h-4" />
+                </Button>
+              </>
+            )}
             <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditorOpen(false)}>
               <X className="w-4 h-4" />
             </Button>
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-1 px-3 py-2 border-b border-border overflow-x-auto">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${
-                  activeTab === tab.id
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                }`}
-              >
-                <Icon className="w-3.5 h-3.5" />
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
+        {!isCollapsed && (
+          <>
+            <div className="flex gap-1 px-3 py-2 border-b border-border overflow-x-auto">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${
+                      activeTab === tab.id
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
 
-        {/* Content */}
-        <ScrollArea className="flex-1 p-4">
-          {activeTab === "hero" && <HeroEditor />}
-          {activeTab === "about" && <AboutEditor />}
-          {activeTab === "experience" && <ExperienceEditor />}
-          {activeTab === "portfolio" && <PortfolioEditor />}
-          {activeTab === "skills" && <SkillsEditor />}
-          {activeTab === "education" && <EducationEditor />}
-          {activeTab === "contact" && <ContactEditor />}
-        </ScrollArea>
+            <ScrollArea className="flex-1 p-4">
+              {activeTab === "hero" && <HeroEditor />}
+              {activeTab === "about" && <AboutEditor />}
+              {activeTab === "experience" && <ExperienceEditor />}
+              {activeTab === "portfolio" && <PortfolioEditor />}
+              {activeTab === "skills" && <SkillsEditor />}
+              {activeTab === "education" && <EducationEditor />}
+              {activeTab === "contact" && <ContactEditor />}
+            </ScrollArea>
 
-        <div className="px-4 py-3 border-t border-border">
-          <p className="text-[10px] text-muted-foreground text-center">
-            Changes are saved to your browser automatically
-          </p>
-        </div>
+            <div className="px-4 py-3 border-t border-border">
+              <p className="text-[10px] text-muted-foreground text-center">
+                Changes are saved to your browser automatically
+              </p>
+            </div>
+          </>
+        )}
       </div>
 
-      {/* Resize handle */}
-      <div
-        onMouseDown={startResize}
-        className="w-1.5 cursor-col-resize hover:bg-primary/20 active:bg-primary/30 transition-colors shrink-0"
-        title="Drag to resize"
-      />
+      {!isCollapsed && (
+        <div
+          onMouseDown={startResize}
+          className="w-1.5 cursor-col-resize hover:bg-primary/20 active:bg-primary/30 transition-colors shrink-0"
+          title="Drag to resize"
+        />
+      )}
     </div>
   );
 }
