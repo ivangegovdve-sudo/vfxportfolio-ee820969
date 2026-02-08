@@ -25,6 +25,7 @@ import PortfolioEditor from "./PortfolioEditor";
 import SkillsEditor from "./SkillsEditor";
 import EducationEditor from "./EducationEditor";
 import ContactEditor from "./ContactEditor";
+import cvDataTemplate from "@/data/cvData.ts?raw";
 
 const tabs = [
   { id: "hero", label: "Hero", icon: User },
@@ -53,14 +54,11 @@ const ContentEditor = () => {
     searchParams.get("edit") === "true" || import.meta.env.VITE_ENABLE_EDITOR === "true";
 
   const exportCvData = useCallback(() => {
-    const fileContents = [
-      'import type { CVData } from "./cvData";',
-      "",
-      `const cvData: CVData = ${JSON.stringify(data, null, 2)};`,
-      "",
-      "export default cvData;",
-      "",
-    ].join("\n");
+    const replacement = `const cvData: CVData = ${JSON.stringify(data, null, 2)};`;
+    const fileContents = cvDataTemplate.replace(
+      /const cvData: CVData = [\s\S]*?;\n\nexport default cvData;/,
+      `${replacement}\n\nexport default cvData;`
+    );
 
     const blob = new Blob([fileContents], { type: "text/typescript;charset=utf-8" });
     const url = URL.createObjectURL(blob);
