@@ -259,7 +259,7 @@ const cvData: CVData = {
       url: "https://vimeo.com/283914588",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: "/assets/natGeoExplorerAcademy.png",
+      thumbnail: "/src/data/assets/natGeoExplorerAcademy.png",
     },
     {
       id: "pf-rescue",
@@ -268,7 +268,7 @@ const cvData: CVData = {
       url: "https://www.youtube.com/watch?v=SOjHSKbRVCQ",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: "/assets/RescueHeroes.png",
+      thumbnail: "/src/data/assets/RescueHeroes.png",
     },
     {
       id: "pf-arcana",
@@ -287,7 +287,7 @@ const cvData: CVData = {
       url: "https://youtu.be/C8Mwkhu3iq4",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: "/assets/miro_end.png",
+      thumbnail: "/src/data/assets/miro_end.png",
     },
     {
       id: "pf-authors",
@@ -296,7 +296,7 @@ const cvData: CVData = {
       url: "https://youtu.be/pInnrhghaxY",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: "/assets/AuthRights.png",
+      thumbnail: "/src/data/assets/AuthRights.png",
     },
     {
       id: "pf-redtiger",
