@@ -1,3 +1,8 @@
+import authRightsThumbnail from "./assets/AuthRights.png";
+import natGeoExplorerAcademyThumbnail from "./assets/natGeoExplorerAcademy.png";
+import rescueHeroesThumbnail from "./assets/RescueHeroes.png";
+import suvenirThumbnail from "./assets/miro_end.png";
+
 // ============================================================
 // CV DATA MODEL — Edit this file to update all CV content.
 // No code changes needed in components.
@@ -49,7 +54,7 @@ export interface PortfolioItem {
   descriptor: string;
   url: string;
   ctaLabel?: string;
-  thumbnail?: string;
+  thumbnail: string;
   type?: "project" | "collection";
   games?: { name: string; url?: string }[];
 }
@@ -91,6 +96,8 @@ const cvData: CVData = {
     title: "Senior Animator / Animation Lead · Compositing · VFX",
     subtitle:
       "Bringing stories to life through visual effects, compositing, and motion",
+    photoUrl:
+      "https://github.com/ivangegovdve-sudo/vfxportfolio-ee820969/blob/main/src/data/assets/slackPic.png?raw=true",
   },
   about: {
     paragraphs: [
@@ -246,6 +253,7 @@ const cvData: CVData = {
       url: "https://vimeo.com/283914588",
       ctaLabel: "Watch",
       type: "project",
+      thumbnail: natGeoExplorerAcademyThumbnail,
     },
     {
       id: "pf-rescue",
@@ -254,6 +262,7 @@ const cvData: CVData = {
       url: "https://www.youtube.com/watch?v=SOjHSKbRVCQ",
       ctaLabel: "Watch",
       type: "project",
+      thumbnail: rescueHeroesThumbnail,
     },
     {
       id: "pf-arcana",
@@ -262,6 +271,8 @@ const cvData: CVData = {
       url: "https://www.youtube.com/watch?v=qeevdrluvnA",
       ctaLabel: "Watch",
       type: "project",
+      thumbnail:
+        "https://cf.geekdo-images.com/8umeW9Q0MfxKgIBzhWUtPg__original/img/7lk_gPGJ9ju9_2pkoyICeCEFB58=/0x0/filters:format(png)/pic5115258.png",
     },
     {
       id: "pf-showreel",
@@ -270,14 +281,17 @@ const cvData: CVData = {
       url: "https://youtu.be/ogwVYZrWI6s",
       ctaLabel: "Watch",
       type: "project",
+      thumbnail:
+        "https://i.ytimg.com/vi/ogwVYZrWI6s/hqdefault.jpg?sqp=-oaymwEnCPYBEIoBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLAxmzNzd3IE3qWB2AmwulQrcnKOng",
     },
     {
       id: "pf-souvenir",
-      title: "Souvenir",
+      title: "Miro – Suvenir",
       descriptor: "Music Video · VFX",
       url: "https://youtu.be/C8Mwkhu3iq4",
       ctaLabel: "Watch",
       type: "project",
+      thumbnail: suvenirThumbnail,
     },
     {
       id: "pf-authors",
@@ -286,6 +300,7 @@ const cvData: CVData = {
       url: "https://youtu.be/pInnrhghaxY",
       ctaLabel: "Watch",
       type: "project",
+      thumbnail: authRightsThumbnail,
     },
     {
       id: "pf-redtiger",
@@ -295,6 +310,8 @@ const cvData: CVData = {
       url: "https://redtiger.com/games",
       ctaLabel: "Visit Red Tiger",
       type: "collection",
+      thumbnail:
+        "https://imgs.search.brave.com/BsjSD0z2Smrez9TV5ODO5aRyFtwjuAyolTX7wviQkK4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zbG90Z29kcy5jby51ay9zdG9yYWdlL2FwcC9tZWRpYS9zbG90LWRldmVsb3BlcnMvcmVkLXRpZ2VyLndlYnA",
       games: [
         { name: "DragonBoyz" },
         { name: "Big Rich Turkeys" },

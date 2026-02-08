@@ -37,6 +37,7 @@ const PortfolioEditor = () => {
       url: "https://",
       ctaLabel: "View",
       type: "project",
+      thumbnail: "",
     };
     updateData((prev) => ({ ...prev, portfolio: [...prev.portfolio, newItem] }));
     setExpanded(newId);
@@ -153,12 +154,18 @@ const PortfolioEditor = () => {
                   <Label className="text-xs font-semibold">Games ({item.games?.length || 0})</Label>
                   <div className="max-h-48 overflow-y-auto space-y-1.5">
                     {item.games?.map((game, gi) => (
-                      <div key={gi} className="flex items-center gap-1.5">
+                      <div key={gi} className="grid grid-cols-[1fr_1fr_auto] items-center gap-1.5">
                         <Input
                           value={game.name}
                           onChange={(e) => updateGame(item.id, gi, "name", e.target.value)}
-                          className="h-7 text-xs flex-1"
+                          className="h-7 text-xs"
                           placeholder="Game name"
+                        />
+                        <Input
+                          value={game.url || ""}
+                          onChange={(e) => updateGame(item.id, gi, "url", e.target.value)}
+                          className="h-7 text-xs"
+                          placeholder="Official URL (optional)"
                         />
                         <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0" onClick={() => removeGame(item.id, gi)}>
                           <Trash2 className="w-3 h-3 text-destructive" />
