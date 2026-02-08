@@ -1,3 +1,5 @@
+import { lazy, Suspense } from "react";
+import { useSearchParams } from "react-router-dom";
 import Navigation from "@/components/cv/Navigation";
 import HeroSection from "@/components/cv/HeroSection";
 import AboutSection from "@/components/cv/AboutSection";
@@ -6,12 +8,21 @@ import PortfolioSection from "@/components/cv/PortfolioSection";
 import SkillsSection from "@/components/cv/SkillsSection";
 import EducationSection from "@/components/cv/EducationSection";
 import ContactSection from "@/components/cv/ContactSection";
-import ContentEditor from "@/components/editor/ContentEditor";
+
+const ContentEditor = lazy(() => import("@/components/editor/ContentEditor"));
 
 const Index = () => {
+  const [searchParams] = useSearchParams();
+  const isEditMode =
+    searchParams.get("edit") === "true" || import.meta.env.VITE_ENABLE_EDITOR === "true";
+
   return (
     <>
-      <ContentEditor />
+      {isEditMode && (
+        <Suspense fallback={null}>
+          <ContentEditor />
+        </Suspense>
+      )}
       <Navigation />
       <main>
         <HeroSection />
