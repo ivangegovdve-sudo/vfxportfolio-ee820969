@@ -9,14 +9,19 @@ interface CVDataContextValue {
   setEditorOpen: (open: boolean) => void;
 }
 
-const STORAGE_KEY = "cv-data-custom";
+const STORAGE_KEY = "cv-data-v2";
 
 const CVDataContext = createContext<CVDataContextValue | null>(null);
 
 function loadFromStorage(): CVData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw) as CVData;
+    if (raw) {
+      const parsed = JSON.parse(raw) as CVData;
+      // Validate the new structure — if skills.sections doesn't exist, reset
+      if (!parsed.skills?.sections) return defaultCvData;
+      return parsed;
+    }
   } catch {}
   return defaultCvData;
 }

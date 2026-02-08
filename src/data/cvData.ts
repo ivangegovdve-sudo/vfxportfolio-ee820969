@@ -19,6 +19,12 @@ export interface ExperienceItem {
 export interface SkillCategory {
   category: string;
   skills: string[];
+  note?: string;
+}
+
+export interface SkillSection {
+  title: string;
+  groups: SkillCategory[];
 }
 
 export interface LanguageItem {
@@ -43,6 +49,9 @@ export interface PortfolioItem {
   descriptor: string;
   url: string;
   ctaLabel?: string;
+  thumbnail?: string;
+  type?: "project" | "collection";
+  games?: { name: string; url?: string }[];
 }
 
 export interface CVData {
@@ -59,7 +68,7 @@ export interface CVData {
   experience: ExperienceItem[];
   portfolio: PortfolioItem[];
   skills: {
-    technical: SkillCategory[];
+    sections: SkillSection[];
     personal: string[];
   };
   languages: LanguageItem[];
@@ -105,7 +114,6 @@ const cvData: CVData = {
         "Hands-on production of animations and VFX for slot games",
         "Close collaboration with game designers, developers, and artists",
         "Supporting and improving animation pipelines and workflows",
-        "Additional titles: Beriched, Athens MegaWays, Astros, Gonzita's Quest, Dragon's Mirror, Dracula Awakening, Gold Mine Mistress, Piggy Riches MegaWays, Fa Fa Babies 2, Bounty Raid 2, Wolfkin, Reel Keeper Power Reels, Majestic Mysteries Power Reels, Jingle Ways MegaWays, Hansel & Gretel Candy House, Big Cat Rescue MegaWays, Roman Emperors, The Good The Bad and The Rich, Alexander the Great, ShahMat",
       ],
       tags: ["Animation Lead", "2D Animation", "VFX", "Slot Games", "Red Tiger"],
     },
@@ -153,6 +161,7 @@ const cvData: CVData = {
         'National Geographic\'s Explorers Academy — "Brain Freeze"',
         '"Rescue Heroes" — production by TONGAL for Fisher-Price (14 episodes)',
         '"Arcana Magica" — Kickstarter promotional video',
+        "John Vardar vs the Galaxy — animated feature film (limited compositing work, uncredited)",
       ],
       tags: ["After Effects", "Compositing", "VFX", "Animation"],
       links: [
@@ -230,46 +239,169 @@ const cvData: CVData = {
     },
   ],
   portfolio: [
-    { id: "pf-monsters", title: "Monsters Unchained", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/monsters-unchained", ctaLabel: "Play Here" },
-    { id: "pf-cake", title: "Cake and Ice Cream", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/cake-and-ice-cream", ctaLabel: "Play Here" },
-    { id: "pf-bass", title: "Bass Boss", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/bass-boss", ctaLabel: "Play Here" },
-    { id: "pf-caishen", title: "Cai Shen 168", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/cai-shen-168", ctaLabel: "Play Here" },
-    { id: "pf-pinatas", title: "Piñatas & Ponies", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/pinatas-and-ponies", ctaLabel: "Play Here" },
-    { id: "pf-santa", title: "Dear Santa", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/dear-santa", ctaLabel: "Play Here" },
-    { id: "pf-happy", title: "Happy Apples", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/happy-apples", ctaLabel: "Play Here" },
-    { id: "pf-judgment", title: "Judgment Day MegaWays", descriptor: "Slot Game · Red Tiger", url: "https://www.redtiger.com/games/judgment-day-megaways", ctaLabel: "Play Here" },
-    { id: "pf-showreel", title: "Showreel", descriptor: "Animation & VFX Reel", url: "https://youtu.be/ogwVYZrWI6s", ctaLabel: "Watch" },
-    { id: "pf-brainfreeze", title: "Brain Freeze", descriptor: "Animation · National Geographic", url: "https://vimeo.com/283914588", ctaLabel: "Watch" },
-    { id: "pf-rescue", title: "Rescue Heroes", descriptor: "Animation · Fisher-Price", url: "https://www.youtube.com/watch?v=SOjHSKbRVCQ", ctaLabel: "Watch" },
-    { id: "pf-souvenir", title: "Souvenir", descriptor: "Music Video · VFX", url: "https://youtu.be/C8Mwkhu3iq4", ctaLabel: "Watch" },
-    { id: "pf-authors", title: "In Author's Hands", descriptor: "Short Film · VFX", url: "https://youtu.be/pInnrhghaxY", ctaLabel: "Watch" },
-    { id: "pf-arcana", title: "Arcana Magica", descriptor: "Kickstarter Promo · Animation", url: "https://www.youtube.com/watch?v=qeevdrluvnA", ctaLabel: "Watch" },
+    {
+      id: "pf-brainfreeze",
+      title: 'National Geographic – Explorers Academy "Brain Freeze"',
+      descriptor: "Animation · Compositing",
+      url: "https://vimeo.com/283914588",
+      ctaLabel: "Watch",
+      type: "project",
+    },
+    {
+      id: "pf-rescue",
+      title: "Fisher-Price / TONGAL – Rescue Heroes",
+      descriptor: "Animation · Series (14 episodes)",
+      url: "https://www.youtube.com/watch?v=SOjHSKbRVCQ",
+      ctaLabel: "Watch",
+      type: "project",
+    },
+    {
+      id: "pf-arcana",
+      title: "Arcana Magica – Kickstarter Promo",
+      descriptor: "Animation · Promotional",
+      url: "https://www.youtube.com/watch?v=qeevdrluvnA",
+      ctaLabel: "Watch",
+      type: "project",
+    },
+    {
+      id: "pf-showreel",
+      title: "Showreel",
+      descriptor: "Animation & VFX Reel",
+      url: "https://youtu.be/ogwVYZrWI6s",
+      ctaLabel: "Watch",
+      type: "project",
+    },
+    {
+      id: "pf-souvenir",
+      title: "Souvenir",
+      descriptor: "Music Video · VFX",
+      url: "https://youtu.be/C8Mwkhu3iq4",
+      ctaLabel: "Watch",
+      type: "project",
+    },
+    {
+      id: "pf-authors",
+      title: "In Author's Hands",
+      descriptor: "Short Film · VFX",
+      url: "https://youtu.be/pInnrhghaxY",
+      ctaLabel: "Watch",
+      type: "project",
+    },
+    {
+      id: "pf-redtiger",
+      title: "Red Tiger Slot Games",
+      descriptor:
+        "Selection of slot games animated and developed while working at Dopamine (published under the Red Tiger brand).",
+      url: "https://www.redtiger.com",
+      ctaLabel: "Visit Red Tiger",
+      type: "collection",
+      games: [
+        { name: "DragonBoyz" },
+        { name: "Big Rich Turkeys" },
+        { name: "Cash Lamps" },
+        { name: "Monopoly Rent Rush" },
+        { name: "Piggy Riches 2 Megaways" },
+        { name: "Piggy Riches Begins" },
+        { name: "Bass Boss" },
+        { name: "Bass Boss 2" },
+        { name: "Judgment Day MegaWays" },
+        { name: "Monsters Unchained" },
+        { name: "Cake and Ice Cream" },
+        { name: "Cai Shen 168" },
+        { name: "Piñatas & Ponies" },
+        { name: "Happy Apples" },
+        { name: "Trophy Fish" },
+        { name: "Fishtastic" },
+        { name: "Rise of Cleopatra" },
+        { name: "7's Luck" },
+        { name: "Dear Santa" },
+        { name: "The Wild Kiss" },
+        { name: "Beriched" },
+        { name: "Athens MegaWays" },
+        { name: "Astros" },
+        { name: "Gonzita's Quest" },
+        { name: "Dragon's Mirror" },
+        { name: "Dracula Awakening" },
+        { name: "Gold Mine Mistress" },
+        { name: "Fa Fa Babies 2" },
+        { name: "Bounty Raid 2" },
+        { name: "Wolfkin" },
+        { name: "Reel Keeper Power Reels" },
+        { name: "Majestic Mysteries Power Reels" },
+        { name: "Jingle Ways MegaWays" },
+        { name: "Hansel & Gretel Candyhouse" },
+        { name: "Big Cat Rescue MegaWays" },
+        { name: "Roman Emperors" },
+        { name: "The Good The Bad and The Rich" },
+        { name: "Alexander the Great" },
+        { name: "ShahMat" },
+      ],
+    },
   ],
   skills: {
-    technical: [
+    sections: [
       {
-        category: "Adobe",
-        skills: [
-          "After Effects",
-          "Animate",
-          "Photoshop",
-          "Character Animator",
+        title: "Technical & Production",
+        groups: [
+          {
+            category: "Adobe",
+            skills: ["After Effects", "Animate", "Photoshop", "Character Animator"],
+          },
+          {
+            category: "Animation",
+            skills: ["Spine 2D (2.5D animation software)"],
+          },
+          {
+            category: "Production & Optimization",
+            skills: [
+              "Scripting (ActionScript) for procedural animation and optimization",
+              "Animation structures and logic optimized for JavaScript / runtime implementation",
+              "UI, symbol, character, and FX animation",
+              "Asset optimization for browser and mobile performance",
+              "Asset compression and optimizing export workflows",
+            ],
+          },
         ],
       },
       {
-        category: "Animation & 3D",
-        skills: ["Spine 2D (Esoteric Software)", "Blender"],
+        title: "Tools & Pipelines",
+        groups: [
+          {
+            category: "Production Tools",
+            skills: [
+              "Git and repository-based workflows",
+              "Jira and Notion for production tracking and documentation",
+            ],
+          },
+          {
+            category: "Exploratory",
+            skills: ["Postshot Jawset", "Cascadeur", "JangaFX", "Unreal Engine", "Dragon Bones"],
+            note: "Amateur / exploratory experience",
+          },
+        ],
       },
       {
-        category: "Compositing & VFX",
-        skills: ["Boris FX Mocha", "Particle Systems"],
+        title: "AI & Emerging Tools",
+        groups: [
+          {
+            category: "Practical Familiarity",
+            skills: ["Stable Diffusion", "ControlNet", "LoRAs", "ComfyUI"],
+            note: "Basic hands-on familiarity",
+          },
+          {
+            category: "",
+            skills: [
+              "Interest in open-source AI models for workflow optimization and pipeline automation",
+            ],
+          },
+        ],
       },
     ],
     personal: [
-      "Effective communicator",
-      "Organized & team player",
-      "Adaptive in multicultural environments",
-      "Effective under pressure",
+      "Strong communication and teamwork",
+      "Ability to manage multiple tasks and deadlines",
+      "High attention to detail",
+      "Adaptability to different art and animation styles",
     ],
   },
   languages: [
