@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Binary image assets should not be committed from Codex PRs
+src/data/assets/*.png

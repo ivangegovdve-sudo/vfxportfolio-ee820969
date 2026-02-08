@@ -259,7 +259,7 @@ const cvData: CVData = {
       url: "https://vimeo.com/283914588",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: "/assets/natGeoExplorerAcademy.png",
+      thumbnail: "/src/data/assets/natGeoExplorerAcademy.png",
     },
     {
       id: "pf-rescue",
@@ -268,7 +268,7 @@ const cvData: CVData = {
       url: "https://www.youtube.com/watch?v=SOjHSKbRVCQ",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: "/assets/RescueHeroes.png",
+      thumbnail: "/src/data/assets/RescueHeroes.png",
     },
     {
       id: "pf-arcana",
@@ -287,7 +287,7 @@ const cvData: CVData = {
       url: "https://youtu.be/C8Mwkhu3iq4",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: "/assets/miro_end.png",
+      thumbnail: "/src/data/assets/miro_end.png",
     },
     {
       id: "pf-authors",
@@ -296,7 +296,7 @@ const cvData: CVData = {
       url: "https://youtu.be/pInnrhghaxY",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: "/assets/AuthRights.png",
+      thumbnail: "/src/data/assets/AuthRights.png",
     },
     {
       id: "pf-redtiger",
@@ -306,8 +306,7 @@ const cvData: CVData = {
       url: "https://redtiger.com/games",
       ctaLabel: "Visit Red Tiger",
       type: "collection",
-      thumbnail:
-        "https://imgs.search.brave.com/BsjSD0z2Smrez9TV5ODO5aRyFtwjuAyolTX7wviQkK4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zbG90Z29kcy5jby51ay9zdG9yYWdlL2FwcC9tZWRpYS9zbG90LWRldmVsb3BlcnMvcmVkLXRpZ2VyLndlYnA",
+      thumbnail: "/src/data/assets/redTiger.png",
       games: [
         { name: "DragonBoyz" },
         { name: "Big Rich Turkeys" },
