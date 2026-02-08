@@ -20,7 +20,7 @@ interface CVDataContextValue {
 const STORAGE_KEY = "cv-data-v2";
 
 const defaultContextValue: CVDataContextValue = {
-  data: withPortfolioThumbnails(defaultCvData),
+  data: defaultCvData,
   updateData: () => {},
   resetData: () => {},
   editorOpen: false,
@@ -29,61 +29,6 @@ const defaultContextValue: CVDataContextValue = {
 
 const CVDataContext = createContext<CVDataContextValue>(defaultContextValue);
 
-function normalizeThumbnail(thumbnail?: string): string {
-  if (!thumbnail) return "";
-
-  const value = thumbnail.trim();
-
-  if (value.startsWith("https://") || value.startsWith("/assets/")) {
-    return value;
-  }
-
-  if (value.startsWith("assets/")) {
-    return `/${value}`;
-  }
-
-  if (value.startsWith("./assets/")) {
-    return value.slice(1);
-  }
-
-  if (value.startsWith("../assets/")) {
-    return `/assets/${value.slice("../assets/".length)}`;
-  }
-
-  return "";
-}
-
-function withPortfolioThumbnails(data: CVData): CVData {
-  const defaultThumbById = new Map(defaultCvData.portfolio.map((item) => [item.id, item.thumbnail]));
-  return {
-    ...data,
-    hero: {
-      ...data.hero,
-      photoUrl: defaultCvData.hero.photoUrl,
-    },
-    portfolio: data.portfolio.map((item) => {
-      const raw =
-        item.thumbnail ??
-        defaultThumbById.get(item.id) ??
-        "";
-
-      let thumbnail = raw.trim();
-
-      if (thumbnail && !thumbnail.startsWith("http") && !thumbnail.startsWith("/")) {
-        thumbnail = `/assets/${thumbnail.replace(/^\.?\/*assets\//, "")}`;
-      }
-
-      if (thumbnail && thumbnail.startsWith("/src/")) {
-        console.error("INVALID THUMBNAIL (src leak):", item.id, thumbnail);
-      }
-
-      return {
-        ...item,
-        thumbnail,
-      };
-    }),
-  };
-}
 
 function loadFromStorage(): CVData {
   try {
@@ -91,11 +36,13 @@ function loadFromStorage(): CVData {
     if (raw) {
       const parsed = JSON.parse(raw) as CVData;
       // Validate the new structure — if skills.sections doesn't exist, reset
-      if (!parsed.skills?.sections) return withPortfolioThumbnails(defaultCvData);
-      return withPortfolioThumbnails(parsed);
+      if (!parsed.skills?.sections) return defaultCvData;
+      return parsed;
     }
-  } catch {}
-  return withPortfolioThumbnails(defaultCvData);
+  } catch {
+    return defaultCvData;
+  }
+  return defaultCvData;
 }
 
 export function CVDataProvider({ children }: { children: ReactNode }) {
@@ -111,7 +58,7 @@ export function CVDataProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const resetData = useCallback(() => {
-    setData(withPortfolioThumbnails(defaultCvData));
+    setData(defaultCvData);
     localStorage.removeItem(STORAGE_KEY);
   }, []);
 

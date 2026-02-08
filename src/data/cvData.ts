@@ -4,6 +4,8 @@
 // No code changes needed in components.
 // ============================================================
 
+import portfolioThumbnails from "@/data/portfolioThumbnails";
+
 export interface ExperienceItem {
   id: string;
   role: string;
@@ -259,7 +261,7 @@ const cvData: CVData = {
       url: "https://vimeo.com/283914588",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: "/src/data/assets/natGeoExplorerAcademy.png",
+      thumbnail: portfolioThumbnails.natgeo,
     },
     {
       id: "pf-rescue",
@@ -268,7 +270,7 @@ const cvData: CVData = {
       url: "https://www.youtube.com/watch?v=SOjHSKbRVCQ",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: "/src/data/assets/RescueHeroes.png",
+      thumbnail: portfolioThumbnails.rescue,
     },
     {
       id: "pf-arcana",
@@ -287,7 +289,7 @@ const cvData: CVData = {
       url: "https://youtu.be/C8Mwkhu3iq4",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: "/src/data/assets/miro_end.png",
+      thumbnail: portfolioThumbnails.souvenir,
     },
     {
       id: "pf-authors",
@@ -296,7 +298,7 @@ const cvData: CVData = {
       url: "https://youtu.be/pInnrhghaxY",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail: "/src/data/assets/AuthRights.png",
+      thumbnail: portfolioThumbnails.authors,
     },
     {
       id: "pf-redtiger",
@@ -306,7 +308,7 @@ const cvData: CVData = {
       url: "https://redtiger.com/games",
       ctaLabel: "Visit Red Tiger",
       type: "collection",
-      thumbnail: "/src/data/assets/redTiger.png",
+      thumbnail: portfolioThumbnails.redtiger,
       games: [
         { name: "DragonBoyz" },
         { name: "Big Rich Turkeys" },
