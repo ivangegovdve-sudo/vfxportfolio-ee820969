@@ -59,7 +59,7 @@ export interface CVData {
     name: string;
     title: string;
     subtitle: string;
-    photoUrl?: string;
+    photoUrl?: https://github.com/ivangegovdve-sudo/python-learning-orchestrated/blob/main/src/assets/slackPic.png?raw=true;
     resumeUrl?: string;
   };
   about: {
@@ -127,13 +127,13 @@ const cvData: CVData = {
       description:
         "Animation, compositing, and visual effects across a variety of freelance projects for studios, agencies, and independent productions.",
       tags: ["After Effects", "Compositing", "VFX", "Animation"],
-      links: [
+      links: [https://i.ytimg.com/vi/ogwVYZrWI6s/hqdefault.jpg?sqp=-oaymwEnCPYBEIoBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLAxmzNzd3IE3qWB2AmwulQrcnKOng
         { label: "Showreel", url: "https://youtu.be/ogwVYZrWI6s" },
       ],
     },
     {
       id: "exp-semperia",
-      role: "Compositor & VFX Artist",
+      role: "Compositing & VFX Artist",
       company: "Semperia Films",
       location: "Sofia, Bulgaria",
       startDate: "Jul 2020",
@@ -141,7 +141,7 @@ const cvData: CVData = {
       description:
         'Compositing and visual effects for the short film "In Author\'s Hands".',
       tags: ["Compositing", "VFX"],
-      links: [
+      links: [https://github.com/ivangegovdve-sudo/python-learning-orchestrated/blob/main/src/assets/AuthRigts.png?raw=true
         {
           label: "In Author's Hands",
           url: "https://youtu.be/pInnrhghaxY",
@@ -222,7 +222,7 @@ const cvData: CVData = {
       description:
         'Screenwriting, second directing, and visual effects for the music video "Souvenir".',
       tags: ["VFX", "Screenwriting", "Directing"],
-      links: [
+      links: [https://github.com/ivangegovdve-sudo/python-learning-orchestrated/blob/main/src/assets/miro.png?raw=true
         { label: "Souvenir", url: "https://youtu.be/C8Mwkhu3iq4" },
       ],
     },
@@ -292,7 +292,7 @@ const cvData: CVData = {
       title: "Red Tiger Slot Games",
       descriptor:
         "Selection of slot games animated and developed while working at Dopamine (published under the Red Tiger brand).",
-      url: "https://www.redtiger.com",
+      url: "https://redtiger.com/games",
       ctaLabel: "Visit Red Tiger",
       type: "collection",
       games: [
