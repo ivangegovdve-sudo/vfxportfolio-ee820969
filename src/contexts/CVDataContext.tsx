@@ -67,10 +67,15 @@ function withPortfolioThumbnails(data: CVData): CVData {
         defaultThumbById.get(item.id) ??
         "";
 
-      const thumbnail =
-        raw.startsWith("http") || raw.startsWith("/")
-          ? raw
-          : `/assets/${raw.replace(/^\.?\/*assets\//, "")}`;
+      let thumbnail = raw.trim();
+
+      if (thumbnail && !thumbnail.startsWith("http") && !thumbnail.startsWith("/")) {
+        thumbnail = `/assets/${thumbnail.replace(/^\.?\/*assets\//, "")}`;
+      }
+
+      if (thumbnail && thumbnail.startsWith("/src/")) {
+        console.error("INVALID THUMBNAIL (src leak):", item.id, thumbnail);
+      }
 
       return {
         ...item,
