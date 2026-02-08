@@ -306,8 +306,7 @@ const cvData: CVData = {
       url: "https://redtiger.com/games",
       ctaLabel: "Visit Red Tiger",
       type: "collection",
-      thumbnail:
-        "https://imgs.search.brave.com/BsjSD0z2Smrez9TV5ODO5aRyFtwjuAyolTX7wviQkK4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zbG90Z29kcy5jby51ay9zdG9yYWdlL2FwcC9tZWRpYS9zbG90LWRldmVsb3BlcnMvcmVkLXRpZ2VyLndlYnA",
+      thumbnail: "/src/data/assets/redTiger.png",
       games: [
         { name: "DragonBoyz" },
         { name: "Big Rich Turkeys" },
