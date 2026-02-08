@@ -88,7 +88,7 @@ export interface CVData {
 const cvData: CVData = {
   hero: {
     name: "Ivan Gegov",
-    title: "Animation · Compositing · VFX",
+    title: "Senior Animator / Animation Lead · Compositing · VFX",
     subtitle:
       "Bringing stories to life through visual effects, compositing, and motion",
   },
@@ -101,13 +101,13 @@ const cvData: CVData = {
   experience: [
     {
       id: "exp-dopamine",
-      role: "Senior Animator → Animation Lead",
+      role: "Senior Animator / Animation Lead",
       company: "Dopamine (Red Tiger)",
       location: "Sofia, Bulgaria",
       startDate: "Mar 2021",
       endDate: "Present",
       description:
-        "Joined as Senior Animator producing high-quality 2D animation, VFX, and in-engine implementation for premium slot games published under the Red Tiger brand. Progressed into Animation Lead, taking ownership of animation execution and quality across a full game development team — balancing hands-on production with leadership.",
+        "Joined as Senior Animator producing 2D animation, VFX, and in-engine implementation for slot games published under the Red Tiger brand. Progressed into Animation Lead, taking ownership of animation execution and quality across a full game development team while continuing hands-on production.",
       highlights: [
         "Leading and coordinating animation work within a multidisciplinary game team",
         "Defining and maintaining animation quality standards and visual consistency",
