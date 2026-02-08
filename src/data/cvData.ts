@@ -97,7 +97,7 @@ const cvData: CVData = {
     subtitle:
       "Bringing stories to life through visual effects, compositing, and motion",
     photoUrl:
-      "https://27ede678-1a3d-4451-bbff-400280d2ce12.lovableproject.com/src/data/assets/slackPic.png",
+      "/src/data/assets/slackPic.png",
   },
   about: {
     paragraphs: [
