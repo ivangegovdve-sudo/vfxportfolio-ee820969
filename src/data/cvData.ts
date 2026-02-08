@@ -1,6 +1,7 @@
 import authRightsThumbnail from "./assets/AuthRights.png";
 import natGeoExplorerAcademyThumbnail from "./assets/natGeoExplorerAcademy.png";
 import rescueHeroesThumbnail from "./assets/RescueHeroes.png";
+import slackPic from "./assets/slackPic.png";
 import suvenirThumbnail from "./assets/miro_end.png";
 
 // ============================================================
@@ -96,8 +97,7 @@ const cvData: CVData = {
     title: "Senior Animator / Animation Lead · Compositing · VFX",
     subtitle:
       "Bringing stories to life through visual effects, compositing, and motion",
-    photoUrl:
-      "https://github.com/ivangegovdve-sudo/vfxportfolio-ee820969/blob/main/src/data/assets/slackPic.png?raw=true",
+    photoUrl: slackPic,
   },
   about: {
     paragraphs: [
@@ -273,16 +273,6 @@ const cvData: CVData = {
       type: "project",
       thumbnail:
         "https://cf.geekdo-images.com/8umeW9Q0MfxKgIBzhWUtPg__original/img/7lk_gPGJ9ju9_2pkoyICeCEFB58=/0x0/filters:format(png)/pic5115258.png",
-    },
-    {
-      id: "pf-showreel",
-      title: "Showreel",
-      descriptor: "Animation & VFX Reel",
-      url: "https://youtu.be/ogwVYZrWI6s",
-      ctaLabel: "Watch",
-      type: "project",
-      thumbnail:
-        "https://i.ytimg.com/vi/ogwVYZrWI6s/hqdefault.jpg?sqp=-oaymwEnCPYBEIoBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLAxmzNzd3IE3qWB2AmwulQrcnKOng",
     },
     {
       id: "pf-souvenir",
