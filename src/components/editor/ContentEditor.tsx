@@ -1,8 +1,8 @@
 import { useCvData } from "@/contexts/CVDataContext";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Pencil, X, RotateCcw, User, FileText, Briefcase, FolderOpen, Wrench, GraduationCap, Mail } from "lucide-react";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { Pencil, X, RotateCcw, User, FileText, Briefcase, FolderOpen, Wrench, GraduationCap, Mail, Download } from "lucide-react";
+import { useState, useRef, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import HeroEditor from "./HeroEditor";
 import AboutEditor from "./AboutEditor";
@@ -29,12 +29,34 @@ const MAX_WIDTH = 560;
 const DEFAULT_WIDTH = 320;
 
 const ContentEditor = () => {
-  const { editorOpen, setEditorOpen, resetData } = useCvData();
+  const { data, editorOpen, setEditorOpen, resetData } = useCvData();
   const [activeTab, setActiveTab] = useState<TabId>("hero");
   const [panelWidth, setPanelWidth] = useState(DEFAULT_WIDTH);
   const [searchParams] = useSearchParams();
 
-  const isEditMode = searchParams.get("edit") === "true";
+  const isEditMode =
+    searchParams.get("edit") === "true" || import.meta.env.VITE_ENABLE_EDITOR === "true";
+
+  const exportCvData = useCallback(() => {
+    const fileContents = [
+      "import type { CVData } from \"./cvData\";",
+      "",
+      `const cvData: CVData = ${JSON.stringify(data, null, 2)};`,
+      "",
+      "export default cvData;",
+      "",
+    ].join("\n");
+
+    const blob = new Blob([fileContents], { type: "text/typescript;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "cvData.export.ts";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }, [data]);
 
   // Don't render anything for public visitors
   if (!isEditMode) return null;
@@ -59,6 +81,7 @@ const ContentEditor = () => {
       setActiveTab={setActiveTab}
       setEditorOpen={setEditorOpen}
       resetData={resetData}
+      exportCvData={exportCvData}
     />
   );
 };
@@ -70,9 +93,18 @@ interface EditorPanelProps {
   setActiveTab: (t: TabId) => void;
   setEditorOpen: (o: boolean) => void;
   resetData: () => void;
+  exportCvData: () => void;
 }
 
-function EditorPanel({ panelWidth, setPanelWidth, activeTab, setActiveTab, setEditorOpen, resetData }: EditorPanelProps) {
+function EditorPanel({
+  panelWidth,
+  setPanelWidth,
+  activeTab,
+  setActiveTab,
+  setEditorOpen,
+  resetData,
+  exportCvData,
+}: EditorPanelProps) {
   const isDragging = useRef(false);
 
   const startResize = useCallback(
@@ -114,6 +146,9 @@ function EditorPanel({ panelWidth, setPanelWidth, activeTab, setActiveTab, setEd
         <div className="flex items-center justify-between px-4 py-3 border-b border-border">
           <h2 className="font-display font-semibold text-sm text-foreground">Content Editor</h2>
           <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={exportCvData} title="Export CV Data">
+              <Download className="w-4 h-4" />
+            </Button>
             <Button variant="ghost" size="icon" className="h-8 w-8" onClick={resetData} title="Reset to defaults">
               <RotateCcw className="w-4 h-4" />
             </Button>

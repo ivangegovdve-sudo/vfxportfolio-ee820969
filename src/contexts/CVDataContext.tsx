@@ -13,6 +13,18 @@ const STORAGE_KEY = "cv-data-v2";
 
 const CVDataContext = createContext<CVDataContextValue | null>(null);
 
+function withPortfolioThumbnails(data: CVData): CVData {
+  const defaultThumbById = new Map(defaultCvData.portfolio.map((item) => [item.id, item.thumbnail]));
+
+  return {
+    ...data,
+    portfolio: data.portfolio.map((item) => ({
+      ...item,
+      thumbnail: item.thumbnail || defaultThumbById.get(item.id) || "",
+    })),
+  };
+}
+
 function loadFromStorage(): CVData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -20,10 +32,10 @@ function loadFromStorage(): CVData {
       const parsed = JSON.parse(raw) as CVData;
       // Validate the new structure — if skills.sections doesn't exist, reset
       if (!parsed.skills?.sections) return defaultCvData;
-      return parsed;
+      return withPortfolioThumbnails(parsed);
     }
   } catch {}
-  return defaultCvData;
+  return withPortfolioThumbnails(defaultCvData);
 }
 
 export function CVDataProvider({ children }: { children: ReactNode }) {
