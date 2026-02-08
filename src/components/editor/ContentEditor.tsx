@@ -2,7 +2,8 @@ import { useCvData } from "@/contexts/CVDataContext";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Pencil, X, RotateCcw, User, FileText, Briefcase, FolderOpen, Wrench, GraduationCap, Mail } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import HeroEditor from "./HeroEditor";
 import AboutEditor from "./AboutEditor";
 import ExperienceEditor from "./ExperienceEditor";
@@ -23,9 +24,20 @@ const tabs = [
 
 type TabId = (typeof tabs)[number]["id"];
 
+const MIN_WIDTH = 280;
+const MAX_WIDTH = 560;
+const DEFAULT_WIDTH = 320;
+
 const ContentEditor = () => {
   const { editorOpen, setEditorOpen, resetData } = useCvData();
   const [activeTab, setActiveTab] = useState<TabId>("hero");
+  const [panelWidth, setPanelWidth] = useState(DEFAULT_WIDTH);
+  const [searchParams] = useSearchParams();
+
+  const isEditMode = searchParams.get("edit") === "true";
+
+  // Don't render anything for public visitors
+  if (!isEditMode) return null;
 
   if (!editorOpen) {
     return (
@@ -40,59 +52,124 @@ const ContentEditor = () => {
   }
 
   return (
-    <div className="fixed inset-y-0 left-0 z-50 w-80 bg-background border-r border-border shadow-xl flex flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-        <h2 className="font-display font-semibold text-sm text-foreground">Content Editor</h2>
-        <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={resetData} title="Reset to defaults">
-            <RotateCcw className="w-4 h-4" />
-          </Button>
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditorOpen(false)}>
-            <X className="w-4 h-4" />
-          </Button>
+    <EditorPanel
+      panelWidth={panelWidth}
+      setPanelWidth={setPanelWidth}
+      activeTab={activeTab}
+      setActiveTab={setActiveTab}
+      setEditorOpen={setEditorOpen}
+      resetData={resetData}
+    />
+  );
+};
+
+interface EditorPanelProps {
+  panelWidth: number;
+  setPanelWidth: (w: number) => void;
+  activeTab: TabId;
+  setActiveTab: (t: TabId) => void;
+  setEditorOpen: (o: boolean) => void;
+  resetData: () => void;
+}
+
+function EditorPanel({ panelWidth, setPanelWidth, activeTab, setActiveTab, setEditorOpen, resetData }: EditorPanelProps) {
+  const isDragging = useRef(false);
+
+  const startResize = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      isDragging.current = true;
+      const startX = e.clientX;
+      const startWidth = panelWidth;
+
+      const onMouseMove = (ev: MouseEvent) => {
+        const newWidth = Math.min(Math.max(startWidth + (ev.clientX - startX), MIN_WIDTH), MAX_WIDTH);
+        setPanelWidth(newWidth);
+      };
+
+      const onMouseUp = () => {
+        isDragging.current = false;
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+        document.body.style.cursor = "";
+        document.body.style.userSelect = "";
+      };
+
+      document.body.style.cursor = "col-resize";
+      document.body.style.userSelect = "none";
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    },
+    [panelWidth, setPanelWidth]
+  );
+
+  return (
+    <div
+      className="fixed inset-y-0 left-0 z-50 bg-background border-r border-border shadow-xl flex"
+      style={{ width: panelWidth }}
+    >
+      {/* Main panel content */}
+      <div className="flex flex-col flex-1 min-w-0">
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+          <h2 className="font-display font-semibold text-sm text-foreground">Content Editor</h2>
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={resetData} title="Reset to defaults">
+              <RotateCcw className="w-4 h-4" />
+            </Button>
+            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditorOpen(false)}>
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex gap-1 px-3 py-2 border-b border-border overflow-x-auto">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${
+                  activeTab === tab.id
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Content */}
+        <ScrollArea className="flex-1 p-4">
+          {activeTab === "hero" && <HeroEditor />}
+          {activeTab === "about" && <AboutEditor />}
+          {activeTab === "experience" && <ExperienceEditor />}
+          {activeTab === "portfolio" && <PortfolioEditor />}
+          {activeTab === "skills" && <SkillsEditor />}
+          {activeTab === "education" && <EducationEditor />}
+          {activeTab === "contact" && <ContactEditor />}
+        </ScrollArea>
+
+        <div className="px-4 py-3 border-t border-border">
+          <p className="text-[10px] text-muted-foreground text-center">
+            Changes are saved to your browser automatically
+          </p>
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-1 px-3 py-2 border-b border-border overflow-x-auto">
-        {tabs.map((tab) => {
-          const Icon = tab.icon;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${
-                activeTab === tab.id
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              <Icon className="w-3.5 h-3.5" />
-              {tab.label}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Content */}
-      <ScrollArea className="flex-1 p-4">
-        {activeTab === "hero" && <HeroEditor />}
-        {activeTab === "about" && <AboutEditor />}
-        {activeTab === "experience" && <ExperienceEditor />}
-        {activeTab === "portfolio" && <PortfolioEditor />}
-        {activeTab === "skills" && <SkillsEditor />}
-        {activeTab === "education" && <EducationEditor />}
-        {activeTab === "contact" && <ContactEditor />}
-      </ScrollArea>
-
-      <div className="px-4 py-3 border-t border-border">
-        <p className="text-[10px] text-muted-foreground text-center">
-          Changes are saved to your browser automatically
-        </p>
-      </div>
+      {/* Resize handle */}
+      <div
+        onMouseDown={startResize}
+        className="w-1.5 cursor-col-resize hover:bg-primary/20 active:bg-primary/30 transition-colors shrink-0"
+        title="Drag to resize"
+      />
     </div>
   );
-};
+}
 
 export default ContentEditor;
