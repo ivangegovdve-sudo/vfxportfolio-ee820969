@@ -29,8 +29,34 @@ const defaultContextValue: CVDataContextValue = {
 
 const CVDataContext = createContext<CVDataContextValue>(defaultContextValue);
 
+function normalizeThumbnail(thumbnail?: string): string {
+  if (!thumbnail) return "";
+
+  const value = thumbnail.trim();
+
+  if (value.startsWith("https://") || value.startsWith("/assets/")) {
+    return value;
+  }
+
+  if (value.startsWith("assets/")) {
+    return `/${value}`;
+  }
+
+  if (value.startsWith("./assets/")) {
+    return value.slice(1);
+  }
+
+  if (value.startsWith("../assets/")) {
+    return `/assets/${value.slice("../assets/".length)}`;
+  }
+
+  return "";
+}
+
 function withPortfolioThumbnails(data: CVData): CVData {
-  const defaultThumbById = new Map(defaultCvData.portfolio.map((item) => [item.id, item.thumbnail]));
+  const defaultThumbById = new Map(
+    defaultCvData.portfolio.map((item) => [item.id, normalizeThumbnail(item.thumbnail)])
+  );
   const requiredDefaultThumbnails = new Set(["pf-showreel", "pf-redtiger"]);
 
   return {
@@ -62,7 +88,7 @@ function loadFromStorage(): CVData {
     if (raw) {
       const parsed = JSON.parse(raw) as CVData;
       // Validate the new structure — if skills.sections doesn't exist, reset
-      if (!parsed.skills?.sections) return defaultCvData;
+      if (!parsed.skills?.sections) return withPortfolioThumbnails(defaultCvData);
       return withPortfolioThumbnails(parsed);
     }
   } catch {}
@@ -82,7 +108,7 @@ export function CVDataProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const resetData = useCallback(() => {
-    setData(defaultCvData);
+    setData(withPortfolioThumbnails(defaultCvData));
     localStorage.removeItem(STORAGE_KEY);
   }, []);
 
