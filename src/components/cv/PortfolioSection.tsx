@@ -77,67 +77,85 @@ const PortfolioSection = () => {
 };
 
 function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem }) {
+  const gameCount = item.games?.length ?? 0;
+
   return (
-    <div className="mt-6 rounded-xl border border-border bg-background overflow-hidden">
-      <div className="flex flex-col md:flex-row">
-        <div className="md:w-2/5 aspect-[16/9] md:aspect-auto bg-gradient-to-br from-primary/12 via-accent/8 to-secondary/10 flex items-center justify-center p-8">
-          <img
-            src={item.thumbnail}
-            alt={item.title}
-            className="w-full h-full object-cover rounded-lg"
-            loading="lazy"
-            decoding="async"
-            width={1280}
-            height={720}
-          />
-        </div>
-
-        <div className="flex-1 p-6 md:p-8 flex flex-col justify-between gap-5">
-          <div>
-            <h3 className="font-display font-semibold text-xl text-foreground mb-2">
-              {item.title}
-            </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {item.descriptor}
-            </p>
+    <div className="mt-8 rounded-2xl border border-border bg-background overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+      {/* Hero banner */}
+      <div className="relative aspect-[21/9] md:aspect-[3/1] bg-gradient-to-br from-primary/15 via-accent/8 to-secondary/10 overflow-hidden">
+        <img
+          src={item.thumbnail}
+          alt={item.title}
+          className="w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
+          width={1280}
+          height={420}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <h3 className="font-display font-bold text-xl md:text-2xl text-white drop-shadow-sm leading-tight">
+                {item.title}
+              </h3>
+              <p className="text-sm text-white/80 mt-1 max-w-xl leading-relaxed drop-shadow-sm">
+                {item.descriptor}
+              </p>
+            </div>
+            <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-sm text-xs font-semibold text-white border border-white/20">
+              <Gamepad2 className="w-3.5 h-3.5" />
+              {gameCount} games
+            </span>
           </div>
+        </div>
+      </div>
 
-          {item.games && item.games.length > 0 && (
-            <details className="rounded-lg border border-border bg-card/60 p-3">
-              <summary className="list-none cursor-pointer flex items-center justify-between text-sm font-medium text-foreground">
-                <span className="inline-flex items-center gap-2">
-                  <Gamepad2 className="w-4 h-4 text-primary" />
-                  Games I've worked on ({item.games.length})
+      {/* Games grid + CTA */}
+      <div className="p-6 md:p-8">
+        {item.games && gameCount > 0 && (
+          <details className="group">
+            <summary className="list-none cursor-pointer flex items-center justify-between text-sm font-medium text-foreground hover:text-primary transition-colors select-none">
+              <span className="inline-flex items-center gap-2">
+                <Gamepad2 className="w-4 h-4 text-primary" />
+                Browse all {gameCount} games
+              </span>
+              <ChevronDown className="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform duration-200" />
+            </summary>
+            <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+              {item.games.map((game) => (
+                <span
+                  key={game.name}
+                  className="tag text-center truncate"
+                  title={game.name}
+                >
+                  {game.url ? (
+                    <a
+                      href={game.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-primary transition-colors"
+                    >
+                      {game.name}
+                    </a>
+                  ) : (
+                    game.name
+                  )}
                 </span>
-                <ChevronDown className="w-4 h-4 text-muted-foreground" />
-              </summary>
-              <ul className="mt-3 grid gap-1.5 text-xs text-muted-foreground max-h-64 overflow-y-auto pr-1">
-                {item.games.map((game) => (
-                  <li key={game.name}>
-                    {game.url ? (
-                      <a
-                        href={game.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 hover:text-primary transition-colors"
-                      >
-                        {game.name}
-                        <ExternalLink className="w-3 h-3" />
-                      </a>
-                    ) : (
-                      game.name
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </details>
-          )}
+              ))}
+            </div>
+          </details>
+        )}
 
+        <div className="mt-6 pt-5 border-t border-border flex items-center justify-between">
+          <p className="text-xs text-muted-foreground">
+            Published under the Red Tiger brand
+          </p>
           <a
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline self-start"
+            className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
           >
             {item.ctaLabel || "View"}
             <ExternalLink className="w-3.5 h-3.5" />

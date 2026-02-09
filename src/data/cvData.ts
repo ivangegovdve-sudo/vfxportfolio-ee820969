@@ -251,8 +251,7 @@ const cvData: CVData = {
       url: "https://youtu.be/ogwVYZrWI6s",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail:
-        "https://i.ytimg.com/vi/ogwVYZrWI6s/hqdefault.jpg?sqp=-oaymwEnCPYBEIoBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLAxmzNzd3IE3qWB2AmwulQrcnKOng",
+      thumbnail: portfolioThumbnails.showreel,
     },
     {
       id: "pf-brainfreeze",
@@ -279,8 +278,7 @@ const cvData: CVData = {
       url: "https://www.youtube.com/watch?v=qeevdrluvnA",
       ctaLabel: "Watch",
       type: "project",
-      thumbnail:
-        "https://cf.geekdo-images.com/8umeW9Q0MfxKgIBzhWUtPg__original/img/7lk_gPGJ9ju9_2pkoyICeCEFB58=/0x0/filters:format(png)/pic5115258.png",
+      thumbnail: portfolioThumbnails.arcana,
     },
     {
       id: "pf-souvenir",
