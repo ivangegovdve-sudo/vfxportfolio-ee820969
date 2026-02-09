@@ -24,7 +24,7 @@ const Index = () => {
         </Suspense>
       )}
       <Navigation />
-      <main>
+      <main id="main">
         <HeroSection />
         <AboutSection />
         <ExperienceSection />

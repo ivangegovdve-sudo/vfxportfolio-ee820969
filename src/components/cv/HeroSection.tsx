@@ -36,6 +36,11 @@ const HeroSection = () => {
                 src={currentPhotoUrl}
                 alt={name}
                 onError={handleImageError}
+                loading="lazy"
+                decoding="async"
+                fetchPriority="high"
+                width={208}
+                height={208}
                 className="w-40 h-40 md:w-52 md:h-52 rounded-full object-cover border-4 border-primary/20 shadow-lg"
               />
             ) : (

@@ -41,6 +41,7 @@ const PortfolioSection = () => {
                     alt={item.title}
                     className="w-full h-full object-cover"
                     loading="lazy"
+                    decoding="async"
                   />
                   <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-background/90 backdrop-blur-sm text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm">
                     {item.ctaLabel || "View"}
@@ -81,6 +82,7 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
             alt={item.title}
             className="w-full h-full object-cover rounded-lg"
             loading="lazy"
+            decoding="async"
           />
         </div>
 

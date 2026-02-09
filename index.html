@@ -12,9 +12,39 @@
     <meta property="og:type" content="website" />
 
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="canonical" href="https://vfxportfolio.lovable.app/" />
+    <meta property="og:image" content="/assets/slackPic.png" />
+    <meta property="og:url" content="https://vfxportfolio.lovable.app/" />
+    <meta property="og:site_name" content="Ivan Gegov — VFX Portfolio" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+    <style>
+      .skip-link:focus { position: static; left: auto; width: auto; height: auto; padding: 8px 12px; background: #000; color: #fff; border-radius: 4px; z-index: 9999; }
+    </style>
+
+    <!-- Preconnect and preload Google Fonts for faster font delivery -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" onload="this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"></noscript>
+
+    <!-- Structured data: Person -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Ivan Gegov",
+      "jobTitle": "Senior Animator / Animation Lead",
+      "url": "https://vfxportfolio.lovable.app/",
+      "image": "https://vfxportfolio.lovable.app/assets/slackPic.png",
+      "sameAs": ["https://youtu.be/ogwVYZrWI6s","https://vimeo.com/283914588"]
+    }
+    </script>
   </head>
 
   <body>
+    <a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Skip to content</a>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
