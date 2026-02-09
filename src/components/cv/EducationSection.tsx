@@ -6,10 +6,12 @@ const EducationSection = () => {
   const { data } = useCvData();
 
   return (
-    <section id="education" className="section-spacing bg-card">
+    <section id="education" className="section-spacing bg-card" aria-labelledby="education-title">
       <div className="section-container">
         <AnimatedSection>
-          <p className="section-title">Education</p>
+          <h2 id="education-title" className="section-title">
+            Education
+          </h2>
         </AnimatedSection>
 
         <div className="space-y-8">

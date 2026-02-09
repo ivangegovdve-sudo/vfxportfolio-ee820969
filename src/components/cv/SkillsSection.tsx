@@ -7,10 +7,12 @@ const SkillsSection = () => {
   const { data } = useCvData();
 
   return (
-    <section id="skills" className="section-spacing">
+    <section id="skills" className="section-spacing" aria-labelledby="skills-title">
       <div className="section-container">
         <AnimatedSection>
-          <p className="section-title">Skills</p>
+          <h2 id="skills-title" className="section-title">
+            Skills
+          </h2>
         </AnimatedSection>
 
         <div className="space-y-12">

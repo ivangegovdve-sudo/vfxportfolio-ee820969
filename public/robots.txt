@@ -12,5 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
- 
+
 Sitemap: https://vfxportfolio.lovable.app/sitemap.xml

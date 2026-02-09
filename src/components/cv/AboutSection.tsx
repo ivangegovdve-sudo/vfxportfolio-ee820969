@@ -5,10 +5,12 @@ const AboutSection = () => {
   const { data } = useCvData();
 
   return (
-    <section id="about" className="section-spacing">
+    <section id="about" className="section-spacing" aria-labelledby="about-title">
       <div className="section-container">
         <AnimatedSection>
-          <p className="section-title">About</p>
+          <h2 id="about-title" className="section-title">
+            About
+          </h2>
         </AnimatedSection>
         <div className="space-y-5">
           {data.about.paragraphs.map((p, i) => (

@@ -7,10 +7,12 @@ const ContactSection = () => {
   const { email, location, links } = data.contact;
 
   return (
-    <section id="contact" className="section-spacing">
+    <section id="contact" className="section-spacing" aria-labelledby="contact-title">
       <div className="section-container">
         <AnimatedSection>
-          <p className="section-title">Contact</p>
+          <h2 id="contact-title" className="section-title">
+            Contact
+          </h2>
         </AnimatedSection>
 
         <AnimatedSection delay={0.1}>

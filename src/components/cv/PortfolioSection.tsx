@@ -18,10 +18,12 @@ const PortfolioSection = () => {
   const collectionItems = data.portfolio.filter((p) => p.type === "collection");
 
   return (
-    <section id="portfolio" className="section-spacing bg-card">
+    <section id="portfolio" className="section-spacing bg-card" aria-labelledby="portfolio-title">
       <div className="section-container">
         <AnimatedSection>
-          <p className="section-title">Portfolio</p>
+          <h2 id="portfolio-title" className="section-title">
+            Portfolio
+          </h2>
         </AnimatedSection>
 
         <div className="grid sm:grid-cols-2 gap-6">
@@ -42,6 +44,8 @@ const PortfolioSection = () => {
                     className="w-full h-full object-cover"
                     loading="lazy"
                     decoding="async"
+                    width={1280}
+                    height={720}
                   />
                   <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-background/90 backdrop-blur-sm text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm">
                     {item.ctaLabel || "View"}
@@ -83,6 +87,8 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
             className="w-full h-full object-cover rounded-lg"
             loading="lazy"
             decoding="async"
+            width={1280}
+            height={720}
           />
         </div>
 

@@ -36,7 +36,7 @@ const HeroSection = () => {
                 src={currentPhotoUrl}
                 alt={name}
                 onError={handleImageError}
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 fetchPriority="high"
                 width={208}

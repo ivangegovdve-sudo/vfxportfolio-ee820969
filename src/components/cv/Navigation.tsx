@@ -58,6 +58,8 @@ const Navigation = () => {
           onClick={() => setMobileOpen(!mobileOpen)}
           className="md:hidden text-foreground p-2"
           aria-label="Toggle navigation"
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-navigation"
         >
           <div className="space-y-1.5">
             <span
@@ -82,6 +84,7 @@ const Navigation = () => {
       {/* Mobile menu */}
       {mobileOpen && (
         <motion.div
+          id="mobile-navigation"
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}

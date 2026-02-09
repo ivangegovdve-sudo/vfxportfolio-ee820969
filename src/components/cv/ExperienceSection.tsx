@@ -6,10 +6,16 @@ const ExperienceSection = () => {
   const { data } = useCvData();
 
   return (
-    <section id="experience" className="section-spacing bg-card">
+    <section
+      id="experience"
+      className="section-spacing bg-card"
+      aria-labelledby="experience-title"
+    >
       <div className="section-container">
         <AnimatedSection>
-          <p className="section-title">Experience</p>
+          <h2 id="experience-title" className="section-title">
+            Experience
+          </h2>
         </AnimatedSection>
 
         <div className="space-y-0">

@@ -12,6 +12,8 @@ Personal portfolio website and CV for Ivan Gegov (Senior Animator / Animation Le
 
 ## Local development
 
+Node.js 20+ is required (`.nvmrc` included).
+
 ```sh
 npm install
 npm run dev
