@@ -4,7 +4,6 @@ import miroEnd from "@/data/assets/miro_end.png";
 import authRights from "@/data/assets/AuthRights.png";
 import redTiger from "@/data/assets/redTiger.png";
 import showreel from "@/data/assets/showreel.jpg";
-import arcanaMagica from "@/data/assets/arcanaMagica.png";
 
 const portfolioThumbnails: { [id: string]: string } = {
   natgeo: natGeoExplorerAcademy,
@@ -13,7 +12,8 @@ const portfolioThumbnails: { [id: string]: string } = {
   authors: authRights,
   redtiger: redTiger,
   showreel: showreel,
-  arcana: arcanaMagica,
+  arcana:
+    "https://cf.geekdo-images.com/8umeW9Q0MfxKgIBzhWUtPg__original/img/7lk_gPGJ9ju9_2pkoyICeCEFB58=/0x0/filters:format(png)/pic5115258.png",
 };
 
 export default portfolioThumbnails;
