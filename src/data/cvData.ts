@@ -164,8 +164,8 @@ const cvData: CVData = {
       description:
         "Part of the compositing and VFX team working on animated series and promotional content for international clients.",
       highlights: [
-        'National Geographic\'s Explorers Academy — "Brain Freeze"',
-        '"Rescue Heroes" — production by TONGAL for Fisher-Price (14 episodes)',
+        "National Geographic's Explorers Academy \u2014 \"Brain Freeze\"",
+        "\"Rescue Heroes\" \u2014 contributed to production by TONGAL for Fisher-Price\u00AE (14 episodes)",
         '"Arcana Magica" — Kickstarter promotional video',
         "John Vardar vs the Galaxy — animated feature film (limited compositing work, uncredited)",
       ],
@@ -248,7 +248,7 @@ const cvData: CVData = {
     {
       id: "pf-brainfreeze",
       order: 1,
-      title: "National Geographic \u2014 Brain Freeze",
+      title: "National Geographic\u00AE \u2014 Brain Freeze",
       descriptor: "Animation · Compositing",
       url: "https://vimeo.com/283914588",
       ctaLabel: "Watch",
@@ -319,7 +319,7 @@ const cvData: CVData = {
         { name: "DragonBoyz", url: "https://redtiger.com/games/dragon-boyz" },
         { name: "Big Rich Turkeys", url: "https://redtiger.com/games/big-rich-turkeys" },
         { name: "Cash Lamps", url: "https://redtiger.com/games/cash-lamps" },
-        { name: "Monopoly Rent Rush", url: "https://redtiger.com/games/monopoly-rent-rush" },
+        { name: "Monopoly\u00AE Rent Rush", url: "https://redtiger.com/games/monopoly-rent-rush" },
         { name: "Piggy Riches 2 Megaways", url: "https://redtiger.com/games/piggy-riches-2-megaways" },
         { name: "Piggy Riches Begins", url: "https://redtiger.com/games/piggy-riches-begins" },
         { name: "Bass Boss", url: "https://redtiger.com/games/bass-boss" },
@@ -462,6 +462,7 @@ const cvData: CVData = {
 };
 
 export default cvData;
+
 
 
 
