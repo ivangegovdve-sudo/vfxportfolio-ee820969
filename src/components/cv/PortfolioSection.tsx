@@ -77,8 +77,6 @@ const PortfolioSection = () => {
 };
 
 function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem }) {
-  const gameCount = item.games?.length ?? 0;
-
   return (
     <div className="mt-8 rounded-2xl border border-border bg-background overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
       {/* Hero banner */}
@@ -103,46 +101,45 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
                 {item.descriptor}
               </p>
             </div>
-            <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-sm text-xs font-semibold text-white border border-white/20">
-              <Gamepad2 className="w-3.5 h-3.5" />
-              {gameCount} games
-            </span>
           </div>
         </div>
       </div>
 
       {/* Games grid + CTA */}
       <div className="p-6 md:p-8">
-        {item.games && gameCount > 0 && (
+        {item.games && item.games.length > 0 && (
           <details className="group">
             <summary className="list-none cursor-pointer flex items-center justify-between text-sm font-medium text-foreground hover:text-primary transition-colors select-none">
               <span className="inline-flex items-center gap-2">
                 <Gamepad2 className="w-4 h-4 text-primary" />
-                Browse all {gameCount} games
+                Released / Published games
               </span>
               <ChevronDown className="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform duration-200" />
             </summary>
             <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-              {item.games.map((game) => (
-                <span
-                  key={game.name}
-                  className="tag text-center truncate"
-                  title={game.name}
-                >
-                  {game.url ? (
-                    <a
-                      href={game.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-primary transition-colors"
-                    >
-                      {game.name}
-                    </a>
-                  ) : (
-                    game.name
-                  )}
-                </span>
-              ))}
+              {item.games.map((game) => {
+                const hasUrl = !!game.url;
+                return hasUrl ? (
+                  <a
+                    key={game.name}
+                    href={game.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="tag text-center truncate hover:text-primary transition-colors cursor-pointer"
+                    title={game.name}
+                  >
+                    {game.name}
+                  </a>
+                ) : (
+                  <span
+                    key={game.name}
+                    className="tag text-center truncate opacity-80"
+                    title={game.name}
+                  >
+                    {game.name}
+                  </span>
+                );
+              })}
             </div>
           </details>
         )}

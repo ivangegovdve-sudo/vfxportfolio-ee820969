@@ -2,7 +2,6 @@ import { lazy, Suspense } from "react";
 import { useSearchParams } from "react-router-dom";
 import Navigation from "@/components/cv/Navigation";
 import HeroSection from "@/components/cv/HeroSection";
-import AboutSection from "@/components/cv/AboutSection";
 import ExperienceSection from "@/components/cv/ExperienceSection";
 import PortfolioSection from "@/components/cv/PortfolioSection";
 import SkillsSection from "@/components/cv/SkillsSection";
@@ -26,10 +25,9 @@ const Index = () => {
       <Navigation />
       <main id="main">
         <HeroSection />
-        <AboutSection />
-        <ExperienceSection />
         <PortfolioSection />
         <SkillsSection />
+        <ExperienceSection />
         <EducationSection />
         <ContactSection />
       </main>
