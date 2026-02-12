@@ -93,7 +93,7 @@ const cvData: CVData = {
     name: "Ivan Gegov",
     title: "Senior Animator / Animation Lead · Compositing · VFX",
     subtitle:
-      "Bringing stories to life through visual effects, compositing, and motion",
+      "Where imagination meets the timeline — crafting worlds, one frame at a time.",
     photoUrl:
       "/assets/slackPic.png",
   },
@@ -245,15 +245,6 @@ const cvData: CVData = {
   ],
   portfolio: [
     {
-      id: "pf-showreel",
-      title: "Showreel",
-      descriptor: "Animation · Compositing · VFX",
-      url: "https://youtu.be/ogwVYZrWI6s",
-      ctaLabel: "Watch",
-      type: "project",
-      thumbnail: portfolioThumbnails.showreel,
-    },
-    {
       id: "pf-brainfreeze",
       title: 'National Geographic – Explorers Academy "Brain Freeze"',
       descriptor: "Animation · Compositing",
@@ -272,15 +263,6 @@ const cvData: CVData = {
       thumbnail: portfolioThumbnails.rescue,
     },
     {
-      id: "pf-arcana",
-      title: "Arcana Magica – Kickstarter Promo",
-      descriptor: "Animation · Promotional",
-      url: "https://www.youtube.com/watch?v=qeevdrluvnA",
-      ctaLabel: "Watch",
-      type: "project",
-      thumbnail: portfolioThumbnails.arcana,
-    },
-    {
       id: "pf-souvenir",
       title: "Miro – Suvenir",
       descriptor: "Music Video · VFX",
@@ -288,6 +270,24 @@ const cvData: CVData = {
       ctaLabel: "Watch",
       type: "project",
       thumbnail: portfolioThumbnails.souvenir,
+    },
+    {
+      id: "pf-showreel",
+      title: "Showreel",
+      descriptor: "Animation · Compositing · VFX",
+      url: "https://youtu.be/ogwVYZrWI6s",
+      ctaLabel: "Watch",
+      type: "project",
+      thumbnail: portfolioThumbnails.showreel,
+    },
+    {
+      id: "pf-arcana",
+      title: "Arcana Magica – Kickstarter Promo",
+      descriptor: "Animation · Promotional",
+      url: "https://www.youtube.com/watch?v=qeevdrluvnA",
+      ctaLabel: "Watch",
+      type: "project",
+      thumbnail: portfolioThumbnails.arcana,
     },
     {
       id: "pf-authors",
@@ -308,6 +308,7 @@ const cvData: CVData = {
       type: "collection",
       thumbnail: portfolioThumbnails.redtiger,
       games: [
+        // ─── Paste game URLs here as { name: "...", url: "https://..." } ───
         { name: "DragonBoyz" },
         { name: "Big Rich Turkeys" },
         { name: "Cash Lamps" },

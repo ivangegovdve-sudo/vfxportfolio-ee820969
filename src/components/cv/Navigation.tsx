@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const navItems = [
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
   { label: "Portfolio", href: "#portfolio" },
   { label: "Skills", href: "#skills" },
+  { label: "Experience", href: "#experience" },
   { label: "Education", href: "#education" },
   { label: "Contact", href: "#contact" },
 ];
@@ -40,12 +39,12 @@ const Navigation = () => {
         </a>
 
         {/* Desktop */}
-        <ul className="hidden md:flex items-center gap-8">
+        <ul className="hidden md:flex items-center gap-1">
           {navItems.map((item) => (
             <li key={item.href}>
               <a
                 href={item.href}
-                className="text-xs font-medium uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors"
+                className="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground hover:text-foreground hover:bg-secondary transition-all duration-200"
               >
                 {item.label}
               </a>
@@ -90,13 +89,13 @@ const Navigation = () => {
           exit={{ opacity: 0, height: 0 }}
           className="md:hidden bg-background/95 backdrop-blur-md border-b border-border"
         >
-          <ul className="section-container py-4 space-y-3">
+          <ul className="section-container py-3 flex flex-col gap-1">
             {navItems.map((item) => (
               <li key={item.href}>
                 <a
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
-                  className="block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  className="block px-4 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
                 >
                   {item.label}
                 </a>
