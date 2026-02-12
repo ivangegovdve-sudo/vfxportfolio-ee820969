@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { useCvData } from "@/contexts/CVDataContext";
 import AnimatedSection from "./AnimatedSection";
 import { ExternalLink, Gamepad2, ChevronDown } from "lucide-react";
@@ -35,7 +36,7 @@ const PortfolioSection = () => {
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block rounded-xl border border-border bg-background overflow-hidden hover:border-primary/40 hover:shadow-lg transition-all duration-300"
+                className="group block rounded-xl border border-border bg-background overflow-hidden hover:border-primary/40 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
               >
                 <div
                   className={`aspect-[16/9] bg-gradient-to-br ${gradientVariants[i % gradientVariants.length]} flex items-center justify-center relative overflow-hidden`}
@@ -55,13 +56,16 @@ const PortfolioSection = () => {
                   </span>
                 </div>
 
-                <div className="p-5">
-                  <h3 className="font-display font-semibold text-base text-foreground group-hover:text-primary transition-colors leading-snug">
+                <div className="p-5 md:p-6">
+                  <h3 className="font-display font-bold text-lg md:text-xl text-foreground group-hover:text-primary transition-colors leading-snug">
                     <TrademarkText text={item.title} />
                   </h3>
-                  <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                    {item.descriptor}
-                  </p>
+                  {(item.year || item.category) && (
+                    <p className="mt-1 text-[11px] uppercase tracking-[0.08em] text-muted-foreground/80">
+                      {[item.year, item.category].filter(Boolean).join(" | ")}
+                    </p>
+                  )}
+                  <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{item.descriptor}</p>
                 </div>
               </a>
             </AnimatedSection>
@@ -79,9 +83,29 @@ const PortfolioSection = () => {
 };
 
 function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem }) {
+  const DEFAULT_VISIBLE_GAMES = 8;
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedYear, setSelectedYear] = useState("all");
+  const listId = `${item.id}-games-list`;
+
+  const years = useMemo(() => {
+    if (!item.games) return [];
+    return [...new Set(item.games.map((game) => game.year).filter(Boolean))]
+      .sort((a, b) => Number(b) - Number(a))
+      .map(String);
+  }, [item.games]);
+
+  const filteredGames = useMemo(() => {
+    if (!item.games) return [];
+    if (selectedYear === "all") return item.games;
+    return item.games.filter((game) => String(game.year) === selectedYear);
+  }, [item.games, selectedYear]);
+
+  const visibleGames = isExpanded ? filteredGames : filteredGames.slice(0, DEFAULT_VISIBLE_GAMES);
+  const canToggle = filteredGames.length > DEFAULT_VISIBLE_GAMES;
+
   return (
     <div className="mt-8 rounded-2xl border border-border bg-background overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
-      {/* Hero banner */}
       <div className="relative aspect-[21/9] md:aspect-[3/1] bg-gradient-to-br from-primary/15 via-accent/8 to-secondary/10 overflow-hidden">
         <img
           src={item.thumbnail}
@@ -99,57 +123,103 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
               <h3 className="font-display font-bold text-xl md:text-2xl text-white drop-shadow-sm leading-tight">
                 <TrademarkText text={item.title} />
               </h3>
-              <p className="text-sm text-white/80 mt-1 max-w-xl leading-relaxed drop-shadow-sm">
-                {item.descriptor}
-              </p>
+              <p className="text-sm text-white/80 mt-1 max-w-xl leading-relaxed drop-shadow-sm">{item.descriptor}</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Games grid + CTA */}
       <div className="p-6 md:p-8">
         {item.games && item.games.length > 0 && (
-          <details className="group">
-            <summary className="list-none cursor-pointer flex items-center justify-between text-sm font-medium text-foreground hover:text-primary transition-colors select-none">
-              <span className="inline-flex items-center gap-2">
+          <div>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h4 className="inline-flex items-center gap-2 text-sm font-medium text-foreground">
                 <Gamepad2 className="w-4 h-4 text-primary" />
                 Released / Published games
-              </span>
-              <ChevronDown className="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform duration-200" />
-            </summary>
-            <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-              {item.games.map((game) => {
+              </h4>
+              {years.length > 0 && (
+                <div className="inline-flex items-center gap-2">
+                  <label htmlFor={`${item.id}-year-filter`} className="text-xs text-muted-foreground">
+                    Filter by year
+                  </label>
+                  <select
+                    id={`${item.id}-year-filter`}
+                    value={selectedYear}
+                    onChange={(event) => {
+                      setSelectedYear(event.target.value);
+                      setIsExpanded(false);
+                    }}
+                    className="h-8 rounded-md border border-border bg-background px-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                    aria-label="Filter released games by year"
+                  >
+                    <option value="all">All years</option>
+                    {years.map((year) => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
+
+            <div id={listId} className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+              {visibleGames.map((game) => {
                 const hasUrl = !!game.url;
+                const gameMeta = game.year ? ` (${game.year})` : "";
                 return hasUrl ? (
                   <a
                     key={game.name}
                     href={game.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="tag text-center truncate hover:text-primary transition-colors cursor-pointer"
+                    className="group tag !flex items-center justify-between gap-2 text-left hover:text-primary transition-colors cursor-pointer"
                     title={game.name}
+                    aria-label={`Open ${game.name}${gameMeta} in a new tab`}
                   >
-                    <TrademarkText text={game.name} />
+                    <span className="truncate">
+                      <TrademarkText text={game.name} />
+                    </span>
+                    <ExternalLink
+                      className="w-3.5 h-3.5 shrink-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+                      aria-hidden="true"
+                    />
                   </a>
                 ) : (
                   <span
                     key={game.name}
-                    className="tag text-center truncate opacity-80"
+                    className="tag !flex items-center justify-between gap-2 text-left opacity-80"
                     title={game.name}
                   >
-                    <TrademarkText text={game.name} />
+                    <span className="truncate">
+                      <TrademarkText text={game.name} />
+                    </span>
                   </span>
                 );
               })}
             </div>
-          </details>
+
+            {filteredGames.length === 0 && (
+              <p className="mt-4 text-xs text-muted-foreground">No released games found for this year.</p>
+            )}
+
+            {canToggle && (
+              <button
+                type="button"
+                onClick={() => setIsExpanded((prev) => !prev)}
+                className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                aria-expanded={isExpanded}
+                aria-controls={listId}
+              >
+                {isExpanded ? "Show fewer games" : "View all released games"}
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} />
+              </button>
+            )}
+          </div>
         )}
 
-        <div className="mt-6 pt-5 border-t border-border flex items-center justify-between">
-          <p className="text-xs text-muted-foreground">
-            Published under the Red Tiger brand
-          </p>
+        <div className="mt-6 pt-5 border-t border-border flex items-center justify-between gap-3">
+          <p className="text-xs text-muted-foreground">Published under the Red Tiger brand</p>
           <a
             href={item.url}
             target="_blank"

@@ -22,9 +22,9 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="hero-gradient min-h-[80vh] flex items-center pt-14">
+    <section className="hero-gradient min-h-[72vh] md:min-h-[76vh] flex items-center pt-16 pb-10 md:pb-14">
       <div className="section-container w-full">
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -56,7 +56,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-display text-4xl md:text-6xl font-bold text-foreground tracking-tight leading-[1.2] pb-1"
+              className="font-display text-4xl md:text-6xl font-bold text-foreground tracking-tight leading-[1.15]"
             >
               {name}
             </motion.h1>
@@ -64,7 +64,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.25 }}
-              className="mt-3 text-lg md:text-xl font-display font-medium text-primary"
+              className="mt-2 text-lg md:text-xl font-display font-medium text-primary"
             >
               {"Animation \u00B7 Compositing \u00B7 VFX"}
             </motion.p>
@@ -72,7 +72,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="mt-3 text-base md:text-lg text-muted-foreground max-w-lg"
+              className="mt-2 text-base md:text-lg text-muted-foreground max-w-lg"
             >
               {subtitle}
             </motion.p>
@@ -80,23 +80,25 @@ const HeroSection = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.55 }}
-              className="mt-6 flex flex-wrap gap-3 justify-center md:justify-start"
+              className="mt-4 md:mt-5 flex flex-wrap gap-2.5 sm:gap-3 justify-center md:justify-start"
             >
               <a
-                href="#contact"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
-              >
-                Get in Touch
-              </a>
-              <a
                 href="#experience"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border text-foreground text-sm font-medium hover:bg-secondary transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm hover:shadow-md"
               >
                 View Experience
               </a>
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/40 text-foreground text-sm font-medium hover:bg-secondary/80 transition-colors"
+              >
+                Get in Touch
+              </a>
               <button
                 onClick={() => setAboutOpen(!aboutOpen)}
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-border text-foreground text-sm font-medium hover:bg-secondary transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full text-foreground/80 text-sm font-medium hover:bg-secondary/70 hover:text-foreground transition-colors"
+                aria-expanded={aboutOpen}
+                aria-controls="hero-about-panel"
               >
                 ABOUT
                 <ChevronDown
@@ -113,6 +115,7 @@ const HeroSection = () => {
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="overflow-hidden"
+                  id="hero-about-panel"
                 >
                   <div className="mt-6 p-5 rounded-xl bg-card/80 border border-border/60 backdrop-blur-sm max-w-lg">
                     <div className="space-y-3">
