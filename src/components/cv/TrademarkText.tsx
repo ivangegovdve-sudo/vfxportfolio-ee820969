@@ -1,16 +1,18 @@
-import { Fragment, type ReactNode } from "react";
+﻿import { Fragment, type ReactNode } from "react";
 
 interface TrademarkTextProps {
   text: string;
   className?: string;
 }
 
-// Renders a subtle superscript registered mark while keeping the marked word unbroken.
+// Renders a stable registered mark while keeping the marked word + symbol unbroken.
 const TrademarkText = ({ text, className }: TrademarkTextProps) => {
-  const parts = text.split("\u00AE");
+  // Support both literal "®" and escaped "\\u00AE" entered through editors.
+  const normalizedText = text.split("\\u00AE").join("®");
+  const parts = normalizedText.split("®");
 
   if (parts.length === 1) {
-    return <span className={className}>{text}</span>;
+    return <span className={className}>{normalizedText}</span>;
   }
 
   const nodes: ReactNode[] = [];
@@ -27,25 +29,30 @@ const TrademarkText = ({ text, className }: TrademarkTextProps) => {
 
     if (!match) {
       if (part) nodes.push(<Fragment key={`part-${index}`}>{part}</Fragment>);
-      nodes.push(
-        <sup key={`tm-${index}`} className="text-[0.72em] align-super leading-none">
-          \u00AE
-        </sup>
-      );
+      nodes.push(<TrademarkSup key={`tm-${index}`} />);
       return;
     }
 
     const [, leading, trailingWord] = match;
     if (leading) nodes.push(<Fragment key={`lead-${index}`}>{leading}</Fragment>);
     nodes.push(
-      <span key={`nowrap-${index}`} className="whitespace-nowrap">
+      <span key={`nowrap-${index}`} className="inline-flex items-start whitespace-nowrap align-baseline">
         {trailingWord}
-        <sup className="text-[0.72em] align-super leading-none">\u00AE</sup>
+        <TrademarkSup />
       </span>
     );
   });
 
   return <span className={className}>{nodes}</span>;
 };
+
+const TrademarkSup = ({ className = "" }: { className?: string }) => (
+  <sup
+    className={`ml-[0.05em] text-[0.64em] leading-none font-semibold relative -top-[0.38em] ${className}`}
+    aria-hidden="true"
+  >
+    ®
+  </sup>
+);
 
 export default TrademarkText;

@@ -1,34 +1,43 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useCvData } from "@/contexts/CVDataContext";
 import { User, ChevronDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import fallbackHeroPhoto from "@/data/assets/slackPic.png";
+import { resolvePhotoUrl } from "@/utils/resolvePhotoUrl";
 
 const FALLBACK_PHOTO_URL = "/placeholder.svg";
 
 const HeroSection = () => {
   const { data } = useCvData();
   const { name, subtitle, photoUrl } = data.hero;
-  const [currentPhotoUrl, setCurrentPhotoUrl] = useState(photoUrl || "");
+  const reduceMotion = useReducedMotion();
+  const resolvedPrimaryPhotoUrl = useMemo(() => resolvePhotoUrl(photoUrl, fallbackHeroPhoto), [photoUrl]);
+  const [currentPhotoUrl, setCurrentPhotoUrl] = useState(resolvedPrimaryPhotoUrl);
   const [aboutOpen, setAboutOpen] = useState(false);
 
   useEffect(() => {
-    setCurrentPhotoUrl(photoUrl || "");
-  }, [photoUrl]);
+    setCurrentPhotoUrl(resolvedPrimaryPhotoUrl);
+  }, [resolvedPrimaryPhotoUrl]);
 
   const handleImageError = () => {
+    if (currentPhotoUrl !== fallbackHeroPhoto) {
+      setCurrentPhotoUrl(fallbackHeroPhoto);
+      return;
+    }
+
     if (currentPhotoUrl !== FALLBACK_PHOTO_URL) {
       setCurrentPhotoUrl(FALLBACK_PHOTO_URL);
     }
   };
 
   return (
-    <section className="hero-gradient min-h-[72vh] md:min-h-[76vh] flex items-center pt-16 pb-10 md:pb-14">
+    <section id="hero" className="hero-gradient min-h-[72vh] md:min-h-[76vh] flex items-center pt-14 md:pt-16 pb-8 md:pb-14">
       <div className="section-container w-full">
         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={reduceMotion ? false : { opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="shrink-0"
           >
             {currentPhotoUrl ? (
@@ -53,50 +62,50 @@ const HeroSection = () => {
 
           <div className="text-center md:text-left overflow-visible">
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={reduceMotion ? { duration: 0 } : { duration: 0.4, delay: 0.03, ease: [0.22, 1, 0.36, 1] }}
               className="font-display text-4xl md:text-6xl font-bold text-foreground tracking-tight leading-[1.15]"
             >
               {name}
             </motion.h1>
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.25 }}
+              transition={reduceMotion ? { duration: 0 } : { duration: 0.36, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
               className="mt-2 text-lg md:text-xl font-display font-medium text-primary"
             >
               {"Animation \u00B7 Compositing \u00B7 VFX"}
             </motion.p>
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={reduceMotion ? { duration: 0 } : { duration: 0.36, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
               className="mt-2 text-base md:text-lg text-muted-foreground max-w-lg"
             >
               {subtitle}
             </motion.p>
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.55 }}
-              className="mt-4 md:mt-5 flex flex-wrap gap-2.5 sm:gap-3 justify-center md:justify-start"
+              initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={reduceMotion ? { duration: 0 } : { duration: 0.34, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-4 md:mt-5 flex flex-col sm:flex-row gap-2.5 sm:gap-3 justify-center md:justify-start w-full md:w-auto"
             >
               <a
                 href="#experience"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm hover:shadow-md"
+                className="inline-flex h-11 items-center justify-center gap-2 w-full sm:w-auto px-5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm hover:shadow-md"
               >
                 View Experience
               </a>
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/40 text-foreground text-sm font-medium hover:bg-secondary/80 transition-colors"
+                className="inline-flex h-11 items-center justify-center gap-2 w-full sm:w-auto px-5 rounded-full border border-primary/40 text-foreground text-sm font-medium hover:bg-secondary/80 transition-colors"
               >
                 Get in Touch
               </a>
               <button
                 onClick={() => setAboutOpen(!aboutOpen)}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full text-foreground/80 text-sm font-medium hover:bg-secondary/70 hover:text-foreground transition-colors"
+                className="inline-flex h-11 items-center justify-center gap-1.5 w-full sm:w-auto px-4 rounded-full text-foreground/80 text-sm font-medium hover:bg-secondary/70 hover:text-foreground transition-colors"
                 aria-expanded={aboutOpen}
                 aria-controls="hero-about-panel"
               >

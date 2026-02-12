@@ -50,7 +50,7 @@ const PortfolioSection = () => {
                     width={1280}
                     height={720}
                   />
-                  <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-background/90 backdrop-blur-sm text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm">
+                  <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-background/90 backdrop-blur-sm text-xs font-medium text-primary opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 shadow-sm">
                     {item.ctaLabel || "View"}
                     <ExternalLink className="w-3 h-3" />
                   </span>
@@ -207,7 +207,7 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
               <button
                 type="button"
                 onClick={() => setIsExpanded((prev) => !prev)}
-                className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                className="mt-4 inline-flex h-11 w-full sm:w-auto justify-center items-center gap-1.5 px-4 rounded-lg border border-border text-sm font-medium text-primary hover:text-primary/80 hover:bg-secondary/60 transition-colors"
                 aria-expanded={isExpanded}
                 aria-controls={listId}
               >
