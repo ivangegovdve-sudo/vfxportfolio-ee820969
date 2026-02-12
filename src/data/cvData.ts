@@ -246,7 +246,7 @@ const cvData: CVData = {
   portfolio: [
     {
       id: "pf-brainfreeze",
-      title: 'National Geographic – Explorers Academy "Brain Freeze"',
+      title: "NatGeo Brain Freeze",
       descriptor: "Animation · Compositing",
       url: "https://vimeo.com/283914588",
       ctaLabel: "Watch",
@@ -255,7 +255,7 @@ const cvData: CVData = {
     },
     {
       id: "pf-rescue",
-      title: "Fisher-Price / TONGAL – Rescue Heroes",
+      title: "Rescue Heroes",
       descriptor: "Animation · Series (14 episodes)",
       url: "https://www.youtube.com/watch?v=SOjHSKbRVCQ",
       ctaLabel: "Watch",
@@ -264,7 +264,7 @@ const cvData: CVData = {
     },
     {
       id: "pf-souvenir",
-      title: "Miro – Suvenir",
+      title: "Miro - Souvenir",
       descriptor: "Music Video · VFX",
       url: "https://youtu.be/C8Mwkhu3iq4",
       ctaLabel: "Watch",
@@ -282,7 +282,7 @@ const cvData: CVData = {
     },
     {
       id: "pf-arcana",
-      title: "Arcana Magica – Kickstarter Promo",
+      title: "Arcana Magica",
       descriptor: "Animation · Promotional",
       url: "https://www.youtube.com/watch?v=qeevdrluvnA",
       ctaLabel: "Watch",
@@ -300,7 +300,7 @@ const cvData: CVData = {
     },
     {
       id: "pf-redtiger",
-      title: "Red Tiger Slot Games",
+      title: "Red Tiger Collection",
       descriptor:
         "Selection of slot games animated and developed while working at Dopamine (published under the Red Tiger brand).",
       url: "https://redtiger.com/games",
@@ -455,3 +455,4 @@ const cvData: CVData = {
 };
 
 export default cvData;
+

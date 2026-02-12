@@ -7,7 +7,7 @@ const FALLBACK_PHOTO_URL = "/placeholder.svg";
 
 const HeroSection = () => {
   const { data } = useCvData();
-  const { name, title, subtitle, photoUrl } = data.hero;
+  const { name, subtitle, photoUrl } = data.hero;
   const [currentPhotoUrl, setCurrentPhotoUrl] = useState(photoUrl || "");
   const [aboutOpen, setAboutOpen] = useState(false);
 
@@ -25,7 +25,6 @@ const HeroSection = () => {
     <section className="hero-gradient min-h-[80vh] flex items-center pt-14">
       <div className="section-container w-full">
         <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-          {/* Photo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -51,14 +50,12 @@ const HeroSection = () => {
             )}
           </motion.div>
 
-          {/* Text */}
-          <div className="text-center md:text-left">
+          <div className="text-center md:text-left overflow-visible">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-display text-4xl md:text-6xl font-bold text-foreground tracking-tight"
-              style={{ lineHeight: 1.15, paddingBottom: "0.05em" }}
+              className="font-display text-4xl md:text-6xl font-bold text-foreground tracking-tight leading-[1.2] pb-1"
             >
               {name}
             </motion.h1>
@@ -68,7 +65,7 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 0.25 }}
               className="mt-3 text-lg md:text-xl font-display font-medium text-primary"
             >
-              Animation · Compositing · VFX
+              {"Animation \u00B7 Compositing \u00B7 VFX"}
             </motion.p>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -100,14 +97,13 @@ const HeroSection = () => {
                 onClick={() => setAboutOpen(!aboutOpen)}
                 className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-border text-foreground text-sm font-medium hover:bg-secondary transition-colors"
               >
-                About
+                ABOUT
                 <ChevronDown
                   className={`w-4 h-4 transition-transform duration-200 ${aboutOpen ? "rotate-180" : ""}`}
                 />
               </button>
             </motion.div>
 
-            {/* Collapsible About */}
             <AnimatePresence>
               {aboutOpen && (
                 <motion.div
@@ -120,10 +116,7 @@ const HeroSection = () => {
                   <div className="mt-6 p-5 rounded-xl bg-card/80 border border-border/60 backdrop-blur-sm max-w-lg">
                     <div className="space-y-3">
                       {data.about.paragraphs.map((p, i) => (
-                        <p
-                          key={i}
-                          className="text-sm leading-relaxed text-foreground/80"
-                        >
+                        <p key={i} className="text-sm leading-relaxed text-foreground/80">
                           {p}
                         </p>
                       ))}
