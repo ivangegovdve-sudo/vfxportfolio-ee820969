@@ -164,6 +164,7 @@ const cvData: CVData = {
       description:
         "Part of the compositing and VFX team working on animated series and promotional content for international clients.",
       highlights: [
+        // Trademark notation applied on first occurrence only per page.
         "National Geographic's Explorers Academy \u2014 \"Brain Freeze\"",
         "\"Rescue Heroes\" \u2014 contributed to production by TONGAL for Fisher-Price\u00AE (14 episodes)",
         '"Arcana Magica" — Kickstarter promotional video',

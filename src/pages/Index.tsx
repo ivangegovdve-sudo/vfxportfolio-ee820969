@@ -33,7 +33,7 @@ const Index = () => {
       </main>
       <footer className="section-container py-8 text-center">
         <p className="text-xs text-muted-foreground">(c) {new Date().getFullYear()} - Built with care</p>
-        <p className="mt-2 text-xs text-muted-foreground">
+        <p className="mt-2 text-xs text-muted-foreground/70 max-w-2xl mx-auto">
           All trademarks and brand names are the property of their respective owners. Project references are presented for portfolio purposes only.
         </p>
       </footer>

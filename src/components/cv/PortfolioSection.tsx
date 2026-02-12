@@ -1,6 +1,7 @@
 import { useCvData } from "@/contexts/CVDataContext";
 import AnimatedSection from "./AnimatedSection";
 import { ExternalLink, Gamepad2, ChevronDown } from "lucide-react";
+import TrademarkText from "./TrademarkText";
 
 const gradientVariants = [
   "from-primary/15 via-primary/5 to-transparent",
@@ -56,7 +57,7 @@ const PortfolioSection = () => {
 
                 <div className="p-5">
                   <h3 className="font-display font-semibold text-base text-foreground group-hover:text-primary transition-colors leading-snug">
-                    {item.title}
+                    <TrademarkText text={item.title} />
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
                     {item.descriptor}
@@ -96,7 +97,7 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
           <div className="flex items-end justify-between gap-4">
             <div>
               <h3 className="font-display font-bold text-xl md:text-2xl text-white drop-shadow-sm leading-tight">
-                {item.title}
+                <TrademarkText text={item.title} />
               </h3>
               <p className="text-sm text-white/80 mt-1 max-w-xl leading-relaxed drop-shadow-sm">
                 {item.descriptor}
@@ -129,7 +130,7 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
                     className="tag text-center truncate hover:text-primary transition-colors cursor-pointer"
                     title={game.name}
                   >
-                    {game.name}
+                    <TrademarkText text={game.name} />
                   </a>
                 ) : (
                   <span
@@ -137,7 +138,7 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
                     className="tag text-center truncate opacity-80"
                     title={game.name}
                   >
-                    {game.name}
+                    <TrademarkText text={game.name} />
                   </span>
                 );
               })}
