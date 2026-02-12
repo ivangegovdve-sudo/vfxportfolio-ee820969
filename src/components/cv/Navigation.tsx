@@ -30,21 +30,14 @@ const Navigation = () => {
           : "bg-transparent"
       }`}
     >
-      <div className="section-container flex items-center justify-between h-14">
-        <a
-          href="#"
-          className="font-display font-semibold text-sm tracking-wide text-foreground hover:text-primary transition-colors"
-        >
-          CV
-        </a>
-
+      <div className="section-container flex items-center justify-center h-14">
         {/* Desktop */}
-        <ul className="hidden md:flex items-center gap-1">
+        <ul className="hidden md:flex items-center justify-evenly w-full">
           {navItems.map((item) => (
             <li key={item.href}>
               <a
                 href={item.href}
-                className="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground hover:text-foreground hover:bg-secondary transition-all duration-200"
+                className="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-medium uppercase tracking-[0.1em] text-muted-foreground hover:text-foreground hover:bg-secondary transition-all duration-200"
               >
                 {item.label}
               </a>
