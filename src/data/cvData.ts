@@ -382,7 +382,7 @@ const cvData: CVData = {
         groups: [
           {
             category: "Adobe",
-            skills: ["After Effects", "Animate", "Photoshop", "Character Animator"],
+            skills: ["After Effects", "Animate", "Photoshop", "Character Animator", "Premiere"],
           },
           {
             category: "Animation",
