@@ -48,6 +48,7 @@ export interface EducationItem {
 
 export interface PortfolioItem {
   id: string;
+  order: number;
   title: string;
   descriptor: string;
   url: string;
@@ -246,7 +247,8 @@ const cvData: CVData = {
   portfolio: [
     {
       id: "pf-brainfreeze",
-      title: "NatGeo Brain Freeze",
+      order: 1,
+      title: "National Geographic \u2014 Brain Freeze",
       descriptor: "Animation · Compositing",
       url: "https://vimeo.com/283914588",
       ctaLabel: "Watch",
@@ -255,6 +257,7 @@ const cvData: CVData = {
     },
     {
       id: "pf-rescue",
+      order: 2,
       title: "Rescue Heroes",
       descriptor: "Animation · Series (14 episodes)",
       url: "https://www.youtube.com/watch?v=SOjHSKbRVCQ",
@@ -264,7 +267,8 @@ const cvData: CVData = {
     },
     {
       id: "pf-souvenir",
-      title: "Miro - Souvenir",
+      order: 3,
+      title: "Miro \u2014 Souvenir",
       descriptor: "Music Video · VFX",
       url: "https://youtu.be/C8Mwkhu3iq4",
       ctaLabel: "Watch",
@@ -273,6 +277,7 @@ const cvData: CVData = {
     },
     {
       id: "pf-showreel",
+      order: 4,
       title: "Showreel",
       descriptor: "Animation · Compositing · VFX",
       url: "https://youtu.be/ogwVYZrWI6s",
@@ -282,6 +287,7 @@ const cvData: CVData = {
     },
     {
       id: "pf-arcana",
+      order: 5,
       title: "Arcana Magica",
       descriptor: "Animation · Promotional",
       url: "https://www.youtube.com/watch?v=qeevdrluvnA",
@@ -291,7 +297,8 @@ const cvData: CVData = {
     },
     {
       id: "pf-authors",
-      title: "In Author's Hands",
+      order: 6,
+      title: "In Author\u2019s Hands",
       descriptor: "Short Film · VFX",
       url: "https://youtu.be/pInnrhghaxY",
       ctaLabel: "Watch",
@@ -300,7 +307,8 @@ const cvData: CVData = {
     },
     {
       id: "pf-redtiger",
-      title: "Red Tiger Collection",
+      order: 7,
+      title: "Red Tiger collection",
       descriptor:
         "Selection of slot games animated and developed while working at Dopamine (published under the Red Tiger brand).",
       url: "https://redtiger.com/games",
@@ -455,4 +463,8 @@ const cvData: CVData = {
 };
 
 export default cvData;
+
+
+
+
 

@@ -13,9 +13,10 @@ const gradientVariants = [
 
 const PortfolioSection = () => {
   const { data } = useCvData();
+  const orderedItems = [...data.portfolio].sort((a, b) => a.order - b.order);
 
-  const projectItems = data.portfolio.filter((p) => p.type !== "collection");
-  const collectionItems = data.portfolio.filter((p) => p.type === "collection");
+  const projectItems = orderedItems.filter((p) => p.type !== "collection");
+  const collectionItems = orderedItems.filter((p) => p.type === "collection");
 
   return (
     <section id="portfolio" className="section-spacing bg-card" aria-labelledby="portfolio-title">

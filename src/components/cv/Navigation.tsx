@@ -11,7 +11,6 @@ const navItems = [
 
 const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -30,73 +29,20 @@ const Navigation = () => {
           : "bg-transparent"
       }`}
     >
-      <div className="section-container flex items-center justify-center h-14">
-        {/* Desktop */}
-        <ul className="hidden md:flex items-center justify-evenly w-full">
+      <div className="section-container h-14 flex items-center overflow-x-auto">
+        <ul className="flex items-center gap-2 md:gap-3 min-w-max md:min-w-0 md:w-full md:justify-evenly py-1">
           {navItems.map((item) => (
             <li key={item.href}>
               <a
                 href={item.href}
-                className="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-medium uppercase tracking-[0.1em] text-muted-foreground hover:text-foreground hover:bg-secondary transition-all duration-200"
+                className="inline-flex items-center justify-center px-3 sm:px-4 md:px-6 py-2 rounded-full text-xs sm:text-sm font-medium uppercase tracking-[0.08em] text-muted-foreground hover:text-foreground hover:bg-secondary transition-all duration-200 whitespace-nowrap"
               >
                 {item.label}
               </a>
             </li>
           ))}
         </ul>
-
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden text-foreground p-2"
-          aria-label="Toggle navigation"
-          aria-expanded={mobileOpen}
-          aria-controls="mobile-navigation"
-        >
-          <div className="space-y-1.5">
-            <span
-              className={`block w-5 h-0.5 bg-foreground transition-transform ${
-                mobileOpen ? "rotate-45 translate-y-2" : ""
-              }`}
-            />
-            <span
-              className={`block w-5 h-0.5 bg-foreground transition-opacity ${
-                mobileOpen ? "opacity-0" : ""
-              }`}
-            />
-            <span
-              className={`block w-5 h-0.5 bg-foreground transition-transform ${
-                mobileOpen ? "-rotate-45 -translate-y-2" : ""
-              }`}
-            />
-          </div>
-        </button>
       </div>
-
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <motion.div
-          id="mobile-navigation"
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          className="md:hidden bg-background/95 backdrop-blur-md border-b border-border"
-        >
-          <ul className="section-container py-3 flex flex-col gap-1">
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-4 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </motion.div>
-      )}
     </motion.nav>
   );
 };
