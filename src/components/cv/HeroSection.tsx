@@ -34,11 +34,12 @@ const HeroSection = () => {
             {currentPhotoUrl ? (
               <img
                 src={currentPhotoUrl}
+                srcSet={`${currentPhotoUrl} 1x, ${currentPhotoUrl} 2x`}
+                sizes="(max-width: 767px) 160px, 208px"
                 alt={name}
                 onError={handleImageError}
                 loading="eager"
                 decoding="async"
-                fetchPriority="high"
                 width={208}
                 height={208}
                 className="w-40 h-40 md:w-52 md:h-52 rounded-full object-cover border-4 border-primary/20 shadow-lg"
