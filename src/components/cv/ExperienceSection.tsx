@@ -7,11 +7,7 @@ const ExperienceSection = () => {
   const { data } = useCvData();
 
   return (
-    <section
-      id="experience"
-      className="section-spacing bg-card"
-      aria-labelledby="experience-title"
-    >
+    <section id="experience" className="section-spacing bg-card" aria-labelledby="experience-title">
       <div className="section-container">
         <AnimatedSection>
           <h2 id="experience-title" className="section-title">
@@ -22,48 +18,44 @@ const ExperienceSection = () => {
         <div className="space-y-0">
           {data.experience.map((exp, i) => (
             <AnimatedSection key={exp.id} delay={0.05 * i}>
-              <div className="relative pl-8 pb-12 last:pb-0 group">
+              <div className="group relative pl-8 pb-12 last:pb-0">
                 <div className="absolute left-0 top-1.5">
-                  <div className="timeline-dot group-hover:scale-125 transition-transform" />
+                  <div className="timeline-dot transition-transform motion-short md:group-hover:scale-110" />
                   {i < data.experience.length - 1 && <div className="timeline-line" />}
                 </div>
 
                 <div>
-                  <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-2">
-                    <h3 className="font-display font-semibold text-lg text-foreground">
-                      {exp.role}
-                    </h3>
-                    <span className="text-xs font-medium text-muted-foreground tracking-wide">
-                      {exp.startDate} — {exp.endDate}
+                  <div className="mb-2 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+                    <h3 className="font-display text-lg font-semibold text-foreground">{exp.role}</h3>
+                    <span className="text-xs font-medium tracking-wide text-muted-foreground">
+                      {exp.startDate} {"\u2014"} {exp.endDate}
                     </span>
                   </div>
 
-                  <p className="text-sm font-medium text-primary mb-2">
+                  <p className="mb-2 text-sm font-medium text-primary">
                     {exp.company}
                     {exp.location && (
-                      <span className="text-muted-foreground font-normal">
+                      <span className="font-normal text-muted-foreground">
                         {" "}
-                        · {exp.location}
+                        {"\u00B7"} {exp.location}
                       </span>
                     )}
                   </p>
 
-                  <p className="text-sm text-foreground/75 leading-relaxed mb-3">
-                    {exp.description}
-                  </p>
+                  <p className="mb-3 text-sm leading-relaxed text-foreground/75">{exp.description}</p>
 
                   {exp.highlights && exp.highlights.length > 0 && (
-                    <ul className="space-y-1 mb-3">
+                    <ul className="mb-3 space-y-1">
                       {exp.highlights.map((h, j) => (
-                        <li key={j} className="text-sm text-foreground/70 flex items-start gap-2">
-                          <span className="text-primary mt-1.5 text-[6px]">●</span>
+                        <li key={j} className="flex items-start gap-2 text-sm text-foreground/70">
+                          <span className="mt-1.5 text-[6px] text-primary">{"\u2022"}</span>
                           <TrademarkText text={h} />
                         </li>
                       ))}
                     </ul>
                   )}
 
-                  <div className="flex flex-wrap gap-2 items-center">
+                  <div className="flex flex-wrap items-center gap-2">
                     {exp.tags?.map((tag) => (
                       <span key={tag} className="tag">
                         {tag}
@@ -75,10 +67,10 @@ const ExperienceSection = () => {
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                        className="inline-flex items-center gap-1 text-xs font-medium text-primary transition-colors motion-short hover:text-primary/80"
                       >
                         {link.label}
-                        <ExternalLink className="w-3 h-3" />
+                        <ExternalLink className="h-3 w-3" />
                       </a>
                     ))}
                   </div>

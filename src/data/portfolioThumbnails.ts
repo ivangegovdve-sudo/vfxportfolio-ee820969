@@ -1,7 +1,7 @@
-import natGeoExplorerAcademy from "@/data/assets/natGeoExplorerAcademy.png";
-import rescueHeroes from "@/data/assets/RescueHeroes.png";
-import miroEnd from "@/data/assets/miro_end.png";
-import authRights from "@/data/assets/AuthRights.png";
+import natGeoExplorerAcademy from "@/data/assets/natGeoExplorerAcademy.webp";
+import rescueHeroes from "@/data/assets/RescueHeroes.webp";
+import miroEnd from "@/data/assets/miro_end.webp";
+import authRights from "@/data/assets/AuthRights.webp";
 import redTiger from "@/data/assets/redTiger.png";
 import showreel from "@/data/assets/showreel.jpg";
 

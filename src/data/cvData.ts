@@ -98,7 +98,7 @@ const cvData: CVData = {
     subtitle:
       "Where imagination meets the timeline — crafting worlds, one frame at a time.",
     photoUrl:
-      "/assets/slackPic.png",
+      "/assets/slackPic.webp",
   },
   about: {
     paragraphs: [

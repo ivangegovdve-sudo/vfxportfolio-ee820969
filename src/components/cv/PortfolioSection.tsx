@@ -29,14 +29,14 @@ const PortfolioSection = () => {
           </h2>
         </AnimatedSection>
 
-        <div className="grid sm:grid-cols-2 gap-6">
+        <div className="grid gap-5 sm:grid-cols-2 md:gap-6">
           {projectItems.map((item, i) => (
             <AnimatedSection key={item.id} delay={0.05 * i}>
               <a
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block rounded-xl border border-border bg-background overflow-hidden hover:border-primary/40 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+                className="group hover-elevate block overflow-hidden rounded-xl border border-border bg-background shadow-sm transition-[border-color,box-shadow,transform] motion-medium md:hover:border-primary/40 md:hover:shadow-lg"
               >
                 <div
                   className={`aspect-[16/9] bg-gradient-to-br ${gradientVariants[i % gradientVariants.length]} flex items-center justify-center relative overflow-hidden`}
@@ -50,14 +50,14 @@ const PortfolioSection = () => {
                     width={1280}
                     height={720}
                   />
-                  <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-background/90 backdrop-blur-sm text-xs font-medium text-primary opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 shadow-sm">
+                  <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1.5 text-xs font-medium text-primary opacity-100 shadow-sm backdrop-blur-sm transition-opacity motion-medium sm:opacity-0 sm:group-hover:opacity-100">
                     {item.ctaLabel || "View"}
                     <ExternalLink className="w-3 h-3" />
                   </span>
                 </div>
 
                 <div className="p-5 md:p-6">
-                  <h3 className="font-display font-bold text-lg md:text-xl text-foreground group-hover:text-primary transition-colors leading-snug">
+                  <h3 className="font-display text-lg font-bold leading-snug text-foreground transition-colors motion-short md:text-xl md:group-hover:text-primary">
                     <TrademarkText text={item.title} />
                   </h3>
                   {(item.year || item.category) && (
@@ -105,7 +105,7 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
   const canToggle = filteredGames.length > DEFAULT_VISIBLE_GAMES;
 
   return (
-    <div className="mt-8 rounded-2xl border border-border bg-background overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-background shadow-sm transition-shadow motion-medium md:hover:shadow-md">
       <div className="relative aspect-[21/9] md:aspect-[3/1] bg-gradient-to-br from-primary/15 via-accent/8 to-secondary/10 overflow-hidden">
         <img
           src={item.thumbnail}
@@ -149,7 +149,7 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
                       setSelectedYear(event.target.value);
                       setIsExpanded(false);
                     }}
-                    className="h-8 rounded-md border border-border bg-background px-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="h-8 rounded-md border border-border bg-background px-2.5 text-xs text-foreground transition-colors motion-short focus:outline-none focus:ring-2 focus:ring-ring"
                     aria-label="Filter released games by year"
                   >
                     <option value="all">All years</option>
@@ -173,7 +173,7 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
                     href={game.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group tag !flex items-center justify-between gap-2 text-left hover:text-primary transition-colors cursor-pointer"
+                    className="group tag !flex cursor-pointer items-center justify-between gap-2 text-left transition-colors motion-short hover:text-primary"
                     title={game.name}
                     aria-label={`Open ${game.name}${gameMeta} in a new tab`}
                   >
@@ -181,7 +181,7 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
                       <TrademarkText text={game.name} />
                     </span>
                     <ExternalLink
-                      className="w-3.5 h-3.5 shrink-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+                      className="h-3.5 w-3.5 shrink-0 opacity-100 transition-opacity motion-short md:opacity-0 md:group-hover:opacity-100"
                       aria-hidden="true"
                     />
                   </a>
@@ -207,12 +207,12 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
               <button
                 type="button"
                 onClick={() => setIsExpanded((prev) => !prev)}
-                className="mt-4 inline-flex h-11 w-full sm:w-auto justify-center items-center gap-1.5 px-4 rounded-lg border border-border text-sm font-medium text-primary hover:text-primary/80 hover:bg-secondary/60 transition-colors"
+                className="mt-4 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-lg border border-border px-4 text-sm font-medium text-primary transition-[background-color,color,transform] motion-medium active:scale-[0.98] sm:w-auto md:hover:bg-secondary/60 md:hover:text-primary/80"
                 aria-expanded={isExpanded}
                 aria-controls={listId}
               >
                 {isExpanded ? "Show fewer games" : "View all released games"}
-                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} />
+                <ChevronDown className={`h-4 w-4 transition-transform motion-short ${isExpanded ? "rotate-180" : ""}`} />
               </button>
             )}
           </div>
@@ -224,7 +224,7 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-[box-shadow,transform] motion-medium active:scale-[0.98] md:hover:-translate-y-0.5 md:hover:shadow-md"
           >
             {item.ctaLabel || "View"}
             <ExternalLink className="w-3.5 h-3.5" />

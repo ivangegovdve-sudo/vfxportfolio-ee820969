@@ -1,8 +1,9 @@
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useCvData } from "@/contexts/CVDataContext";
 import { User, ChevronDown } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import fallbackHeroPhoto from "@/data/assets/slackPic.png";
+import { useEffect, useMemo, useRef, useState } from "react";
+import fallbackHeroPhoto from "@/data/assets/slackPic.webp";
+import { MOTION_TOKENS } from "@/lib/motion";
 import { resolvePhotoUrl } from "@/utils/resolvePhotoUrl";
 
 const FALLBACK_PHOTO_URL = "/placeholder.svg";
@@ -14,10 +15,22 @@ const HeroSection = () => {
   const resolvedPrimaryPhotoUrl = useMemo(() => resolvePhotoUrl(photoUrl, fallbackHeroPhoto), [photoUrl]);
   const [currentPhotoUrl, setCurrentPhotoUrl] = useState(resolvedPrimaryPhotoUrl);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const renderCountRef = useRef(0);
+
+  renderCountRef.current += 1;
 
   useEffect(() => {
     setCurrentPhotoUrl(resolvedPrimaryPhotoUrl);
   }, [resolvedPrimaryPhotoUrl]);
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) {
+      return;
+    }
+
+    const probeStore = (window.__renderProbes ??= {});
+    probeStore.HeroSection = renderCountRef.current;
+  });
 
   const handleImageError = () => {
     if (currentPhotoUrl !== fallbackHeroPhoto) {
@@ -31,13 +44,17 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="hero" className="hero-gradient min-h-[72vh] md:min-h-[76vh] flex items-center pt-14 md:pt-16 pb-8 md:pb-14">
+    <section id="hero" className="hero-gradient min-h-[66vh] md:min-h-[70vh] flex items-center pt-14 md:pt-16 pb-6 md:pb-10">
       <div className="section-container w-full">
-        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+        <div className="flex flex-col items-center gap-7 md:flex-row md:items-center md:gap-10">
           <motion.div
-            initial={reduceMotion ? false : { opacity: 0, scale: 0.94 }}
+            initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            transition={
+              reduceMotion
+                ? { duration: 0 }
+                : { duration: MOTION_TOKENS.durationAvatar, ease: MOTION_TOKENS.easingDefault }
+            }
             className="shrink-0"
           >
             {currentPhotoUrl ? (
@@ -60,58 +77,92 @@ const HeroSection = () => {
             )}
           </motion.div>
 
-          <div className="text-center md:text-left overflow-visible">
+          <div className="overflow-visible text-center md:text-left">
             <motion.h1
-              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+              initial={reduceMotion ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={reduceMotion ? { duration: 0 } : { duration: 0.4, delay: 0.03, ease: [0.22, 1, 0.36, 1] }}
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : {
+                      duration: MOTION_TOKENS.durationMed,
+                      delay: 0.03,
+                      ease: MOTION_TOKENS.easingDefault,
+                    }
+              }
               className="font-display text-4xl md:text-6xl font-bold text-foreground tracking-tight leading-[1.15]"
             >
               {name}
             </motion.h1>
             <motion.p
-              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              initial={reduceMotion ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={reduceMotion ? { duration: 0 } : { duration: 0.36, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-2 text-lg md:text-xl font-display font-medium text-primary"
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : {
+                      duration: MOTION_TOKENS.durationMed,
+                      delay: 0.07,
+                      ease: MOTION_TOKENS.easingDefault,
+                    }
+              }
+              className="mt-1.5 text-lg md:text-xl font-display font-medium text-primary"
             >
               {"Animation \u00B7 Compositing \u00B7 VFX"}
             </motion.p>
             <motion.p
-              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              initial={reduceMotion ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={reduceMotion ? { duration: 0 } : { duration: 0.36, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-2 text-base md:text-lg text-muted-foreground max-w-lg"
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : {
+                      duration: MOTION_TOKENS.durationMed,
+                      delay: 0.11,
+                      ease: MOTION_TOKENS.easingDefault,
+                    }
+              }
+              className="mt-1.5 max-w-lg text-base text-muted-foreground md:text-lg"
             >
               {subtitle}
             </motion.p>
             <motion.div
               initial={reduceMotion ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={reduceMotion ? { duration: 0 } : { duration: 0.34, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-4 md:mt-5 flex flex-col sm:flex-row gap-2.5 sm:gap-3 justify-center md:justify-start w-full md:w-auto"
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : {
+                      duration: MOTION_TOKENS.durationMed,
+                      delay: 0.15,
+                      ease: MOTION_TOKENS.easingDefault,
+                    }
+              }
+              className="mt-3.5 flex w-full flex-col justify-center gap-2.5 sm:flex-row sm:gap-3 md:mt-4 md:w-auto md:justify-start"
             >
               <a
                 href="#experience"
-                className="inline-flex h-11 items-center justify-center gap-2 w-full sm:w-auto px-5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm hover:shadow-md"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm transition-[background-color,box-shadow,transform] duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] md:w-auto md:hover:-translate-y-0.5 md:hover:shadow-md"
               >
                 View Experience
               </a>
               <a
                 href="#contact"
-                className="inline-flex h-11 items-center justify-center gap-2 w-full sm:w-auto px-5 rounded-full border border-primary/40 text-foreground text-sm font-medium hover:bg-secondary/80 transition-colors"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-primary/40 px-5 text-sm font-medium text-foreground transition-[background-color,color,transform] duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] md:w-auto md:hover:-translate-y-0.5 md:hover:bg-secondary/80"
               >
                 Get in Touch
               </a>
               <button
                 onClick={() => setAboutOpen(!aboutOpen)}
-                className="inline-flex h-11 items-center justify-center gap-1.5 w-full sm:w-auto px-4 rounded-full text-foreground/80 text-sm font-medium hover:bg-secondary/70 hover:text-foreground transition-colors"
+                className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-full px-4 text-sm font-medium text-foreground/80 transition-[background-color,color,transform] duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] md:w-auto md:hover:bg-secondary/70 md:hover:text-foreground"
                 aria-expanded={aboutOpen}
                 aria-controls="hero-about-panel"
               >
                 ABOUT
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${aboutOpen ? "rotate-180" : ""}`}
+                  className={`h-4 w-4 transition-transform duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${
+                    aboutOpen ? "rotate-180" : ""
+                  }`}
                 />
               </button>
             </motion.div>
@@ -122,11 +173,15 @@ const HeroSection = () => {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  transition={
+                    reduceMotion
+                      ? { duration: 0 }
+                      : { duration: MOTION_TOKENS.durationMed, ease: MOTION_TOKENS.easingDefault }
+                  }
                   className="overflow-hidden"
                   id="hero-about-panel"
                 >
-                  <div className="mt-6 p-5 rounded-xl bg-card/80 border border-border/60 backdrop-blur-sm max-w-lg">
+                  <div className="mt-5 max-w-lg rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm">
                     <div className="space-y-3">
                       {data.about.paragraphs.map((p, i) => (
                         <p key={i} className="text-sm leading-relaxed text-foreground/80">

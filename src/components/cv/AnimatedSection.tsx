@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ReactNode } from "react";
+import { MOTION_TOKENS } from "@/lib/motion";
 
 interface AnimatedSectionProps {
   children: ReactNode;
@@ -12,13 +13,13 @@ const AnimatedSection = ({ children, className = "", delay = 0 }: AnimatedSectio
 
   return (
     <motion.div
-      initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+      initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={{ once: true, margin: "-72px" }}
       transition={
         reduceMotion
           ? { duration: 0 }
-          : { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }
+          : { duration: MOTION_TOKENS.durationMed, delay, ease: MOTION_TOKENS.easingDefault }
       }
       className={className}
     >

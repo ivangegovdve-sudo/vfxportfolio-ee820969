@@ -47,6 +47,10 @@
     --font-display: 'Inter', sans-serif;
     --font-body: 'Inter', sans-serif;
     --section-spacing: 6rem;
+    --motion-duration-short: 160ms;
+    --motion-duration-med: 220ms;
+    --motion-ease-default: cubic-bezier(0.22, 1, 0.36, 1);
+    --motion-hover-elevate: -2px;
     --timeline-accent: 38 92% 50%;
     --timeline-line: 220 14% 85%;
     --tag-bg: 38 92% 95%;
@@ -114,11 +118,11 @@
 
 @layer utilities {
   .section-container {
-    @apply max-w-4xl mx-auto px-6 md:px-8;
+    @apply max-w-4xl mx-auto px-5 md:px-8;
   }
 
   .section-spacing {
-    @apply py-16 md:py-24;
+    @apply py-14 md:py-20;
   }
 
   .section-title {
@@ -144,5 +148,25 @@
 
   .hero-gradient {
     background: var(--hero-gradient);
+  }
+
+  .motion-short {
+    transition-duration: var(--motion-duration-short);
+    transition-timing-function: var(--motion-ease-default);
+  }
+
+  .motion-medium {
+    transition-duration: var(--motion-duration-med);
+    transition-timing-function: var(--motion-ease-default);
+  }
+
+  .hover-elevate {
+    transform: translateY(0);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hover-elevate:hover {
+      transform: translateY(var(--motion-hover-elevate));
+    }
   }
 }

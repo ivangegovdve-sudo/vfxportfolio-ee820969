@@ -4,7 +4,14 @@ export const resolvePhotoUrl = (photoUrl: string | undefined, fallbackUrl: strin
   const value = photoUrl?.trim();
 
   if (!value) return fallbackUrl;
-  if (value === "/assets/slackPic.png" || value === "assets/slackPic.png") return fallbackUrl;
+  if (
+    value === "/assets/slackPic.png" ||
+    value === "assets/slackPic.png" ||
+    value === "/assets/slackPic.webp" ||
+    value === "assets/slackPic.webp"
+  ) {
+    return fallbackUrl;
+  }
   if (value.startsWith("data:")) return value;
   if (ABSOLUTE_PROTOCOL.test(value)) return value;
   if (value.startsWith("/")) return value;

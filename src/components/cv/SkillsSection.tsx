@@ -53,7 +53,7 @@ const SkillsSection = () => {
                                 key={skill}
                                 className="text-sm text-foreground/75 flex items-start gap-2"
                               >
-                                <span className="text-primary mt-1.5 text-[6px]">●</span>
+                                <span className="text-primary mt-1.5 text-[6px]">{"\u2022"}</span>
                                 {skill}
                               </li>
                             ))}
@@ -81,7 +81,7 @@ const SkillsSection = () => {
                       key={skill}
                       className="text-sm text-foreground/80 flex items-start gap-2"
                     >
-                      <span className="text-primary mt-1.5 text-[6px]">●</span>
+                      <span className="text-primary mt-1.5 text-[6px]">{"\u2022"}</span>
                       {skill}
                     </li>
                   ))}
