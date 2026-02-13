@@ -1,13 +1,24 @@
 import { useCvData } from "@/contexts/useCvData";
 import AnimatedSection from "./AnimatedSection";
 import { Mail, MapPin, ExternalLink, Download } from "lucide-react";
-import { mapCvDataToJsonResume } from "@/utils/exportJsonResume";
 
 const ContactSection = () => {
   const { data } = useCvData();
   const { email, location, links } = data.contact;
-  const handleDownloadJsonResume = () => {
+  const handleDownloadJsonResume = async () => {
+    const [{ mapCvDataToJsonResume }, { validateJsonResume }] = await Promise.all([
+      import("@/utils/jsonResume/mapCvDataToJsonResume"),
+      import("@/utils/jsonResume/validateJsonResume"),
+    ]);
+
     const jsonResume = mapCvDataToJsonResume(data);
+    const validationResult = validateJsonResume(jsonResume);
+    if (!validationResult.ok) {
+      console.error("JSON Resume validation failed", validationResult.errors);
+      window.alert("Could not export JSON Resume. Check console for validation details.");
+      return;
+    }
+
     const blob = new Blob([JSON.stringify(jsonResume, null, 2)], {
       type: "application/json",
     });
