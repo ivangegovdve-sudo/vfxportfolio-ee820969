@@ -12,8 +12,7 @@ const portfolioThumbnails: { [id: string]: string } = {
   authors: authRights,
   redtiger: redTiger,
   showreel: showreel,
-  arcana:
-    "https://cf.geekdo-images.com/8umeW9Q0MfxKgIBzhWUtPg__original/img/7lk_gPGJ9ju9_2pkoyICeCEFB58=/0x0/filters:format(png)/pic5115258.png",
+  arcana: "/assets/arcanaMagica.png",
 };
 
 export default portfolioThumbnails;

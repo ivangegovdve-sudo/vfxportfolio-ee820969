@@ -1,4 +1,4 @@
-import { useCvData } from "@/contexts/CVDataContext";
+import { useCvData } from "@/contexts/useCvData";
 import AnimatedSection from "./AnimatedSection";
 
 const IS_TAG_THRESHOLD = 45; // skills shorter than this render as tags
@@ -127,3 +127,4 @@ const SkillsSection = () => {
 };
 
 export default SkillsSection;
+

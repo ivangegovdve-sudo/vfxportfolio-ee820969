@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useCvData } from "@/contexts/CVDataContext";
+import { useCvData } from "@/contexts/useCvData";
 import AnimatedSection from "./AnimatedSection";
 import { ExternalLink, Gamepad2, ChevronDown } from "lucide-react";
 import TrademarkText from "./TrademarkText";
@@ -236,3 +236,4 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
 }
 
 export default PortfolioSection;
+

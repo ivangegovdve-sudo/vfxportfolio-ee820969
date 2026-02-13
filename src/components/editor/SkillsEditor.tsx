@@ -1,4 +1,4 @@
-import { useCvData } from "@/contexts/CVDataContext";
+import { useCvData } from "@/contexts/useCvData";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -219,3 +219,4 @@ const SkillsEditor = () => {
 };
 
 export default SkillsEditor;
+

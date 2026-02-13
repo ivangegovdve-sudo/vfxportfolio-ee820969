@@ -8,7 +8,7 @@ import {
   SlidersHorizontal,
   User,
 } from "lucide-react";
-import { useCvData } from "@/contexts/CVDataContext";
+import { useCvData } from "@/contexts/useCvData";
 import fallbackHeroPhoto from "@/data/assets/slackPic.webp";
 import { MOTION_TOKENS } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -271,3 +271,4 @@ const Navigation = () => {
 };
 
 export default Navigation;
+

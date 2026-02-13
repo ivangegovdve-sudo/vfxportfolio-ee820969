@@ -1,6 +1,4 @@
 import {
-  createContext,
-  useContext,
   useState,
   useCallback,
   ReactNode,
@@ -8,26 +6,7 @@ import {
   useMemo,
 } from "react";
 import defaultCvData, { CVData } from "@/data/cvData";
-
-interface CVDataContextValue {
-  data: CVData;
-  updateData: (updater: (prev: CVData) => CVData) => void;
-  resetData: () => void;
-  editorOpen: boolean;
-  setEditorOpen: (open: boolean) => void;
-}
-
-const STORAGE_KEY = "cv-data-v2";
-
-const defaultContextValue: CVDataContextValue = {
-  data: defaultCvData,
-  updateData: () => {},
-  resetData: () => {},
-  editorOpen: false,
-  setEditorOpen: () => {},
-};
-
-const CVDataContext = createContext<CVDataContextValue>(defaultContextValue);
+import { CVDataContext, CVDataContextValue, STORAGE_KEY } from "@/contexts/cvDataStore";
 
 
 function loadFromStorage(): CVData {
@@ -68,12 +47,4 @@ export function CVDataProvider({ children }: { children: ReactNode }) {
   );
 
   return <CVDataContext.Provider value={stableValue}>{children}</CVDataContext.Provider>;
-}
-
-export function useCvData() {
-  const contextValue = useContext(CVDataContext);
-  if (contextValue === defaultContextValue) {
-    throw new Error("useCvData must be used within CVDataProvider");
-  }
-  return contextValue;
 }

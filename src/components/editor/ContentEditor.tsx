@@ -1,4 +1,4 @@
-import { useCvData } from "@/contexts/CVDataContext";
+import { useCvData } from "@/contexts/useCvData";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -235,3 +235,4 @@ function EditorPanel({
 }
 
 export default ContentEditor;
+

@@ -1,4 +1,4 @@
-import { useCvData } from "@/contexts/CVDataContext";
+import { useCvData } from "@/contexts/useCvData";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -50,3 +50,4 @@ const AboutEditor = () => {
 };
 
 export default AboutEditor;
+

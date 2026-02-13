@@ -1,4 +1,4 @@
-import { useCvData } from "@/contexts/CVDataContext";
+import { useCvData } from "@/contexts/useCvData";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -33,3 +33,4 @@ const HeroEditor = () => {
 };
 
 export default HeroEditor;
+

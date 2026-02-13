@@ -1,4 +1,4 @@
-import { useCvData } from "@/contexts/CVDataContext";
+import { useCvData } from "@/contexts/useCvData";
 import AnimatedSection from "./AnimatedSection";
 import { GraduationCap } from "lucide-react";
 
@@ -51,3 +51,4 @@ const EducationSection = () => {
 };
 
 export default EducationSection;
+

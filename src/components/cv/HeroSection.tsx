@@ -1,5 +1,5 @@
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { useCvData } from "@/contexts/CVDataContext";
+import { useCvData } from "@/contexts/useCvData";
 import { User, ChevronDown } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import fallbackHeroPhoto from "@/data/assets/slackPic.webp";
@@ -201,3 +201,4 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+

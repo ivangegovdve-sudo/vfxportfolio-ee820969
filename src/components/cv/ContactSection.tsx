@@ -1,4 +1,4 @@
-import { useCvData } from "@/contexts/CVDataContext";
+import { useCvData } from "@/contexts/useCvData";
 import AnimatedSection from "./AnimatedSection";
 import { Mail, MapPin, ExternalLink } from "lucide-react";
 
@@ -61,3 +61,4 @@ const ContactSection = () => {
 };
 
 export default ContactSection;
+

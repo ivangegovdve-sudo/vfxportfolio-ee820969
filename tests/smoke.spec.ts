@@ -1,4 +1,6 @@
-import { expect, test } from "@playwright/test";
+import { expect, Page, test } from "@playwright/test";
+
+const MOBILE_WIDTHS = [320, 375, 430] as const;
 
 const normalizeUrl = (rawUrl: string): string => {
   try {
@@ -46,8 +48,9 @@ const getNavMetrics = () => {
   return { minWidth, minHeight, hasOverlap, outOfBounds };
 };
 
-test("app smoke checks on mobile", async ({ page, request }) => {
+const attachProbe = (page: Page) => {
   const consoleErrors: string[] = [];
+  const consoleWarnings: string[] = [];
   const pageErrors: string[] = [];
   const requestFailures: string[] = [];
   const response404s: string[] = [];
@@ -58,6 +61,10 @@ test("app smoke checks on mobile", async ({ page, request }) => {
   page.on("console", (msg) => {
     if (msg.type() === "error") {
       consoleErrors.push(msg.text());
+    }
+
+    if (msg.type() === "warning") {
+      consoleWarnings.push(msg.text());
     }
   });
 
@@ -92,53 +99,48 @@ test("app smoke checks on mobile", async ({ page, request }) => {
     }
   });
 
-  await page.setViewportSize({ width: 320, height: 740 });
-  await page.goto("/", { waitUntil: "networkidle" });
+  return {
+    consoleErrors,
+    consoleWarnings,
+    pageErrors,
+    requestFailures,
+    response404s,
+    imageRequests,
+    imageResponses,
+    imageRequestFailures,
+  };
+};
 
-  await expect(page.locator("main")).toBeVisible();
-  await expect(page.locator("#hero")).toBeVisible();
-  await expect(page.locator("#hero h1")).toBeVisible();
+const assertCleanConsoleAndNetwork = (probe: ReturnType<typeof attachProbe>) => {
+  expect(probe.consoleErrors).toEqual([]);
+  expect(probe.consoleWarnings).toEqual([]);
+  expect(probe.pageErrors).toEqual([]);
+  expect(probe.requestFailures).toEqual([]);
+  expect(probe.response404s).toEqual([]);
+};
 
-  const heroImageSrc = await page
-    .locator("#hero img")
-    .first()
-    .evaluate((img) => (img as HTMLImageElement).currentSrc || (img as HTMLImageElement).src);
-  const heroImageResponse = await request.get(heroImageSrc);
-  expect(heroImageResponse.status()).toBe(200);
+type ThumbnailRow = {
+  entry: string;
+  srcType: "import" | "public";
+  previewURL: string;
+  httpStatus: number;
+  requested: "Y" | "N";
+  naturalWidth: number;
+};
 
-  const mobileNavLinks = page.locator("nav a[href^='#']");
-  await expect(mobileNavLinks.first()).toBeVisible();
-  await expect(mobileNavLinks).toHaveCount(5);
-
-  const topNavMetrics = await page.evaluate(getNavMetrics);
-
-  expect(topNavMetrics.minWidth).toBeGreaterThanOrEqual(44);
-  expect(topNavMetrics.minHeight).toBeGreaterThanOrEqual(44);
-  expect(topNavMetrics.hasOverlap).toBeFalsy();
-  expect(topNavMetrics.outOfBounds).toBeFalsy();
-
-  await page.evaluate(() => window.scrollTo({ top: window.innerHeight * 1.2, behavior: "instant" }));
-  await expect(page.locator("nav a[aria-label='Home']")).toBeVisible();
-  await expect(page.locator("nav a[href^='#']")).toHaveCount(6);
-  await page.waitForTimeout(450);
-
-  const scrolledNavMetrics = await page.evaluate(getNavMetrics);
-
-  expect(scrolledNavMetrics.minWidth).toBeGreaterThanOrEqual(44);
-  expect(scrolledNavMetrics.minHeight).toBeGreaterThanOrEqual(44);
-  expect(scrolledNavMetrics.hasOverlap).toBeFalsy();
-  expect(scrolledNavMetrics.outOfBounds).toBeFalsy();
-
+const collectPreviewThumbnailRows = async (
+  page: Page,
+  probe: ReturnType<typeof attachProbe>
+): Promise<ThumbnailRow[]> => {
   await page.locator("#portfolio").scrollIntoViewIfNeeded();
-  await expect(page.locator("#portfolio")).toBeVisible();
-
   const portfolioImages = page.locator("#portfolio img");
   await expect(portfolioImages.first()).toBeVisible();
 
   const imageCount = await portfolioImages.count();
   expect(imageCount).toBeGreaterThanOrEqual(7);
 
-  const checkedImageSources = new Set<string>();
+  const rows: ThumbnailRow[] = [];
+  const seenUrls = new Set<string>();
 
   for (let i = 0; i < imageCount; i += 1) {
     const image = portfolioImages.nth(i);
@@ -155,38 +157,160 @@ test("app smoke checks on mobile", async ({ page, request }) => {
       )
       .toBe(true);
 
-    const imageSource = normalizeUrl(
-      await image.evaluate((element) => {
-        const img = element as HTMLImageElement;
-        return img.currentSrc || img.src;
-      })
-    );
+    const [entry, source, naturalWidth] = await image.evaluate((element) => {
+      const img = element as HTMLImageElement;
+      return [img.alt, img.currentSrc || img.src, img.naturalWidth] as const;
+    });
 
-    expect(imageSource).not.toBe("");
-
-    if (imageSource.startsWith("data:") || checkedImageSources.has(imageSource)) {
+    const previewURL = normalizeUrl(source);
+    if (previewURL.startsWith("data:") || seenUrls.has(previewURL)) {
       continue;
     }
+    seenUrls.add(previewURL);
 
-    checkedImageSources.add(imageSource);
-
-    const requestFailure = imageRequestFailures.get(imageSource);
+    const requestFailure = probe.imageRequestFailures.get(previewURL);
     expect(
       requestFailure,
-      `Image request failed for ${imageSource}: ${requestFailure ?? "unknown"}`
+      `Image request failed for ${previewURL}: ${requestFailure ?? "unknown"}`
     ).toBeUndefined();
 
-    const wasRequested = imageRequests.has(imageSource);
-    expect(wasRequested, `Image was not requested by the browser: ${imageSource}`).toBeTruthy();
+    const status = probe.imageResponses.get(previewURL);
+    expect(status, `Image response status missing for ${previewURL}`).toBeDefined();
+    expect(status, `Image returned HTTP ${status} for ${previewURL}`).toBeGreaterThanOrEqual(200);
+    expect(status, `Image returned HTTP ${status} for ${previewURL}`).toBeLessThan(400);
 
-    const status = imageResponses.get(imageSource);
-    expect(status, `Image response status missing for ${imageSource}`).toBeDefined();
-    expect(status, `Image returned HTTP ${status} for ${imageSource}`).toBeGreaterThanOrEqual(200);
-    expect(status, `Image returned HTTP ${status} for ${imageSource}`).toBeLessThan(400);
+    rows.push({
+      entry,
+      srcType: previewURL.includes("/assets/") ? "public" : "import",
+      previewURL,
+      httpStatus: status as number,
+      requested: probe.imageRequests.has(previewURL) ? "Y" : "N",
+      naturalWidth,
+    });
   }
 
-  expect(consoleErrors).toEqual([]);
-  expect(pageErrors).toEqual([]);
-  expect(requestFailures).toEqual([]);
-  expect(response404s).toEqual([]);
+  return rows;
+};
+
+test("stage-a smoke matrices", async ({ page, request }) => {
+  const probe = attachProbe(page);
+  const navRows: string[] = [];
+  const redTigerRows: string[] = [];
+  let previewThumbnailRows: ThumbnailRow[] = [];
+
+  for (const width of MOBILE_WIDTHS) {
+    await page.setViewportSize({ width, height: 860 });
+    await page.goto("/", { waitUntil: "networkidle" });
+
+    await expect(page.locator("main")).toBeVisible();
+    await expect(page.locator("#hero")).toBeVisible();
+    await expect(page.locator("#hero h1")).toBeVisible();
+
+    const heroImageSrc = await page
+      .locator("#hero img")
+      .first()
+      .evaluate((img) => (img as HTMLImageElement).currentSrc || (img as HTMLImageElement).src);
+    const heroImageResponse = await request.get(heroImageSrc);
+    expect(heroImageResponse.status()).toBe(200);
+
+    const topNavMetrics = await page.evaluate(getNavMetrics);
+    expect(topNavMetrics.minWidth).toBeGreaterThanOrEqual(44);
+    expect(topNavMetrics.minHeight).toBeGreaterThanOrEqual(44);
+    expect(topNavMetrics.hasOverlap).toBeFalsy();
+    expect(topNavMetrics.outOfBounds).toBeFalsy();
+
+    await page.evaluate(() => window.scrollTo({ top: window.innerHeight * 1.2, behavior: "instant" }));
+    await expect(page.locator("nav a[aria-label='Home']")).toBeVisible();
+    await expect(page.locator("nav a[href^='#']")).toHaveCount(6);
+    await page.waitForTimeout(450);
+
+    const navMetrics = await page.evaluate(getNavMetrics);
+    const overlap = navMetrics.hasOverlap ? "Y" : "N";
+    const boundsOK = navMetrics.outOfBounds ? "N" : "Y";
+    const touchTargets = navMetrics.minWidth >= 44 && navMetrics.minHeight >= 44 ? "Y" : "N";
+    const consoleClean =
+      probe.consoleErrors.length === 0 &&
+      probe.consoleWarnings.length === 0 &&
+      probe.pageErrors.length === 0
+        ? "Y"
+        : "N";
+
+    navRows.push(`${width} | ${overlap} | ${boundsOK} | ${touchTargets} | ${consoleClean}`);
+
+    await page.locator("#portfolio").scrollIntoViewIfNeeded();
+    const toggleButton = page.locator("#portfolio button[aria-controls$='games-list']").first();
+    await expect(toggleButton).toBeVisible();
+
+    const buttonSemantics = (await toggleButton.evaluate((element) => {
+      const node = element;
+      return (
+        node.tagName.toLowerCase() === "button" &&
+        node.hasAttribute("aria-controls") &&
+        node.hasAttribute("aria-expanded")
+      );
+    }))
+      ? "Y"
+      : "N";
+
+    const gamesGrid = page.locator("#portfolio [id$='games-list']").first();
+    const collapsedCount = await gamesGrid.locator(":scope > *").count();
+    const heights = [await gamesGrid.evaluate((node) => Math.round(node.getBoundingClientRect().height))];
+
+    await toggleButton.click();
+    await expect(toggleButton).toHaveAttribute("aria-expanded", "true");
+    for (const delay of [60, 130, 240]) {
+      await page.waitForTimeout(delay);
+      heights.push(await gamesGrid.evaluate((node) => Math.round(node.getBoundingClientRect().height)));
+    }
+
+    const expandedCount = await gamesGrid.locator(":scope > *").count();
+    const toggleWorks = expandedCount > collapsedCount ? "Y" : "N";
+    const noOverflow = (await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1))
+      ? "Y"
+      : "N";
+
+    const scrollBefore = await page.evaluate(() => window.scrollY);
+    await page.mouse.wheel(0, 420);
+    await page.waitForTimeout(120);
+    const scrollAfter = await page.evaluate(() => window.scrollY);
+    const scrollOK = scrollAfter > scrollBefore ? "Y" : "N";
+    const noSnap = new Set(heights).size > 1 ? "Y" : "N";
+
+    await toggleButton.click();
+    await expect(toggleButton).toHaveAttribute("aria-expanded", "false");
+
+    expect(buttonSemantics).toBe("Y");
+    expect(toggleWorks).toBe("Y");
+    expect(noOverflow).toBe("Y");
+    expect(scrollOK).toBe("Y");
+    expect(noSnap).toBe("Y");
+
+    redTigerRows.push(`${width} | ${buttonSemantics} | ${toggleWorks} | ${noOverflow} | ${scrollOK} | ${noSnap}`);
+
+    if (width === 320) {
+      previewThumbnailRows = await collectPreviewThumbnailRows(page, probe);
+    }
+  }
+
+  console.log("THUMBNAIL MATRIX (PREVIEW)");
+  console.log("entry | srcType(import/public) | previewURL | httpStatus | requested(Y/N) | naturalWidth | devPreviewDelta");
+  for (const row of previewThumbnailRows) {
+    console.log(
+      `${row.entry} | ${row.srcType} | ${row.previewURL} | ${row.httpStatus} | ${row.requested} | ${row.naturalWidth} | n/a`
+    );
+  }
+
+  console.log("MOBILE NAV MATRIX (320/375/430)");
+  console.log("width | overlap(Y/N) | boundsOK(Y/N) | touchTargets>=44(Y/N) | consoleClean(Y/N)");
+  for (const row of navRows) {
+    console.log(row);
+  }
+
+  console.log("RED TIGER MATRIX (320/375/430)");
+  console.log("width | buttonSemantics(Y/N) | toggleWorks(Y/N) | noOverflow(Y/N) | scrollOK(Y/N) | noSnap(Y/N)");
+  for (const row of redTigerRows) {
+    console.log(row);
+  }
+
+  assertCleanConsoleAndNetwork(probe);
 });
