@@ -9,12 +9,22 @@ import defaultCvData, { CVData } from "@/data/cvData";
 import { CVDataContext, CVDataContextValue, STORAGE_KEY } from "@/contexts/cvDataStore";
 
 
+// Bump this version whenever cvData.ts defaults change to invalidate stale localStorage
+const DATA_VERSION = 2;
+const VERSION_KEY = "cv-data-version";
+
 function loadFromStorage(): CVData {
   try {
+    const storedVersion = localStorage.getItem(VERSION_KEY);
+    if (storedVersion !== String(DATA_VERSION)) {
+      // Schema or default data changed — clear stale cache
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.setItem(VERSION_KEY, String(DATA_VERSION));
+      return defaultCvData;
+    }
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as CVData;
-      // Validate the new structure — if skills.sections doesn't exist, reset
       if (!parsed.skills?.sections) return defaultCvData;
       return parsed;
     }
