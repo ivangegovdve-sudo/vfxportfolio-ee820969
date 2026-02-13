@@ -7,6 +7,7 @@ import PortfolioSection from "@/components/cv/PortfolioSection";
 import SkillsSection from "@/components/cv/SkillsSection";
 import EducationSection from "@/components/cv/EducationSection";
 import ContactSection from "@/components/cv/ContactSection";
+import { useActiveSectionTracker } from "@/hooks/useActiveSectionTracker";
 
 const ContentEditor = lazy(() => import("@/components/editor/ContentEditor"));
 
@@ -14,6 +15,7 @@ const Index = () => {
   const [searchParams] = useSearchParams();
   const isEditMode =
     searchParams.get("edit") === "true" || import.meta.env.VITE_ENABLE_EDITOR === "true";
+  useActiveSectionTracker();
 
   return (
     <>
