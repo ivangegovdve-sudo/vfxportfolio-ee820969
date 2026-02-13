@@ -1,10 +1,25 @@
 import { useCvData } from "@/contexts/useCvData";
 import AnimatedSection from "./AnimatedSection";
-import { Mail, MapPin, ExternalLink } from "lucide-react";
+import { Mail, MapPin, ExternalLink, Download } from "lucide-react";
+import { mapCvDataToJsonResume } from "@/utils/exportJsonResume";
 
 const ContactSection = () => {
   const { data } = useCvData();
   const { email, location, links } = data.contact;
+  const handleDownloadJsonResume = () => {
+    const jsonResume = mapCvDataToJsonResume(data);
+    const blob = new Blob([JSON.stringify(jsonResume, null, 2)], {
+      type: "application/json",
+    });
+    const blobUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = blobUrl;
+    anchor.download = "resume.json";
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(blobUrl);
+  };
 
   return (
     <section id="contact" className="section-spacing" aria-labelledby="contact-title">
@@ -52,6 +67,14 @@ const ContactSection = () => {
                   <ExternalLink className="w-3 h-3" />
                 </a>
               ))}
+              <button
+                type="button"
+                onClick={handleDownloadJsonResume}
+                className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-[border-color,color,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hover:-translate-y-0.5 md:hover:border-primary md:hover:text-primary"
+              >
+                Download JSON Resume
+                <Download className="w-3 h-3" />
+              </button>
             </div>
           </div>
         </AnimatedSection>
