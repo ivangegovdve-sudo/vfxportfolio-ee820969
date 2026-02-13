@@ -32,6 +32,7 @@ const PortfolioEditor = () => {
     const newId = `pf-${Date.now()}`;
     const newItem: PortfolioItem = {
       id: newId,
+      order: (data.portfolio?.length ?? 0) + 1,
       title: "New Project",
       descriptor: "Description",
       url: "https://",
