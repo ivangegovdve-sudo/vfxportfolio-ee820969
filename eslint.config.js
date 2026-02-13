@@ -4,6 +4,18 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
+const noRuntimeSrcAssetUrlRule = {
+  selector: "Literal[value=/^\\/src\\//]",
+  message:
+    "Do not use runtime '/src/...' asset URLs. Use imported assets or '/assets/...' from public.",
+};
+
+const noThumbnailLiteralRule = {
+  selector: "Property[key.name='thumbnail'] > Literal",
+  message:
+    "Portfolio thumbnail values in cvData.ts must come from imported thumbnail constants, not string literals.",
+};
+
 export default tseslint.config(
   { ignores: ["dist"] },
   {
@@ -21,6 +33,13 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "@typescript-eslint/no-unused-vars": "off",
+      "no-restricted-syntax": ["error", noRuntimeSrcAssetUrlRule],
     },
   },
+  {
+    files: ["src/data/cvData.ts"],
+    rules: {
+      "no-restricted-syntax": ["error", noRuntimeSrcAssetUrlRule, noThumbnailLiteralRule],
+    },
+  }
 );

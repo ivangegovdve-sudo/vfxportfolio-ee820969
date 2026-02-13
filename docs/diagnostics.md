@@ -1,16 +1,26 @@
-# Test Matrix
+# Diagnostics Matrix
 
-## A) Runtime / blank screen checks
+## Runtime and environment checks
 
-| Check | How to run | Expected result | Status |
-| --- | --- | --- | --- |
-| Confirm app loads (no context/provider crash) | Start dev server (`npm run dev`) and open app root | App renders without runtime errors or blank screen | ☐ |
-| Confirm `HeroSection` renders with placeholder if image fails | Set an invalid `photoUrl` and refresh | Hero image swaps to placeholder (`/placeholder.svg`) and page keeps rendering | ☐ |
+| Check | How to run | Expected result |
+| --- | --- | --- |
+| Node guard blocks runtime on Node 16 | `npm run dev` under Node 16 | Command fails fast with Node 20 guidance |
+| Lint still works from Node 16 workflow | `npm run lint` | Lint runs without requiring global Node switch |
+| Push gate is strict | `git push` | Runs `npm run guardian` (`build` + smoke) |
 
-## B) Asset delivery checks
+## Asset delivery checks
 
-| Environment | Check | Expected result | Status |
-| --- | --- | --- | --- |
-| Dev | Open app in development (`npm run dev`) | Hero image resolves and displays | ☐ |
-| Prod build | Build + preview (`npm run build && npm run preview`) | Hero image resolves and displays in preview | ☐ |
-| Deployed URL | Open deployed site URL in browser | Hero image resolves and displays | ☐ |
+| Check | How to run | Expected result |
+| --- | --- | --- |
+| Production preview smoke | `npm run guardian` | Build succeeds, Playwright smoke passes on preview server |
+| Portfolio thumbnails requested | Playwright smoke (`tests/smoke.spec.ts`) | Every `#portfolio img` has a browser image request |
+| Portfolio thumbnails respond | Playwright smoke (`tests/smoke.spec.ts`) | Every thumbnail response status is 2xx or 3xx |
+| No broken thumbnails | Playwright smoke (`tests/smoke.spec.ts`) | Every thumbnail has `naturalWidth > 0` |
+
+## Mobile nav checks
+
+| Check | How to run | Expected result |
+| --- | --- | --- |
+| Touch target minimum | Playwright smoke at 320px | Nav links are at least 44px x 44px |
+| No overlap at 320px | Playwright smoke at 320px | Nav items do not overlap and stay in bounds |
+| Avatar Home behavior | Playwright smoke after scroll | Home avatar appears once hero is out of view |

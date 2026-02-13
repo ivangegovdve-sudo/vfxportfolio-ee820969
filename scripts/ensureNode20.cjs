@@ -11,24 +11,38 @@ const runtimeEvents = new Set([
   "build",
   "prepreview",
   "preview",
+  "pretest",
   "pretest:smoke",
+  "pretest:watch",
+  "test:watch",
   "test:smoke",
   "test",
+  "guardian",
 ]);
 
 if (!Number.isNaN(currentMajor) && currentMajor >= requiredMajor) {
   process.exit(0);
 }
 
-console.error(
-  `This repo requires Node 20. Running under Node ${currentVersion}. Please run 'nvm use' in this folder. This does NOT affect your work Node 16.`
-);
-
 const lifecycleEvent = process.env.npm_lifecycle_event ?? "";
 
-if (runtimeEvents.has(lifecycleEvent)) {
-  process.exit(1);
+if (!runtimeEvents.has(lifecycleEvent)) {
+  process.exit(0);
 }
 
-process.exit(0);
+console.error(
+  [
+    `Node 20 is required for "${lifecycleEvent}" in this portfolio repo.`,
+    `Current runtime: ${currentVersion}`,
+    "",
+    "Use explicit, repo-scoped switching with nvm-windows:",
+    "  nvm use 20",
+    "  <rerun your command>",
+    "  nvm use 16  (switch back for your other work repo)",
+    "",
+    "This guard only blocks runtime/build/preview/test commands.",
+    "Lint and commit workflows remain available under Node 16.",
+  ].join("\n")
+);
 
+process.exit(1);

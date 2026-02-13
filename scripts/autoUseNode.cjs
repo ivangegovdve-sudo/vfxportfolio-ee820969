@@ -15,6 +15,8 @@ const nvmCheck = spawnSync("nvm", ["--version"], {
 });
 
 if (!nvmCheck.error && nvmCheck.status === 0) {
-  console.log("Run: nvm use");
+  console.log("Tip: run `nvm use 20` in this repo (explicit switch, no global changes).");
+  process.exit(0);
 }
 
+console.log("Node < 20 detected and nvm-windows is not on PATH in this shell.");
