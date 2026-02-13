@@ -36,7 +36,7 @@ const PortfolioSection = () => {
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group hover-elevate block overflow-hidden rounded-xl border border-border bg-background shadow-sm transition-[border-color,box-shadow,transform] motion-medium md:hover:border-primary/40 md:hover:shadow-lg"
+                className="group hover-elevate block overflow-hidden rounded-xl border border-border bg-background shadow-sm transition-[border-color,box-shadow,transform] motion-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hover:border-primary/40 md:hover:shadow-md"
               >
                 <div
                   className={`aspect-[16/9] bg-gradient-to-br ${gradientVariants[i % gradientVariants.length]} flex items-center justify-center relative overflow-hidden`}
@@ -207,7 +207,7 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
               <button
                 type="button"
                 onClick={() => setIsExpanded((prev) => !prev)}
-                className="mt-4 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-lg border border-border px-4 text-sm font-medium text-primary transition-[background-color,color,transform] motion-medium active:scale-[0.98] sm:w-auto md:hover:bg-secondary/60 md:hover:text-primary/80"
+                className="mt-4 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-lg border border-border px-4 text-sm font-medium text-primary transition-[background-color,color,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:w-auto md:hover:bg-secondary/60 md:hover:text-primary/80"
                 aria-expanded={isExpanded}
                 aria-controls={listId}
               >
@@ -224,7 +224,7 @@ function CollectionCard({ item }: { item: import("@/data/cvData").PortfolioItem 
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-[box-shadow,transform] motion-medium active:scale-[0.98] md:hover:-translate-y-0.5 md:hover:shadow-md"
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-[box-shadow,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hover:-translate-y-0.5 md:hover:shadow-md"
           >
             {item.ctaLabel || "View"}
             <ExternalLink className="w-3.5 h-3.5" />

@@ -142,19 +142,19 @@ const HeroSection = () => {
             >
               <a
                 href="#experience"
-                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm transition-[background-color,box-shadow,transform] duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] md:w-auto md:hover:-translate-y-0.5 md:hover:shadow-md"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm transition-[background-color,box-shadow,transform] duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:w-auto md:hover:-translate-y-0.5 md:hover:shadow-md"
               >
                 View Experience
               </a>
               <a
                 href="#contact"
-                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-primary/40 px-5 text-sm font-medium text-foreground transition-[background-color,color,transform] duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] md:w-auto md:hover:-translate-y-0.5 md:hover:bg-secondary/80"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-primary/40 px-5 text-sm font-medium text-foreground transition-[background-color,color,transform] duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:w-auto md:hover:-translate-y-0.5 md:hover:bg-secondary/80"
               >
                 Get in Touch
               </a>
               <button
                 onClick={() => setAboutOpen(!aboutOpen)}
-                className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-full px-4 text-sm font-medium text-foreground/80 transition-[background-color,color,transform] duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] md:w-auto md:hover:bg-secondary/70 md:hover:text-foreground"
+                className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-full px-4 text-sm font-medium text-foreground/80 transition-[background-color,color,transform] duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:w-auto md:hover:bg-secondary/70 md:hover:text-foreground"
                 aria-expanded={aboutOpen}
                 aria-controls="hero-about-panel"
               >

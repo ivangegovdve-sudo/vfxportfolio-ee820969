@@ -13,7 +13,7 @@ const AnimatedSection = ({ children, className = "", delay = 0 }: AnimatedSectio
 
   return (
     <motion.div
-      initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
+      initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-72px" }}
       transition={

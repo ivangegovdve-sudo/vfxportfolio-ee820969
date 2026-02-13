@@ -28,7 +28,7 @@ const ContactSection = () => {
             <div className="space-y-3 mb-8">
               <a
                 href={`mailto:${email}`}
-                className="group flex items-center gap-3 text-sm text-foreground transition-colors motion-short hover:text-primary"
+                className="group flex items-center gap-3 text-sm text-foreground transition-colors motion-short hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 <Mail className="w-4 h-4 text-primary" />
                 <span className="group-hover:underline">{email}</span>
@@ -46,7 +46,7 @@ const ContactSection = () => {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-[border-color,color,transform] motion-medium active:scale-[0.98] md:hover:-translate-y-0.5 md:hover:border-primary md:hover:text-primary"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-[border-color,color,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hover:-translate-y-0.5 md:hover:border-primary md:hover:text-primary"
                 >
                   {link.label}
                   <ExternalLink className="w-3 h-3" />

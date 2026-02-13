@@ -149,7 +149,6 @@ const Navigation = () => {
                     layout: {
                       duration: MOTION_TOKENS.durationMed,
                       ease: MOTION_TOKENS.easingDefault,
-                      delay: index * 0.02,
                     },
                   };
 
@@ -163,7 +162,7 @@ const Navigation = () => {
                     animate={
                       reduceMotion
                         ? { opacity: 1, x: 0, scale: 1 }
-                        : { opacity: 1, x: 0, scale: [0.98, 1.06, 1] }
+                        : { opacity: 1, x: 0, scale: [0.98, 1.03, 1] }
                     }
                     exit={
                       reduceMotion
@@ -185,7 +184,6 @@ const Navigation = () => {
                             layout: {
                               duration: MOTION_TOKENS.durationMed,
                               ease: MOTION_TOKENS.easingDefault,
-                              delay: index * 0.02,
                             },
                             duration: MOTION_TOKENS.durationAvatar,
                             ease: MOTION_TOKENS.easingDefault,
@@ -196,7 +194,7 @@ const Navigation = () => {
                     <motion.a
                       href="#hero"
                       aria-label="Home"
-                      className="inline-flex h-12 w-full items-center justify-center rounded-2xl border border-border/70 bg-card/90 text-foreground shadow-sm transition-colors duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:bg-secondary/80 md:h-11 md:rounded-full md:hover:bg-secondary/70"
+                      className="inline-flex h-12 w-full items-center justify-center rounded-2xl border border-border/70 bg-card/90 text-foreground shadow-sm transition-colors duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:bg-secondary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:h-11 md:rounded-full md:hover:bg-secondary/70"
                       whileTap={reduceMotion ? undefined : { scale: MOTION_TOKENS.pressScale }}
                     >
                       <span className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-border/70 md:h-8 md:w-8">
@@ -233,7 +231,7 @@ const Navigation = () => {
                     aria-label={item.label}
                     onClick={() => setActiveSection(item.id)}
                     className={cn(
-                      "inline-flex h-12 w-full min-w-[44px] items-center justify-center rounded-2xl border border-transparent px-1 text-muted-foreground transition-[background-color,color,box-shadow,transform] duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:bg-secondary/75 md:h-11 md:rounded-full md:px-3",
+                      "inline-flex h-12 w-full min-w-[44px] items-center justify-center rounded-2xl border border-transparent px-1 text-muted-foreground transition-[background-color,color,box-shadow,transform] duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:bg-secondary/75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:h-11 md:rounded-full md:px-3",
                       isActive
                         ? "bg-secondary/90 text-foreground shadow-[inset_0_0_0_1px_hsl(var(--border))]"
                         : "md:hover:bg-secondary/65 md:hover:text-foreground"
@@ -248,7 +246,7 @@ const Navigation = () => {
                         />
                       <span
                         aria-hidden="true"
-                        className="hidden text-[9px] font-medium leading-none tracking-[0.01em] min-[360px]:block md:hidden"
+                        className="hidden"
                       >
                         {item.shortLabel}
                       </span>
