@@ -123,7 +123,7 @@ const Navigation = () => {
   }, []);
 
   const showAvatar = !heroVisible;
-  const navItems = showAvatar ? ["avatar", ...sectionNavItems] : sectionNavItems;
+  const navItems: ("avatar" | SectionNavItem)[] = showAvatar ? ["avatar", ...sectionNavItems] : [...sectionNavItems];
 
   return (
     <motion.nav
@@ -217,19 +217,20 @@ const Navigation = () => {
                 );
               }
 
-              const isActive = activeSection === item.id;
+              const navItem = item as SectionNavItem;
+              const isActive = activeSection === navItem.id;
 
               return (
                 <motion.li
-                  key={item.id}
+                  key={navItem.id}
                   layout
                   transition={layoutTransition}
                   className="flex min-w-0 flex-1"
                 >
                   <motion.a
-                    href={item.href}
-                    aria-label={item.label}
-                    onClick={() => setActiveSection(item.id)}
+                    href={navItem.href}
+                    aria-label={navItem.label}
+                    onClick={() => setActiveSection(navItem.id)}
                     className={cn(
                       "inline-flex h-12 w-full min-w-[44px] items-center justify-center rounded-2xl border border-transparent px-1 text-muted-foreground transition-[background-color,color,box-shadow,transform] duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:bg-secondary/75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:h-11 md:rounded-full md:px-3",
                       isActive
@@ -239,7 +240,7 @@ const Navigation = () => {
                     whileTap={reduceMotion ? undefined : { scale: MOTION_TOKENS.pressScale }}
                   >
                       <span className="flex flex-col items-center justify-center gap-0.5 md:flex-row md:gap-1.5">
-                        <item.Icon
+                        <navItem.Icon
                           className="h-[17px] w-[17px] shrink-0 md:h-4 md:w-4"
                           strokeWidth={1.9}
                           aria-hidden="true"
@@ -248,13 +249,13 @@ const Navigation = () => {
                         aria-hidden="true"
                         className="hidden"
                       >
-                        {item.shortLabel}
+                        {navItem.shortLabel}
                       </span>
                       <span
                         aria-hidden="true"
                         className="hidden whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.08em] md:inline"
                       >
-                        {item.label}
+                        {navItem.label}
                       </span>
                     </span>
                   </motion.a>
