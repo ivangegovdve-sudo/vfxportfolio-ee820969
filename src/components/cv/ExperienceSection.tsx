@@ -2,9 +2,12 @@ import { useCvData } from "@/contexts/useCvData";
 import AnimatedSection from "./AnimatedSection";
 import { ExternalLink } from "lucide-react";
 import TrademarkText from "./TrademarkText";
+import { motion, useReducedMotion } from "framer-motion";
+import { MOTION_TOKENS } from "@/lib/motion";
 
 const ExperienceSection = () => {
   const { data } = useCvData();
+  const reduceMotion = useReducedMotion();
 
   return (
     <section id="experience" className="section-spacing bg-card" aria-labelledby="experience-title">
@@ -20,8 +23,37 @@ const ExperienceSection = () => {
             <AnimatedSection key={exp.id} delay={0.05 * i}>
               <div className="group relative pl-8 pb-12 last:pb-0">
                 <div className="absolute left-0 top-1.5">
-                  <div className="timeline-dot transition-transform motion-short md:group-hover:scale-110" />
-                  {i < data.experience.length - 1 && <div className="timeline-line" />}
+                  <motion.div
+                    initial={reduceMotion ? { scale: 1 } : { scale: 0.9 }}
+                    whileInView={reduceMotion ? { scale: 1 } : { scale: [0.9, 1.05, 1] }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={
+                      reduceMotion
+                        ? { duration: 0 }
+                        : {
+                            duration: 0.2,
+                            delay: 0.3,
+                            ease: MOTION_TOKENS.easingDefault,
+                            times: [0, 0.7, 1],
+                          }
+                    }
+                  >
+                    <div className="timeline-dot" />
+                  </motion.div>
+                  {i < data.experience.length - 1 && (
+                    <motion.div
+                      initial={reduceMotion ? { scaleY: 1 } : { scaleY: 0 }}
+                      whileInView={{ scaleY: 1 }}
+                      viewport={{ once: true, amount: 0.25 }}
+                      transition={
+                        reduceMotion
+                          ? { duration: 0 }
+                          : { duration: 0.3, ease: MOTION_TOKENS.easingDefault }
+                      }
+                      style={{ transformOrigin: "top" }}
+                      className="timeline-line"
+                    />
+                  )}
                 </div>
 
                 <div>

@@ -71,6 +71,9 @@ const Navigation = () => {
 
   const showAvatar = activeSection !== "hero";
   const navItems = sectionNavItems;
+  const navStateTransition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.2, ease: MOTION_TOKENS.easingDefault };
 
   return (
     <motion.nav
@@ -82,7 +85,7 @@ const Navigation = () => {
           : { duration: MOTION_TOKENS.durationMed, ease: MOTION_TOKENS.easingDefault }
       }
       className={cn(
-        "fixed inset-x-0 top-0 z-50 border-b border-transparent transition-colors duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]",
+        "fixed inset-x-0 top-0 z-50 border-b border-transparent transition-colors motion-medium",
         scrolled ? "border-border bg-background/92 backdrop-blur-md shadow-sm" : "bg-transparent"
       )}
     >
@@ -112,8 +115,10 @@ const Navigation = () => {
                   aria-label={navItem.label}
                   aria-current={isActive ? "page" : undefined}
                   onClick={() => setActiveSection(navItem.id)}
+                  animate={reduceMotion ? undefined : { scale: isActive ? 1.02 : 1 }}
+                  transition={navStateTransition}
                   className={cn(
-                    "inline-flex h-12 w-full min-w-[44px] items-center justify-center rounded-2xl border border-transparent px-1 text-muted-foreground transition-[background-color,color,box-shadow,transform] duration-200 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] active:bg-secondary/75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:h-11 md:rounded-full md:px-3",
+                    "relative inline-flex h-12 w-full min-w-[44px] items-center justify-center rounded-2xl border border-transparent px-1 text-muted-foreground transition-[background-color,color,box-shadow,transform] motion-medium active:bg-secondary/75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:h-11 md:rounded-full md:px-3",
                     isActive
                       ? "bg-secondary/90 text-foreground shadow-[inset_0_0_0_1px_hsl(var(--border))]"
                       : "md:hover:bg-secondary/65 md:hover:text-foreground"
@@ -168,6 +173,24 @@ const Navigation = () => {
                       {navItem.label}
                     </span>
                   </span>
+                  {isActive && (
+                    <motion.span
+                      layoutId="active-nav-indicator"
+                      aria-hidden="true"
+                      initial={reduceMotion ? false : { scaleX: 0.55 }}
+                      animate={{ scaleX: 1 }}
+                      transition={
+                        reduceMotion
+                          ? { duration: 0 }
+                          : {
+                              duration: 0.2,
+                              ease: MOTION_TOKENS.easingDefault,
+                            }
+                      }
+                      className="pointer-events-none absolute bottom-1.5 left-1/2 h-0.5 w-6 -translate-x-1/2 rounded-full bg-primary"
+                      style={{ originX: 0.5 }}
+                    />
+                  )}
                 </motion.a>
               </motion.li>
             );

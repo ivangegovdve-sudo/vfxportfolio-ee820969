@@ -48,7 +48,7 @@
     --font-body: 'Inter', sans-serif;
     --section-spacing: 6rem;
     --motion-duration-short: 160ms;
-    --motion-duration-med: 220ms;
+    --motion-duration-med: 180ms;
     --motion-ease-default: cubic-bezier(0.22, 1, 0.36, 1);
     --motion-hover-elevate: -1px;
     --timeline-accent: 38 92% 50%;
@@ -142,7 +142,7 @@
   }
 
   .timeline-line {
-    @apply absolute left-[5px] top-6 w-0.5 h-full;
+    @apply absolute bottom-0 left-[5px] top-6 w-0.5;
     background: hsl(var(--timeline-line));
   }
 

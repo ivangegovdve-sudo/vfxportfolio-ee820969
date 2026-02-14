@@ -1,10 +1,22 @@
 import { useCvData } from "@/contexts/useCvData";
 import AnimatedSection from "./AnimatedSection";
+import { motion, useReducedMotion } from "framer-motion";
+import { MOTION_TOKENS } from "@/lib/motion";
 
 const IS_TAG_THRESHOLD = 45; // skills shorter than this render as tags
 
 const SkillsSection = () => {
   const { data } = useCvData();
+  const reduceMotion = useReducedMotion();
+
+  const getBulletTransition = (index: number) =>
+    reduceMotion
+      ? { duration: 0 }
+      : {
+          duration: 0.18,
+          delay: Math.min(index * 0.03, 0.18),
+          ease: MOTION_TOKENS.easingDefault,
+        };
 
   return (
     <section id="skills" className="section-spacing" aria-labelledby="skills-title">
@@ -48,14 +60,22 @@ const SkillsSection = () => {
                           </div>
                         ) : (
                           <ul className="space-y-1.5">
-                            {group.skills.map((skill) => (
-                              <li
+                            {group.skills.map((skill, skillIndex) => (
+                              <motion.li
                                 key={skill}
+                                layout={false}
+                                initial={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 12 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true, amount: 0.2 }}
+                                transition={getBulletTransition(skillIndex)}
                                 className="text-sm text-foreground/75 flex items-start gap-2"
                               >
-                                <span className="text-primary mt-1.5 text-[6px]">{"\u2022"}</span>
+                                <span
+                                  aria-hidden="true"
+                                  className="mt-[0.42rem] h-[7px] w-[7px] shrink-0 rounded-full bg-primary"
+                                />
                                 {skill}
-                              </li>
+                              </motion.li>
                             ))}
                           </ul>
                         )}
@@ -76,14 +96,22 @@ const SkillsSection = () => {
                   Personal
                 </h3>
                 <ul className="space-y-2">
-                  {data.skills.personal.map((skill) => (
-                    <li
+                  {data.skills.personal.map((skill, skillIndex) => (
+                    <motion.li
                       key={skill}
+                      layout={false}
+                      initial={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 12 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={getBulletTransition(skillIndex)}
                       className="text-sm text-foreground/80 flex items-start gap-2"
                     >
-                      <span className="text-primary mt-1.5 text-[6px]">{"\u2022"}</span>
+                      <span
+                        aria-hidden="true"
+                        className="mt-[0.42rem] h-[7px] w-[7px] shrink-0 rounded-full bg-primary"
+                      />
                       {skill}
-                    </li>
+                    </motion.li>
                   ))}
                 </ul>
               </div>
