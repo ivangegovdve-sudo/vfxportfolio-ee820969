@@ -3,6 +3,8 @@ import { useActiveSection } from "@/context/useActiveSection";
 import { ActiveSectionId, TRACKED_SECTION_IDS } from "@/context/activeSectionIds";
 
 const OBSERVER_THRESHOLDS = [0, 0.3, 0.6, 0.9];
+const PROGRAMMATIC_SCROLL_START_EVENT = "cv:programmatic-scroll-start";
+const PROGRAMMATIC_SCROLL_SETTLE_MS = 300;
 
 const getScore = (entry: IntersectionObserverEntry, viewportHeight: number) => {
   const ratio = entry.intersectionRatio;
@@ -19,6 +21,8 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
   const observerRef = useRef<IntersectionObserver | null>(null);
   const entriesRef = useRef<Map<ActiveSectionId, IntersectionObserverEntry>>(new Map());
   const rafRef = useRef<number | null>(null);
+  const isProgrammaticScrollRef = useRef(false);
+  const scrollUnlockTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     const entriesMap = entriesRef.current;
@@ -32,6 +36,10 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
 
     const evaluateActiveSection = () => {
       rafRef.current = null;
+
+      if (isProgrammaticScrollRef.current) {
+        return;
+      }
 
       const viewportHeight = Math.max(window.innerHeight || 0, 1);
       let bestId: ActiveSectionId | null = null;
@@ -80,6 +88,30 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
       rafRef.current = requestAnimationFrame(evaluateActiveSection);
     };
 
+    const scheduleProgrammaticUnlock = () => {
+      if (scrollUnlockTimeoutRef.current != null) {
+        window.clearTimeout(scrollUnlockTimeoutRef.current);
+      }
+
+      scrollUnlockTimeoutRef.current = window.setTimeout(() => {
+        isProgrammaticScrollRef.current = false;
+        queueEvaluation();
+      }, PROGRAMMATIC_SCROLL_SETTLE_MS);
+    };
+
+    const handleProgrammaticScrollStart = () => {
+      isProgrammaticScrollRef.current = true;
+      scheduleProgrammaticUnlock();
+    };
+
+    const handleScroll = () => {
+      if (!isProgrammaticScrollRef.current) {
+        return;
+      }
+
+      scheduleProgrammaticUnlock();
+    };
+
     observerRef.current = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -97,12 +129,20 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
       observerRef.current.observe(section);
     }
 
+    window.addEventListener(PROGRAMMATIC_SCROLL_START_EVENT, handleProgrammaticScrollStart);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     queueEvaluation();
 
     return () => {
       if (rafRef.current != null) {
         cancelAnimationFrame(rafRef.current);
       }
+      if (scrollUnlockTimeoutRef.current != null) {
+        window.clearTimeout(scrollUnlockTimeoutRef.current);
+      }
+      isProgrammaticScrollRef.current = false;
+      window.removeEventListener(PROGRAMMATIC_SCROLL_START_EVENT, handleProgrammaticScrollStart);
+      window.removeEventListener("scroll", handleScroll);
       observerRef.current?.disconnect();
       observerRef.current = null;
       entriesMap.clear();

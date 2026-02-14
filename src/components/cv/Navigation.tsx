@@ -33,6 +33,7 @@ const sectionNavItems: SectionNavItem[] = [
   { id: "education", href: "#education", label: "Education", shortLabel: "Edu", Icon: GraduationCap },
   { id: "contact", href: "#contact", label: "Contact", shortLabel: "Contact", Icon: Mail },
 ];
+const PROGRAMMATIC_SCROLL_START_EVENT = "cv:programmatic-scroll-start";
 
 const Navigation = () => {
   const { data } = useCvData();
@@ -74,6 +75,10 @@ const Navigation = () => {
   const navStateTransition = reduceMotion
     ? { duration: 0 }
     : { duration: MOTION_TOKENS.durationShort, ease: MOTION_TOKENS.easingDefault };
+  const handleNavItemClick = (sectionId: ActiveSectionId) => {
+    setActiveSection(sectionId);
+    window.dispatchEvent(new CustomEvent(PROGRAMMATIC_SCROLL_START_EVENT));
+  };
 
   return (
     <motion.nav
@@ -114,7 +119,7 @@ const Navigation = () => {
                   href={navItem.href}
                   aria-label={navItem.label}
                   aria-current={isActive ? "page" : undefined}
-                  onClick={() => setActiveSection(navItem.id)}
+                  onClick={() => handleNavItemClick(navItem.id)}
                   animate={reduceMotion ? undefined : { scale: isActive ? 1.02 : 1 }}
                   transition={navStateTransition}
                   className={cn(
@@ -174,23 +179,41 @@ const Navigation = () => {
                     </span>
                   </span>
                   {isActive && (
-                    <motion.span
-                      layoutId="active-nav-indicator"
-                      layout="position"
-                      aria-hidden="true"
-                      initial={reduceMotion ? false : { scaleX: 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={
-                        reduceMotion
-                          ? { duration: 0 }
-                          : {
-                              duration: MOTION_TOKENS.durationShort,
-                              ease: MOTION_TOKENS.easingDefault,
-                            }
-                      }
-                      className="pointer-events-none absolute bottom-1.5 left-1/2 h-0.5 w-6 -translate-x-1/2 rounded-full bg-primary"
-                      style={{ originX: 0.5 }}
-                    />
+                    <>
+                      <span className="pointer-events-none absolute inset-x-0 bottom-1.5 flex justify-center md:hidden">
+                        <motion.span
+                          aria-hidden="true"
+                          initial={reduceMotion ? false : { opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={
+                            reduceMotion
+                              ? { duration: 0 }
+                              : {
+                                  duration: MOTION_TOKENS.durationShort,
+                                  ease: MOTION_TOKENS.easingDefault,
+                                }
+                          }
+                          className="h-1.5 w-1.5 rounded-full bg-primary"
+                        />
+                      </span>
+                      <motion.span
+                        layoutId="active-nav-indicator"
+                        layout="position"
+                        aria-hidden="true"
+                        initial={reduceMotion ? false : { scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        transition={
+                          reduceMotion
+                            ? { duration: 0 }
+                            : {
+                                duration: MOTION_TOKENS.durationShort,
+                                ease: MOTION_TOKENS.easingDefault,
+                              }
+                        }
+                        className="pointer-events-none absolute bottom-1.5 left-1/2 hidden h-0.5 w-6 -translate-x-1/2 rounded-full bg-primary md:block"
+                        style={{ originX: 0.5 }}
+                      />
+                    </>
                   )}
                 </motion.a>
               </motion.li>
