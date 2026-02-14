@@ -5,6 +5,8 @@ import { ActiveSectionId, TRACKED_SECTION_IDS } from "@/context/activeSectionIds
 const OBSERVER_THRESHOLDS = [0, 0.3, 0.6, 0.9];
 const PROGRAMMATIC_SCROLL_START_EVENT = "cv:programmatic-scroll-start";
 const PROGRAMMATIC_SCROLL_SETTLE_MS = 300;
+const ACTIVE_TOP_RATIO = 0.35;
+const HERO_ACTIVE_SCROLL_MAX = 40;
 
 const getScore = (entry: IntersectionObserverEntry, viewportHeight: number) => {
   const ratio = entry.intersectionRatio;
@@ -42,12 +44,20 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
       }
 
       const viewportHeight = Math.max(window.innerHeight || 0, 1);
+      const activeTopBoundary = viewportHeight * ACTIVE_TOP_RATIO;
+      const scrollY = window.scrollY || window.pageYOffset || 0;
       let bestId: ActiveSectionId | null = null;
       let bestScore = -1;
 
       for (const id of sectionIds) {
         const entry = entriesMap.get(id);
         if (!entry || !entry.isIntersecting) {
+          continue;
+        }
+        if (entry.boundingClientRect.top > activeTopBoundary) {
+          continue;
+        }
+        if (id === "hero" && scrollY >= HERO_ACTIVE_SCROLL_MAX) {
           continue;
         }
 
@@ -59,20 +69,27 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
       }
 
       if (!bestId) {
-        let fallbackId = sectionIds[0];
+        let fallbackId: ActiveSectionId | null = null;
         let fallbackDistance = Number.POSITIVE_INFINITY;
 
         for (const id of sectionIds) {
+          if (id === "hero" && scrollY >= HERO_ACTIVE_SCROLL_MAX) {
+            continue;
+          }
           const element = document.getElementById(id);
           if (!element) {
             continue;
           }
 
-          const distance = Math.abs(element.getBoundingClientRect().top);
+          const distance = Math.abs(element.getBoundingClientRect().top - activeTopBoundary);
           if (distance < fallbackDistance) {
             fallbackDistance = distance;
             fallbackId = id;
           }
+        }
+
+        if (!fallbackId) {
+          return;
         }
 
         bestId = fallbackId;
