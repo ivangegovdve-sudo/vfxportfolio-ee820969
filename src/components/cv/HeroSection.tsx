@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useCvData } from "@/contexts/useCvData";
 import { User, ChevronDown } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -15,6 +15,8 @@ const HeroSection = () => {
   const resolvedPrimaryPhotoUrl = useMemo(() => resolvePhotoUrl(photoUrl, fallbackHeroPhoto), [photoUrl]);
   const [currentPhotoUrl, setCurrentPhotoUrl] = useState(resolvedPrimaryPhotoUrl);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const aboutPanelRef = useRef<HTMLDivElement | null>(null);
+  const [aboutPanelHeight, setAboutPanelHeight] = useState(0);
   const renderCountRef = useRef(0);
 
   renderCountRef.current += 1;
@@ -32,6 +34,17 @@ const HeroSection = () => {
     probeStore.HeroSection = renderCountRef.current;
   });
 
+  useEffect(() => {
+    const updateAboutPanelHeight = () => {
+      const nextHeight = aboutPanelRef.current?.scrollHeight ?? 0;
+      setAboutPanelHeight((current) => (current === nextHeight ? current : nextHeight));
+    };
+
+    updateAboutPanelHeight();
+    window.addEventListener("resize", updateAboutPanelHeight);
+    return () => window.removeEventListener("resize", updateAboutPanelHeight);
+  }, [data.about.paragraphs]);
+
   const handleImageError = () => {
     if (currentPhotoUrl !== fallbackHeroPhoto) {
       setCurrentPhotoUrl(fallbackHeroPhoto);
@@ -45,7 +58,7 @@ const HeroSection = () => {
 
   return (
     <section id="hero" className="hero-gradient min-h-[66vh] md:min-h-[70vh] flex items-center pt-14 md:pt-16 pb-6 md:pb-10">
-      <div className="section-container w-full">
+      <div className="section-container w-full self-start">
         <div className="flex flex-col items-center gap-7 md:flex-row md:items-center md:gap-10">
           <motion.div
             initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
@@ -167,32 +180,32 @@ const HeroSection = () => {
               </button>
             </motion.div>
 
-            <AnimatePresence>
-              {aboutOpen && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={
-                    reduceMotion
-                      ? { duration: 0 }
-                      : { duration: MOTION_TOKENS.durationMed, ease: MOTION_TOKENS.easingDefault }
-                  }
-                  className="overflow-hidden"
-                  id="hero-about-panel"
-                >
-                  <div className="mt-5 max-w-lg rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm">
-                    <div className="space-y-3">
-                      {data.about.paragraphs.map((p, i) => (
-                        <p key={i} className="text-sm leading-relaxed text-foreground/80">
-                          {p}
-                        </p>
-                      ))}
-                    </div>
+            <motion.div
+              initial={false}
+              animate={{
+                opacity: aboutOpen ? 1 : 0,
+                maxHeight: aboutOpen ? aboutPanelHeight : 0,
+              }}
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : { duration: 1.05, ease: "easeInOut" }
+              }
+              className="origin-top overflow-hidden"
+              id="hero-about-panel"
+            >
+              <div ref={aboutPanelRef} className="pt-5">
+                <div className="max-w-lg rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm">
+                  <div className="space-y-3">
+                    {data.about.paragraphs.map((p, i) => (
+                      <p key={i} className="text-sm leading-relaxed text-foreground/80">
+                        {p}
+                      </p>
+                    ))}
                   </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
