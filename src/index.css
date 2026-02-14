@@ -142,7 +142,7 @@
   }
 
   .timeline-line {
-    @apply absolute bottom-0 left-[5px] top-6 w-0.5;
+    @apply absolute bottom-0 left-[5px] top-[6px] w-0.5;
     background: hsl(var(--timeline-line));
   }
 

@@ -13,13 +13,14 @@ const AnimatedSection = ({ children, className = "", delay = 0 }: AnimatedSectio
 
   return (
     <motion.div
+      layout={false}
       initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-72px" }}
       transition={
         reduceMotion
           ? { duration: 0 }
-          : { duration: MOTION_TOKENS.durationMed, ease: MOTION_TOKENS.easingDefault }
+          : { duration: MOTION_TOKENS.durationMed, delay: 0, ease: MOTION_TOKENS.easingDefault }
       }
       style={reduceMotion ? undefined : { willChange: "opacity, transform" }}
       className={className}

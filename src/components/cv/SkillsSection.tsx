@@ -14,7 +14,7 @@ const SkillsSection = () => {
       ? { duration: 0 }
       : {
           duration: 0.18,
-          delay: Math.min(index * 0.03, 0.18),
+          delay: Math.min(index * 0.03, 0.03),
           ease: MOTION_TOKENS.easingDefault,
         };
 
@@ -72,7 +72,7 @@ const SkillsSection = () => {
                               >
                                 <span
                                   aria-hidden="true"
-                                  className="mt-[0.42rem] h-[7px] w-[7px] shrink-0 rounded-full bg-primary"
+                                  className="mt-[0.4rem] h-2 w-2 shrink-0 rounded-full bg-primary"
                                 />
                                 {skill}
                               </motion.li>
@@ -108,7 +108,7 @@ const SkillsSection = () => {
                     >
                       <span
                         aria-hidden="true"
-                        className="mt-[0.42rem] h-[7px] w-[7px] shrink-0 rounded-full bg-primary"
+                        className="mt-[0.4rem] h-2 w-2 shrink-0 rounded-full bg-primary"
                       />
                       {skill}
                     </motion.li>

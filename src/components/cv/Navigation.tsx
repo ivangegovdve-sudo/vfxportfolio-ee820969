@@ -73,7 +73,7 @@ const Navigation = () => {
   const navItems = sectionNavItems;
   const navStateTransition = reduceMotion
     ? { duration: 0 }
-    : { duration: 0.2, ease: MOTION_TOKENS.easingDefault };
+    : { duration: MOTION_TOKENS.durationShort, ease: MOTION_TOKENS.easingDefault };
 
   return (
     <motion.nav
@@ -176,14 +176,15 @@ const Navigation = () => {
                   {isActive && (
                     <motion.span
                       layoutId="active-nav-indicator"
+                      layout="position"
                       aria-hidden="true"
-                      initial={reduceMotion ? false : { scaleX: 0.55 }}
+                      initial={reduceMotion ? false : { scaleX: 0 }}
                       animate={{ scaleX: 1 }}
                       transition={
                         reduceMotion
                           ? { duration: 0 }
                           : {
-                              duration: 0.2,
+                              duration: MOTION_TOKENS.durationShort,
                               ease: MOTION_TOKENS.easingDefault,
                             }
                       }
