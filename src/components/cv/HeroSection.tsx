@@ -57,8 +57,8 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="hero" className="hero-gradient min-h-screen pt-14 md:pt-16 pb-6 md:pb-10">
-      <div className="section-container flex min-h-[calc(100vh-5rem)] w-full items-center justify-center md:min-h-[calc(100vh-6.5rem)]">
+    <section id="hero" className="hero-gradient min-h-screen grid grid-rows-[minmax(0,1fr)_auto] pt-14 md:pt-16 pb-6 md:pb-10">
+      <div className="section-container flex w-full items-center justify-center">
         <div className="flex flex-col items-center gap-7 md:flex-row md:items-center md:gap-10">
           <motion.div
             initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
