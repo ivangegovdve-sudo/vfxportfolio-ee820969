@@ -57,9 +57,10 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="hero" className="hero-gradient min-h-screen pt-14 md:pt-16 pb-6 md:pb-10">
-      <div className="section-container flex min-h-[calc(100vh-5rem)] w-full items-center justify-center md:min-h-[calc(100vh-6.5rem)]">
-        <div className="flex flex-col items-center gap-7 md:flex-row md:items-center md:gap-10">
+    <section id="hero" className="hero-gradient flex flex-col items-center justify-center pt-14 md:pt-16 pb-6 md:pb-10">
+      <div className="section-container w-full">
+        <div className="flex w-full items-center justify-center py-8 md:py-12">
+          <div className="flex flex-col items-center gap-7 md:flex-row md:items-center md:gap-10">
           <motion.div
             initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -181,36 +182,37 @@ const HeroSection = () => {
             </motion.div>
           </div>
         </div>
-      </div>
 
-      <motion.div
-        initial={false}
-        animate={{
-          opacity: aboutOpen ? 1 : 0,
-          maxHeight: aboutOpen ? aboutPanelHeight : 0,
-        }}
-        transition={
-          reduceMotion
-            ? { duration: 0 }
-            : { duration: 1.05, ease: "easeInOut" }
-        }
-        className="section-container w-full origin-top overflow-hidden"
-        id="hero-about-panel"
-      >
-        <div ref={aboutPanelRef} className="pt-5">
-          <div className="flex justify-center md:justify-end">
-            <div className="max-w-lg rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm">
-              <div className="space-y-3">
-                {data.about.paragraphs.map((p, i) => (
-                  <p key={i} className="text-sm leading-relaxed text-foreground/80">
-                    {p}
-                  </p>
-                ))}
+        <motion.div
+          initial={false}
+          animate={{
+            opacity: aboutOpen ? 1 : 0,
+            maxHeight: aboutOpen ? aboutPanelHeight : 0,
+          }}
+          transition={
+            reduceMotion
+              ? { duration: 0 }
+              : { duration: 1.05, ease: "easeInOut" }
+          }
+          className="w-full origin-top overflow-hidden"
+          id="hero-about-panel"
+        >
+          <div ref={aboutPanelRef} className="pt-5">
+            <div className="flex justify-center md:justify-end">
+              <div className="max-w-lg rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm">
+                <div className="space-y-3">
+                  {data.about.paragraphs.map((p, i) => (
+                    <p key={i} className="text-sm leading-relaxed text-foreground/80">
+                      {p}
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
+      </div>
     </section>
   );
 };
