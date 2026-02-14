@@ -7,6 +7,8 @@ import { MOTION_TOKENS } from "@/lib/motion";
 import { resolvePhotoUrl } from "@/utils/resolvePhotoUrl";
 
 const FALLBACK_PHOTO_URL = "/placeholder.svg";
+const ABOUT_PLACEMENT: "green" | "red" = "green";
+const ABOUT_ANIMATION_DURATION_MS = 1050;
 
 const HeroSection = () => {
   const { data } = useCvData();
@@ -16,10 +18,32 @@ const HeroSection = () => {
   const [currentPhotoUrl, setCurrentPhotoUrl] = useState(resolvedPrimaryPhotoUrl);
   const [aboutOpen, setAboutOpen] = useState(false);
   const aboutPanelRef = useRef<HTMLDivElement | null>(null);
+  const aboutPanelContainerRef = useRef<HTMLDivElement | null>(null);
+  const aboutButtonRef = useRef<HTMLButtonElement | null>(null);
+  const heroCoreRef = useRef<HTMLDivElement | null>(null);
+  const measurementTimeoutRef = useRef<number | null>(null);
   const [aboutPanelHeight, setAboutPanelHeight] = useState(0);
   const renderCountRef = useRef(0);
 
   renderCountRef.current += 1;
+
+  const aboutPanelClasses =
+    ABOUT_PLACEMENT === "green"
+      ? {
+          outer: "w-full max-w-3xl mx-auto origin-top overflow-hidden",
+          inner: "pt-5 md:pl-[15.5rem]",
+          card: "w-full max-w-lg mx-auto rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm md:mx-0",
+        }
+      : {
+          outer: "w-full max-w-3xl mx-auto origin-top overflow-hidden",
+          inner: "pt-5",
+          card: "w-full max-w-3xl mx-auto rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm",
+        };
+
+  const shouldLogAboutMeasurements =
+    import.meta.env.DEV ||
+    (typeof window !== "undefined" &&
+      (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"));
 
   useEffect(() => {
     setCurrentPhotoUrl(resolvedPrimaryPhotoUrl);
@@ -45,6 +69,64 @@ const HeroSection = () => {
     return () => window.removeEventListener("resize", updateAboutPanelHeight);
   }, [data.about.paragraphs]);
 
+  useEffect(() => {
+    return () => {
+      if (measurementTimeoutRef.current != null) {
+        window.clearTimeout(measurementTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const toRect = (element: Element | null) => {
+    if (!element) {
+      return null;
+    }
+
+    const rect = element.getBoundingClientRect();
+    return {
+      top: Number(rect.top.toFixed(2)),
+      left: Number(rect.left.toFixed(2)),
+      width: Number(rect.width.toFixed(2)),
+      height: Number(rect.height.toFixed(2)),
+      bottom: Number(rect.bottom.toFixed(2)),
+      right: Number(rect.right.toFixed(2)),
+    };
+  };
+
+  const logAboutMeasurements = (phase: "before" | "raf" | "after", scrollBefore: number) => {
+    if (!shouldLogAboutMeasurements) {
+      return;
+    }
+
+    const scrollAfter = window.scrollY;
+    console.info("[about-placement-probe]", {
+      phase,
+      placement: ABOUT_PLACEMENT,
+      aboutPanel: toRect(aboutPanelContainerRef.current),
+      aboutButton: toRect(aboutButtonRef.current),
+      heroCore: toRect(heroCoreRef.current),
+      scrollYBefore: Number(scrollBefore.toFixed(2)),
+      scrollYAfter: Number(scrollAfter.toFixed(2)),
+      scrollDelta: Number((scrollAfter - scrollBefore).toFixed(2)),
+    });
+  };
+
+  const handleAboutToggle = () => {
+    const scrollBefore = window.scrollY;
+    setAboutOpen((current) => !current);
+    logAboutMeasurements("before", scrollBefore);
+    window.requestAnimationFrame(() => logAboutMeasurements("raf", scrollBefore));
+
+    if (measurementTimeoutRef.current != null) {
+      window.clearTimeout(measurementTimeoutRef.current);
+    }
+
+    measurementTimeoutRef.current = window.setTimeout(() => {
+      logAboutMeasurements("after", scrollBefore);
+      measurementTimeoutRef.current = null;
+    }, reduceMotion ? 0 : ABOUT_ANIMATION_DURATION_MS);
+  };
+
   const handleImageError = () => {
     if (currentPhotoUrl !== fallbackHeroPhoto) {
       setCurrentPhotoUrl(fallbackHeroPhoto);
@@ -63,7 +145,7 @@ const HeroSection = () => {
       style={{ minHeight: `calc(100vh + ${aboutOpen ? aboutPanelHeight : 0}px)` }}
     >
       <div className="section-container w-full">
-        <div className="flex flex-col items-center text-center md:flex-row md:items-center md:gap-10 md:text-left">
+        <div ref={heroCoreRef} className="flex flex-col items-center text-center md:flex-row md:items-center md:gap-10 md:text-left">
             <motion.div
               initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -170,7 +252,8 @@ const HeroSection = () => {
                   Get in Touch
                 </a>
                 <button
-                  onClick={() => setAboutOpen(!aboutOpen)}
+                  ref={aboutButtonRef}
+                  onClick={handleAboutToggle}
                   className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-full px-4 text-sm font-medium text-foreground/80 transition-[background-color,color,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:w-auto md:hover:bg-secondary/70 md:hover:text-foreground"
                   aria-expanded={aboutOpen}
                   aria-controls="hero-about-panel"
@@ -197,11 +280,12 @@ const HeroSection = () => {
               ? { duration: 0 }
               : { duration: 1.05, ease: "easeInOut" }
           }
-          className="w-full max-w-3xl mx-auto origin-top overflow-hidden"
+          className={aboutPanelClasses.outer}
           id="hero-about-panel"
+          ref={aboutPanelContainerRef}
         >
-          <div ref={aboutPanelRef} className="pt-5 md:pl-[15.5rem]">
-            <div className="w-full max-w-lg mx-auto rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm md:mx-0">
+          <div ref={aboutPanelRef} className={aboutPanelClasses.inner}>
+            <div className={aboutPanelClasses.card}>
                 <div className="space-y-3">
                   {data.about.paragraphs.map((p, i) => (
                     <p key={i} className="text-sm leading-relaxed text-foreground/80">
