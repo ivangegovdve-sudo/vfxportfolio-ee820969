@@ -7,7 +7,6 @@ import { MOTION_TOKENS } from "@/lib/motion";
 import { resolvePhotoUrl } from "@/utils/resolvePhotoUrl";
 
 const FALLBACK_PHOTO_URL = "/placeholder.svg";
-const ABOUT_CENTERING_OFFSET = 0.23;
 
 const HeroSection = () => {
   const { data } = useCvData();
@@ -58,23 +57,13 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="hero" className="hero-gradient min-h-screen flex items-center justify-center pt-14 md:pt-16 pb-6 md:pb-10">
-      <motion.div
-        className="section-container w-full"
-        initial={false}
-        animate={
-          reduceMotion
-            ? { y: 0 }
-            : { y: aboutOpen ? aboutPanelHeight * ABOUT_CENTERING_OFFSET : 0 }
-        }
-        transition={
-          reduceMotion
-            ? { duration: 0 }
-            : { duration: 1.05, ease: "easeInOut" }
-        }
-      >
-        <div className="flex flex-col items-center justify-center">
-          <div className="flex flex-col items-center gap-7 md:flex-row md:items-center md:gap-10">
+    <section
+      id="hero"
+      className="hero-gradient min-h-screen flex items-center justify-center pt-14 md:pt-16 pb-6 md:pb-10"
+      style={{ minHeight: `calc(100vh + ${aboutOpen ? aboutPanelHeight : 0}px)` }}
+    >
+      <div className="section-container w-full">
+        <div className="flex flex-col items-center text-center md:flex-row md:items-center md:gap-10 md:text-left">
             <motion.div
               initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -105,7 +94,7 @@ const HeroSection = () => {
               )}
             </motion.div>
 
-            <div className="overflow-visible text-center md:text-left">
+            <div className="w-full max-w-lg overflow-visible">
               <motion.h1
                 initial={reduceMotion ? false : { opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -195,7 +184,6 @@ const HeroSection = () => {
                 </button>
               </motion.div>
             </div>
-          </div>
         </div>
 
         <motion.div
@@ -209,12 +197,11 @@ const HeroSection = () => {
               ? { duration: 0 }
               : { duration: 1.05, ease: "easeInOut" }
           }
-          className="w-full origin-top overflow-hidden"
+          className="w-full max-w-3xl mx-auto origin-top overflow-hidden"
           id="hero-about-panel"
         >
-          <div ref={aboutPanelRef} className="pt-5">
-            <div className="flex justify-center md:justify-end">
-              <div className="max-w-lg rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm">
+          <div ref={aboutPanelRef} className="pt-5 md:pl-[15.5rem]">
+            <div className="w-full max-w-lg mx-auto rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm md:mx-0">
                 <div className="space-y-3">
                   {data.about.paragraphs.map((p, i) => (
                     <p key={i} className="text-sm leading-relaxed text-foreground/80">
@@ -222,11 +209,10 @@ const HeroSection = () => {
                     </p>
                   ))}
                 </div>
-              </div>
             </div>
           </div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 };
