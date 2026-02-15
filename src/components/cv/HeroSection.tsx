@@ -55,11 +55,8 @@ const HeroSection = () => {
 
   return (
     <section id="hero" className="hero-gradient">
-      <div
-        className="min-h-screen flex flex-col pt-14 md:pt-16 pb-6 md:pb-10"
-        style={{ minHeight: `calc(100vh + ${aboutOpen ? aboutPanelHeight : 0}px)` }}
-      >
-        <div className="flex-1 flex items-center justify-center">
+      <div className="min-h-screen flex flex-col pt-14 md:pt-16 pb-6 md:pb-10">
+        <div className="min-h-screen flex items-center justify-center">
           <div className="section-container w-full">
             <div className="flex flex-col items-center text-center md:flex-row md:items-center md:gap-10 md:text-left">
               <motion.div
