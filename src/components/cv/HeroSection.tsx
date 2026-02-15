@@ -180,38 +180,36 @@ const HeroSection = () => {
                   />
                 </button>
               </motion.div>
+
+              <motion.div
+                initial={false}
+                animate={{
+                  opacity: aboutOpen ? 1 : 0,
+                  maxHeight: aboutOpen ? aboutPanelHeight : 0,
+                }}
+                transition={
+                  reduceMotion
+                    ? { duration: 0 }
+                    : { duration: 1.05, ease: "easeInOut" }
+                }
+                className="w-full mt-6 origin-top overflow-hidden"
+                id="hero-about-panel"
+              >
+                <div ref={aboutPanelRef}>
+                  <div className="w-full rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm">
+                    <div className="space-y-3">
+                      {data.about.paragraphs.map((p, i) => (
+                        <p key={i} className="text-sm leading-relaxed text-foreground/80">
+                          {p}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="relative section-container w-full">
-        <motion.div
-          initial={false}
-          animate={{
-            opacity: aboutOpen ? 1 : 0,
-            maxHeight: aboutOpen ? aboutPanelHeight : 0,
-          }}
-          transition={
-            reduceMotion
-              ? { duration: 0 }
-              : { duration: 1.05, ease: "easeInOut" }
-          }
-          className="w-full max-w-lg mx-auto origin-top overflow-hidden"
-          id="hero-about-panel"
-        >
-          <div ref={aboutPanelRef} className="pt-6">
-            <div className="w-full rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm">
-              <div className="space-y-3">
-                {data.about.paragraphs.map((p, i) => (
-                  <p key={i} className="text-sm leading-relaxed text-foreground/80">
-                    {p}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
