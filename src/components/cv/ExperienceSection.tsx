@@ -3,10 +3,83 @@ import AnimatedSection from "./AnimatedSection";
 import { ExternalLink } from "lucide-react";
 import TrademarkText from "./TrademarkText";
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 const ExperienceSection = () => {
   const { data } = useCvData();
   const reduceMotion = useReducedMotion();
+  const entryRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [revealedEntries, setRevealedEntries] = useState<Set<number>>(() => new Set());
+
+  useEffect(() => {
+    entryRefs.current = entryRefs.current.slice(0, data.experience.length);
+
+    if (reduceMotion) {
+      setRevealedEntries(new Set(Array.from({ length: data.experience.length }, (_, index) => index)));
+      return;
+    }
+
+    let rafId: number | null = null;
+
+    const checkEntryCenters = () => {
+      const bandTop = window.innerHeight * 0.35;
+      const bandBottom = window.innerHeight * 0.65;
+      const nextIndexes: number[] = [];
+
+      entryRefs.current.forEach((entry, index) => {
+        if (!entry) {
+          return;
+        }
+
+        const rect = entry.getBoundingClientRect();
+        const centerY = rect.top + rect.height / 2;
+        if (centerY >= bandTop && centerY <= bandBottom) {
+          nextIndexes.push(index);
+        }
+      });
+
+      if (nextIndexes.length === 0) {
+        return;
+      }
+
+      setRevealedEntries((current) => {
+        const next = new Set(current);
+        let changed = false;
+
+        nextIndexes.forEach((index) => {
+          if (!next.has(index)) {
+            next.add(index);
+            changed = true;
+          }
+        });
+
+        return changed ? next : current;
+      });
+    };
+
+    const requestCheck = () => {
+      if (rafId != null) {
+        return;
+      }
+
+      rafId = window.requestAnimationFrame(() => {
+        rafId = null;
+        checkEntryCenters();
+      });
+    };
+
+    requestCheck();
+    window.addEventListener("scroll", requestCheck, { passive: true });
+    window.addEventListener("resize", requestCheck);
+
+    return () => {
+      if (rafId != null) {
+        window.cancelAnimationFrame(rafId);
+      }
+      window.removeEventListener("scroll", requestCheck);
+      window.removeEventListener("resize", requestCheck);
+    };
+  }, [data.experience.length, reduceMotion]);
 
   return (
     <section id="experience" className="section-spacing bg-card" aria-labelledby="experience-title">
@@ -18,17 +91,23 @@ const ExperienceSection = () => {
         </AnimatedSection>
 
         <div className="space-y-0">
-          {data.experience.map((exp, i) => (
-            <AnimatedSection key={exp.id} delay={0.05 * i}>
-              <div className="group relative pl-8 pb-12 last:pb-0">
+          {data.experience.map((exp, i) => {
+            const isRevealed = reduceMotion || revealedEntries.has(i);
+            return (
+              <AnimatedSection key={exp.id} delay={0.05 * i}>
+                <div
+                  ref={(entry) => {
+                    entryRefs.current[i] = entry;
+                  }}
+                  className="group relative pl-8 pb-12 last:pb-0"
+                >
                 <motion.div
                   initial={reduceMotion ? { scaleY: 1 } : { scaleY: 0 }}
-                  whileInView={{ scaleY: 1 }}
-                  viewport={{ once: true, amount: 0.25 }}
+                  animate={isRevealed ? { scaleY: 1 } : { scaleY: 0 }}
                   transition={
                     reduceMotion
                       ? { duration: 0 }
-                      : { duration: 0.28, ease: "easeOut" }
+                      : { duration: 2, delay: 0.4, ease: "easeInOut" }
                   }
                   style={{ transformOrigin: "top" }}
                   className="timeline-line"
@@ -36,17 +115,21 @@ const ExperienceSection = () => {
 
                 <motion.div
                   className="absolute left-0 top-1.5"
-                  initial={reduceMotion ? { scale: 1 } : { scale: 0.85 }}
-                  whileInView={reduceMotion ? { scale: 1 } : { scale: [0.85, 1.05, 1] }}
-                  viewport={{ once: true, amount: 0.25 }}
+                  initial={reduceMotion ? { scale: 1 } : { scale: 0.9 }}
+                  animate={
+                    isRevealed
+                      ? reduceMotion
+                        ? { scale: 1 }
+                        : { scale: [0.9, 1.06, 1] }
+                      : { scale: 0.9 }
+                  }
                   transition={
                     reduceMotion
                       ? { duration: 0 }
                       : {
-                          duration: 0.2,
-                          delay: 0.28,
+                          duration: 0.72,
                           ease: "easeOut",
-                          times: [0, 0.7, 1],
+                          times: [0, 0.65, 1],
                         }
                   }
                 >
@@ -104,9 +187,10 @@ const ExperienceSection = () => {
                     ))}
                   </div>
                 </div>
-              </div>
-            </AnimatedSection>
-          ))}
+                </div>
+              </AnimatedSection>
+            );
+          })}
         </div>
       </div>
     </section>
