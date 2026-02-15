@@ -3,18 +3,27 @@ import AnimatedSection from "./AnimatedSection";
 import { motion, useReducedMotion } from "framer-motion";
 import { MOTION_TOKENS } from "@/lib/motion";
 
-const IS_TAG_THRESHOLD = 45; // skills shorter than this render as tags
+const IS_TAG_THRESHOLD = 45;
 
 const SkillsSection = () => {
   const { data } = useCvData();
   const reduceMotion = useReducedMotion();
 
-  const getBulletTransition = (index: number) =>
+  const getEntryTransition = (index: number) =>
     reduceMotion
       ? { duration: 0 }
       : {
-          duration: 0.18,
-          delay: Math.min(index * 0.03, 0.03),
+          duration: MOTION_TOKENS.durationSkillEntry,
+          delay: index * 0.03,
+          ease: MOTION_TOKENS.easingDefault,
+        };
+
+  const getDotTransition = (index: number) =>
+    reduceMotion
+      ? { duration: 0 }
+      : {
+          duration: 0.3,
+          delay: index * 0.03 + MOTION_TOKENS.durationSkillEntry,
           ease: MOTION_TOKENS.easingDefault,
         };
 
@@ -28,7 +37,6 @@ const SkillsSection = () => {
         </AnimatedSection>
 
         <div className="space-y-12">
-          {/* Skill Sections */}
           {data.skills.sections.map((section, si) => (
             <AnimatedSection key={section.title} delay={0.08 * si}>
               <div>
@@ -52,10 +60,26 @@ const SkillsSection = () => {
                         )}
                         {allShort ? (
                           <div className="flex flex-wrap gap-2">
-                            {group.skills.map((skill) => (
-                              <span key={skill} className="tag">
+                            {group.skills.map((skill, skillIndex) => (
+                              <motion.span
+                                key={skill}
+                                layout={false}
+                                initial={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.92 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true, amount: 0.2 }}
+                                transition={
+                                  reduceMotion
+                                    ? { duration: 0 }
+                                    : {
+                                        duration: 0.28,
+                                        delay: skillIndex * 0.04,
+                                        ease: MOTION_TOKENS.easingDefault,
+                                      }
+                                }
+                                className="tag"
+                              >
                                 {skill}
-                              </span>
+                              </motion.span>
                             ))}
                           </div>
                         ) : (
@@ -64,14 +88,19 @@ const SkillsSection = () => {
                               <motion.li
                                 key={skill}
                                 layout={false}
-                                initial={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 12 }}
+                                initial={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 24 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true, amount: 0.2 }}
-                                transition={getBulletTransition(skillIndex)}
+                                transition={getEntryTransition(skillIndex)}
                                 className="text-sm text-foreground/75 flex items-start gap-2"
                               >
-                                <span
+                                <motion.span
                                   aria-hidden="true"
+                                  layout={false}
+                                  initial={reduceMotion ? {} : { scale: 0.8 }}
+                                  whileInView={reduceMotion ? {} : { scale: [0.8, 1.2, 1] }}
+                                  viewport={{ once: true, amount: 0.2 }}
+                                  transition={getDotTransition(skillIndex)}
                                   className="mt-[0.4rem] h-2 w-2 shrink-0 rounded-full bg-primary"
                                 />
                                 {skill}
@@ -100,14 +129,19 @@ const SkillsSection = () => {
                     <motion.li
                       key={skill}
                       layout={false}
-                      initial={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 12 }}
+                      initial={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 24 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true, amount: 0.2 }}
-                      transition={getBulletTransition(skillIndex)}
+                      transition={getEntryTransition(skillIndex)}
                       className="text-sm text-foreground/80 flex items-start gap-2"
                     >
-                      <span
+                      <motion.span
                         aria-hidden="true"
+                        layout={false}
+                        initial={reduceMotion ? {} : { scale: 0.8 }}
+                        whileInView={reduceMotion ? {} : { scale: [0.8, 1.2, 1] }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={getDotTransition(skillIndex)}
                         className="mt-[0.4rem] h-2 w-2 shrink-0 rounded-full bg-primary"
                       />
                       {skill}
@@ -155,4 +189,3 @@ const SkillsSection = () => {
 };
 
 export default SkillsSection;
-

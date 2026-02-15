@@ -50,9 +50,9 @@
     --motion-duration-short: 160ms;
     --motion-duration-med: 180ms;
     --motion-ease-default: cubic-bezier(0.22, 1, 0.36, 1);
-    --motion-hover-elevate: -1px;
+    --motion-hover-elevate: -4px;
     --timeline-accent: 38 92% 50%;
-    --timeline-line: 220 14% 85%;
+    --timeline-line: 220 14% 78%;
     --tag-bg: 38 92% 95%;
     --tag-fg: 38 80% 30%;
     --hero-gradient: linear-gradient(135deg, hsl(40 25% 97%) 0%, hsl(38 40% 92%) 100%);
@@ -134,6 +134,13 @@
     @apply inline-block px-3 py-1 text-xs font-medium rounded-full;
     background: hsl(var(--tag-bg));
     color: hsl(var(--tag-fg));
+    transition: transform var(--motion-duration-short) var(--motion-ease-default);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .tag:hover {
+      transform: scale(1.04);
+    }
   }
 
   .timeline-dot {
@@ -142,8 +149,10 @@
   }
 
   .timeline-line {
-    @apply absolute bottom-0 left-[5px] top-[6px] w-0.5;
+    @apply absolute bottom-0 left-[4.5px] top-[6px] w-[3px] rounded-full;
     background: hsl(var(--timeline-line));
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
   }
 
   .hero-gradient {
@@ -162,11 +171,32 @@
 
   .hover-elevate {
     transform: translateY(0);
+    transition: transform 240ms var(--motion-ease-default), box-shadow 240ms var(--motion-ease-default);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .hover-elevate:hover {
       transform: translateY(var(--motion-hover-elevate));
     }
+  }
+
+  /* Hero avatar breathing animation */
+  .hero-breathe {
+    animation: hero-breathe 6s ease-in-out infinite;
+  }
+
+  @keyframes hero-breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.015); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-breathe {
+      animation: none;
+    }
+  }
+
+  .hero-breathe:hover {
+    animation-play-state: paused;
   }
 }
