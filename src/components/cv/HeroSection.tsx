@@ -30,7 +30,7 @@ const HeroSection = () => {
   const aboutPanelClasses =
     ABOUT_PLACEMENT === "green"
       ? {
-          outer: "w-full max-w-3xl mx-auto origin-top overflow-hidden",
+          outer: "w-full max-w-[52rem] mx-auto origin-top overflow-hidden",
           inner: "pt-5 md:pl-[15.5rem]",
           card: "w-full max-w-lg mx-auto rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm md:mx-0",
         }
@@ -112,6 +112,11 @@ const HeroSection = () => {
   };
 
   const handleAboutToggle = () => {
+    const measuredPanelHeight = aboutPanelRef.current?.scrollHeight ?? 0;
+    if (measuredPanelHeight > 0 && measuredPanelHeight !== aboutPanelHeight) {
+      setAboutPanelHeight(measuredPanelHeight);
+    }
+
     const scrollBefore = window.scrollY;
     setAboutOpen((current) => !current);
     logAboutMeasurements("before", scrollBefore);
@@ -141,8 +146,12 @@ const HeroSection = () => {
   return (
     <section
       id="hero"
-      className="hero-gradient min-h-screen flex items-center justify-center pt-14 md:pt-16 pb-6 md:pb-10"
-      style={{ minHeight: `calc(100vh + ${aboutOpen ? aboutPanelHeight : 0}px)` }}
+      className="hero-gradient min-h-screen flex items-center justify-center pt-14 md:pt-16 pb-6 md:pb-10 transition-[min-height]"
+      style={{
+        minHeight: `calc(100vh + ${aboutOpen ? aboutPanelHeight : 0}px)`,
+        transitionDuration: reduceMotion ? "0ms" : "1050ms",
+        transitionTimingFunction: "ease-in-out",
+      }}
     >
       <div className="section-container w-full">
         <div ref={heroCoreRef} className="flex flex-col items-center text-center md:flex-row md:items-center md:gap-10 md:text-left">
