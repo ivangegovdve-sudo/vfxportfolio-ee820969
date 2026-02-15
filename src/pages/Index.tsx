@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Navigation from "@/components/cv/Navigation";
 import HeroSection from "@/components/cv/HeroSection";
@@ -11,11 +11,26 @@ import { useActiveSectionTracker } from "@/hooks/useActiveSectionTracker";
 
 const ContentEditor = lazy(() => import("@/components/editor/ContentEditor"));
 
+const PROGRAMMATIC_SCROLL_EVENT = "cv:programmatic-scroll-start";
+
 const Index = () => {
   const [searchParams] = useSearchParams();
   const isEditMode =
     searchParams.get("edit") === "true" || import.meta.env.VITE_ENABLE_EDITOR === "true";
   useActiveSectionTracker();
+
+  const [navFading, setNavFading] = useState(false);
+
+  const handleAnimationEnd = useCallback(() => setNavFading(false), []);
+
+  useEffect(() => {
+    const handler = () => {
+      setNavFading(false);
+      requestAnimationFrame(() => setNavFading(true));
+    };
+    window.addEventListener(PROGRAMMATIC_SCROLL_EVENT, handler);
+    return () => window.removeEventListener(PROGRAMMATIC_SCROLL_EVENT, handler);
+  }, []);
 
   return (
     <>
@@ -25,7 +40,11 @@ const Index = () => {
         </Suspense>
       )}
       <Navigation />
-      <main id="main">
+      <main
+        id="main"
+        className={navFading ? "animate-nav-fadein" : ""}
+        onAnimationEnd={handleAnimationEnd}
+      >
         <HeroSection />
         <PortfolioSection />
         <SkillsSection />

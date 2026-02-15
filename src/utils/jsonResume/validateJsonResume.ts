@@ -3,7 +3,7 @@ import addFormats from "ajv-formats";
 import jsonResumeSchemaRaw from "@/utils/jsonResume/jsonresume.schema.json?raw";
 import type { JsonResume } from "@/utils/jsonResume/mapCvDataToJsonResume";
 
-type ValidationResult = { ok: true } | { ok: false; errors: string[] };
+export type ValidationResult = { ok: true } | { ok: false; errors: string[] };
 
 const ajv = new Ajv({
   allErrors: true,
@@ -20,7 +20,7 @@ const formatError = (error: ErrorObject): string => {
   return `${path} ${error.message ?? "is invalid"}`;
 };
 
-export function validateJsonResume(resume: JsonResume): ValidationResult {
+export function validateJsonResume(resume: JsonResume): { ok: true } | { ok: false; errors: string[] } {
   const valid = validate(resume);
 
   if (valid) {

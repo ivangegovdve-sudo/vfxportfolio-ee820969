@@ -4,6 +4,7 @@ import { ExternalLink } from "lucide-react";
 import TrademarkText from "./TrademarkText";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { MOTION_TOKENS } from "@/lib/motion";
 
 const ExperienceSection = () => {
   const { data } = useCvData();
@@ -107,7 +108,7 @@ const ExperienceSection = () => {
                   transition={
                     reduceMotion
                       ? { duration: 0 }
-                      : { duration: 2, delay: 0.4, ease: "easeInOut" }
+                      : { duration: MOTION_TOKENS.durationTimelineLine, delay: 0.4, ease: "easeInOut" }
                   }
                   style={{ transformOrigin: "top" }}
                   className="timeline-line"
@@ -115,21 +116,21 @@ const ExperienceSection = () => {
 
                 <motion.div
                   className="absolute left-0 top-1.5"
-                  initial={reduceMotion ? { scale: 1 } : { scale: 0.9 }}
+                  initial={reduceMotion ? { scale: 1 } : { scale: 0.5 }}
                   animate={
                     isRevealed
                       ? reduceMotion
                         ? { scale: 1 }
-                        : { scale: [0.9, 1.06, 1] }
-                      : { scale: 0.9 }
+                        : { scale: [0.5, 1.6, 1] }
+                      : { scale: 0.5 }
                   }
                   transition={
                     reduceMotion
                       ? { duration: 0 }
                       : {
-                          duration: 0.72,
-                          ease: "easeOut",
-                          times: [0, 0.65, 1],
+                          duration: MOTION_TOKENS.durationTimelineDot,
+                          ease: MOTION_TOKENS.easingDefault,
+                          times: [0, 0.5, 1],
                         }
                   }
                 >
@@ -198,4 +199,3 @@ const ExperienceSection = () => {
 };
 
 export default ExperienceSection;
-

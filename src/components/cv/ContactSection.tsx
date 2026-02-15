@@ -14,7 +14,7 @@ const ContactSection = () => {
     const jsonResume = mapCvDataToJsonResume(data);
     const validationResult = validateJsonResume(jsonResume);
     if (!validationResult.ok) {
-      console.error("JSON Resume validation failed", validationResult.errors);
+      console.error("JSON Resume validation failed", "errors" in validationResult ? validationResult.errors : []);
       window.alert("Could not export JSON Resume. Check console for validation details.");
       return;
     }

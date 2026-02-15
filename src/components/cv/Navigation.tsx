@@ -189,7 +189,7 @@ const Navigation = () => {
                             reduceMotion
                               ? { duration: 0 }
                               : {
-                                  duration: MOTION_TOKENS.durationShort,
+                          duration: 0.24,
                                   ease: MOTION_TOKENS.easingDefault,
                                 }
                           }
@@ -206,7 +206,7 @@ const Navigation = () => {
                           reduceMotion
                             ? { duration: 0 }
                             : {
-                                duration: MOTION_TOKENS.durationShort,
+                            duration: 0.24,
                                 ease: MOTION_TOKENS.easingDefault,
                               }
                         }

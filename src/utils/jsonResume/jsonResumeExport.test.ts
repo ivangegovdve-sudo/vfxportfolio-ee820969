@@ -31,7 +31,8 @@ describe("JSON Resume export", () => {
     const validationResult = validateJsonResume(resume);
 
     if (!validationResult.ok) {
-      throw new Error(validationResult.errors.join("\n"));
+      const errors = "errors" in validationResult ? validationResult.errors : [];
+      throw new Error(errors.join("\n"));
     }
 
     expect(validationResult.ok).toBe(true);
