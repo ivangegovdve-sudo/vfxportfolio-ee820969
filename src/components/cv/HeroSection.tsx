@@ -211,7 +211,7 @@ const HeroSection = () => {
                 className="absolute left-0 right-0 top-full mt-6 w-full origin-top overflow-hidden"
                 id="hero-about-panel"
               >
-                <div ref={aboutMeasureRef}>
+                <div ref={aboutMeasureRef} className="w-full md:max-w-[30rem]">
                   <div className="w-full rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm">
                     <div className="space-y-3">
                       {data.about.paragraphs.map((p, i) => (
