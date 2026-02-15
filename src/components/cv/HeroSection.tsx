@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useCvData } from "@/contexts/useCvData";
 import { User, ChevronDown } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import fallbackHeroPhoto from "@/data/assets/slackPic.webp";
 import { MOTION_TOKENS } from "@/lib/motion";
 import { resolvePhotoUrl } from "@/utils/resolvePhotoUrl";
@@ -15,28 +15,47 @@ const HeroSection = () => {
   const resolvedPrimaryPhotoUrl = useMemo(() => resolvePhotoUrl(photoUrl, fallbackHeroPhoto), [photoUrl]);
   const [currentPhotoUrl, setCurrentPhotoUrl] = useState(resolvedPrimaryPhotoUrl);
   const [aboutOpen, setAboutOpen] = useState(false);
-  const aboutPanelRef = useRef<HTMLDivElement | null>(null);
-  const [aboutPanelHeight, setAboutPanelHeight] = useState(0);
+  const aboutMeasureRef = useRef<HTMLDivElement | null>(null);
+  const [aboutPx, setAboutPx] = useState(0);
+
+  const measureAboutHeight = useCallback(() => {
+    const nextHeight = aboutMeasureRef.current?.scrollHeight ?? 0;
+    setAboutPx((current) => (current === nextHeight ? current : nextHeight));
+  }, []);
 
   useEffect(() => {
     setCurrentPhotoUrl(resolvedPrimaryPhotoUrl);
   }, [resolvedPrimaryPhotoUrl]);
 
   useEffect(() => {
-    const updateAboutPanelHeight = () => {
-      const nextHeight = aboutPanelRef.current?.scrollHeight ?? 0;
-      setAboutPanelHeight((current) => (current === nextHeight ? current : nextHeight));
-    };
+    measureAboutHeight();
+  }, [data.about.paragraphs, measureAboutHeight]);
 
-    updateAboutPanelHeight();
-    window.addEventListener("resize", updateAboutPanelHeight);
-    return () => window.removeEventListener("resize", updateAboutPanelHeight);
-  }, [data.about.paragraphs]);
+  useEffect(() => {
+    if (!aboutOpen) {
+      return;
+    }
+
+    measureAboutHeight();
+    const node = aboutMeasureRef.current;
+    if (!node || typeof ResizeObserver === "undefined") {
+      return;
+    }
+
+    const observer = new ResizeObserver(() => measureAboutHeight());
+    observer.observe(node);
+    window.addEventListener("resize", measureAboutHeight);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measureAboutHeight);
+    };
+  }, [aboutOpen, measureAboutHeight]);
 
   const handleAboutToggle = () => {
-    const measuredPanelHeight = aboutPanelRef.current?.scrollHeight ?? 0;
-    if (measuredPanelHeight > 0 && measuredPanelHeight !== aboutPanelHeight) {
-      setAboutPanelHeight(measuredPanelHeight);
+    const measuredPanelHeight = aboutMeasureRef.current?.scrollHeight ?? 0;
+    if (measuredPanelHeight > 0 && measuredPanelHeight !== aboutPx) {
+      setAboutPx(measuredPanelHeight);
     }
 
     setAboutOpen((current) => !current);
@@ -54,11 +73,8 @@ const HeroSection = () => {
   };
 
   return (
-    <section
-      id="hero"
-      className="hero-gradient min-h-screen relative pt-14 md:pt-16 pb-6 md:pb-10"
-    >
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+    <section id="hero" className="hero-gradient min-h-screen relative">
+      <div className="absolute inset-x-0 top-0 h-screen pt-14 md:pt-16 pb-6 md:pb-10 flex items-center justify-center pointer-events-none">
         <div className="section-container w-full pointer-events-auto">
           <div className="flex w-full flex-col items-center text-center md:flex-row md:items-center md:gap-10 md:text-left">
             <motion.div
@@ -91,7 +107,7 @@ const HeroSection = () => {
               )}
             </motion.div>
 
-            <div className="w-full max-w-lg overflow-visible">
+            <div className="relative w-full max-w-lg overflow-visible">
               <motion.h1
                 initial={reduceMotion ? false : { opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -185,17 +201,17 @@ const HeroSection = () => {
                 initial={false}
                 animate={{
                   opacity: aboutOpen ? 1 : 0,
-                  maxHeight: aboutOpen ? aboutPanelHeight : 0,
+                  maxHeight: aboutOpen ? aboutPx : 0,
                 }}
                 transition={
                   reduceMotion
                     ? { duration: 0 }
                     : { duration: 1.05, ease: "easeInOut" }
                 }
-                className="w-full mt-6 origin-top overflow-hidden"
+                className="absolute left-0 right-0 top-full mt-6 w-full origin-top overflow-hidden"
                 id="hero-about-panel"
               >
-                <div ref={aboutPanelRef}>
+                <div ref={aboutMeasureRef}>
                   <div className="w-full rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm">
                     <div className="space-y-3">
                       {data.about.paragraphs.map((p, i) => (
@@ -210,6 +226,19 @@ const HeroSection = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div aria-hidden="true" className="h-screen" />
+
+      <div
+        aria-hidden="true"
+        className="overflow-hidden"
+        style={{
+          maxHeight: aboutOpen ? `${aboutPx}px` : "0px",
+          transition: reduceMotion ? "none" : "max-height 1050ms ease-in-out",
+        }}
+      >
+        <div style={{ height: `${aboutPx}px` }} />
       </div>
     </section>
   );
