@@ -6,6 +6,9 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { MOTION_TOKENS } from "@/lib/motion";
 
+const ACTIVE_ZONE_TOP_RATIO = 0.25;
+const ACTIVE_ZONE_BOTTOM_RATIO = 0.75;
+
 const ExperienceSection = () => {
   const { data } = useCvData();
   const reduceMotion = useReducedMotion();
@@ -23,8 +26,8 @@ const ExperienceSection = () => {
     let rafId: number | null = null;
 
     const checkEntryCenters = () => {
-      const bandTop = window.innerHeight * 0.35;
-      const bandBottom = window.innerHeight * 0.65;
+      const bandTop = window.innerHeight * ACTIVE_ZONE_TOP_RATIO;
+      const bandBottom = window.innerHeight * ACTIVE_ZONE_BOTTOM_RATIO;
       const nextIndexes: number[] = [];
 
       entryRefs.current.forEach((entry, index) => {
@@ -102,92 +105,89 @@ const ExperienceSection = () => {
                   }}
                   className="group relative pl-8 pb-12 last:pb-0"
                 >
-                <motion.div
-                  initial={reduceMotion ? { scaleY: 1 } : { scaleY: 0 }}
-                  animate={isRevealed ? { scaleY: 1 } : { scaleY: 0 }}
-                  transition={
-                    reduceMotion
-                      ? { duration: 0 }
-                      : { duration: MOTION_TOKENS.durationTimelineLine, delay: 0.4, ease: "easeInOut" }
-                  }
-                  style={{ transformOrigin: "top" }}
-                  className="timeline-line"
-                />
+                  <motion.div
+                    initial={reduceMotion ? { scaleY: 1 } : { scaleY: 0 }}
+                    animate={isRevealed ? { scaleY: 1 } : { scaleY: 0 }}
+                    transition={
+                      reduceMotion
+                        ? { duration: 0 }
+                        : {
+                            duration: MOTION_TOKENS.durationTimelineLineReveal,
+                            delay: MOTION_TOKENS.durationTimelineLineDelay,
+                            ease: MOTION_TOKENS.easingReveal,
+                          }
+                    }
+                    style={{ transformOrigin: "top" }}
+                    className="timeline-line"
+                  />
 
-                <motion.div
-                  className="absolute left-0 top-1.5"
-                  initial={reduceMotion ? { scale: 1 } : { scale: 0.5 }}
-                  animate={
-                    isRevealed
-                      ? reduceMotion
-                        ? { scale: 1 }
-                        : { scale: [0.5, 1.6, 1] }
-                      : { scale: 0.5 }
-                  }
-                  transition={
-                    reduceMotion
-                      ? { duration: 0 }
-                      : {
-                          duration: MOTION_TOKENS.durationTimelineDot,
-                          ease: MOTION_TOKENS.easingDefault,
-                          times: [0, 0.5, 1],
-                        }
-                  }
-                >
-                  <div className="timeline-dot" />
-                </motion.div>
+                  <motion.div
+                    className="absolute left-0 top-1.5"
+                    initial={reduceMotion ? { scale: 1, opacity: 1 } : { scale: 3, opacity: 0 }}
+                    animate={isRevealed ? { scale: 1, opacity: 1 } : { scale: 3, opacity: 0 }}
+                    transition={
+                      reduceMotion
+                        ? { duration: 0 }
+                        : {
+                            duration: MOTION_TOKENS.durationTimelineDotReveal,
+                            ease: MOTION_TOKENS.easingReveal,
+                          }
+                    }
+                  >
+                    <div className="timeline-dot" />
+                  </motion.div>
 
-                <div>
-                  <div className="mb-2 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
-                    <h3 className="font-display text-lg font-semibold text-foreground">{exp.role}</h3>
-                    <span className="text-xs font-medium tracking-wide text-muted-foreground">
-                      {exp.startDate} {"\u2014"} {exp.endDate}
-                    </span>
-                  </div>
-
-                  <p className="mb-2 text-sm font-medium text-primary">
-                    {exp.company}
-                    {exp.location && (
-                      <span className="font-normal text-muted-foreground">
-                        {" "}
-                        {"\u00B7"} {exp.location}
+                  <div>
+                    <div className="mb-2 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+                      <h3 className="font-display text-lg font-semibold text-foreground">{exp.role}</h3>
+                      <span className="text-xs font-medium tracking-wide text-muted-foreground">
+                        {exp.startDate} {"\u2014"} {exp.endDate}
                       </span>
+                    </div>
+
+                    <p className="mb-2 text-sm font-medium text-primary">
+                      {exp.company}
+                      {exp.location && (
+                        <span className="font-normal text-muted-foreground">
+                          {" "}
+                          {"\u00B7"} {exp.location}
+                        </span>
+                      )}
+                    </p>
+
+                    <p className="mb-3 text-sm leading-relaxed text-foreground/75">{exp.description}</p>
+
+                    {exp.highlights && exp.highlights.length > 0 && (
+                      <ul className="mb-3 space-y-1">
+                        {exp.highlights.map((h, j) => (
+                          <li key={j} className="flex items-start gap-2 text-sm text-foreground/70">
+                            <span className="mt-1.5 text-[6px] text-primary">{"\u2022"}</span>
+                            <TrademarkText text={h} />
+                          </li>
+                        ))}
+                      </ul>
                     )}
-                  </p>
 
-                  <p className="mb-3 text-sm leading-relaxed text-foreground/75">{exp.description}</p>
-
-                  {exp.highlights && exp.highlights.length > 0 && (
-                    <ul className="mb-3 space-y-1">
-                      {exp.highlights.map((h, j) => (
-                        <li key={j} className="flex items-start gap-2 text-sm text-foreground/70">
-                          <span className="mt-1.5 text-[6px] text-primary">{"\u2022"}</span>
-                          <TrademarkText text={h} />
-                        </li>
+                    <div className="flex flex-wrap items-center gap-2">
+                      {exp.tags?.map((tag) => (
+                        <span key={tag} className="tag">
+                          {tag}
+                        </span>
                       ))}
-                    </ul>
-                  )}
-
-                  <div className="flex flex-wrap items-center gap-2">
-                    {exp.tags?.map((tag) => (
-                      <span key={tag} className="tag">
-                        {tag}
-                      </span>
-                    ))}
-                    {exp.links?.map((link) => (
-                      <a
-                        key={link.label}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs font-medium text-primary transition-colors motion-short hover:text-primary/80"
-                      >
-                        {link.label}
-                        <ExternalLink className="h-3 w-3" />
-                      </a>
-                    ))}
+                      {exp.links?.map((link) => (
+                        <a
+                          key={link.label}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-xs font-medium text-primary transition-colors motion-short hover:text-primary/80"
+                        >
+                          {link.label}
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      ))}
+                    </div>
                   </div>
-                </div>
                 </div>
               </AnimatedSection>
             );

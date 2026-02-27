@@ -2,6 +2,8 @@ import { useMemo, useState } from "react";
 import { useCvData } from "@/contexts/useCvData";
 import AnimatedSection from "./AnimatedSection";
 import { ExternalLink, Gamepad2, ChevronDown } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { MOTION_TOKENS } from "@/lib/motion";
 import TrademarkText from "./TrademarkText";
 
 const gradientVariants = [
@@ -15,10 +17,15 @@ const gradientVariants = [
 
 const PortfolioSection = () => {
   const { data } = useCvData();
+  const reduceMotion = useReducedMotion();
   const orderedItems = [...data.portfolio].sort((a, b) => a.order - b.order);
 
   const projectItems = orderedItems.filter((p) => p.type !== "collection");
   const collectionItems = orderedItems.filter((p) => p.type === "collection");
+  const entryInitial = reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 };
+  const entryTransition = reduceMotion
+    ? { duration: 0 }
+    : { duration: MOTION_TOKENS.durationPortfolioEntry, ease: MOTION_TOKENS.easingDefault };
 
   return (
     <section id="portfolio" className="section-spacing bg-card" aria-labelledby="portfolio-title">
@@ -31,12 +38,26 @@ const PortfolioSection = () => {
 
         <div className="grid gap-5 sm:grid-cols-2 md:gap-6">
           {projectItems.map((item, i) => (
-            <AnimatedSection key={item.id} delay={0.05 * i}>
-              <a
+            <motion.div
+              key={item.id}
+              initial={entryInitial}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-72px" }}
+              transition={entryTransition}
+              style={reduceMotion ? undefined : { willChange: "opacity, transform" }}
+            >
+              <motion.a
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group hover-elevate block overflow-hidden rounded-xl border border-border bg-background shadow-sm transition-[border-color,box-shadow,transform] motion-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hover:border-primary/40 md:hover:shadow-md"
+                className="group block overflow-hidden rounded-xl border border-border bg-background shadow-sm transition-[border-color,box-shadow,transform] motion-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hover:border-primary/40 md:hover:shadow-md"
+                whileHover={
+                  reduceMotion
+                    ? undefined
+                    : { y: MOTION_TOKENS.hoverElevate, scale: MOTION_TOKENS.portfolioHoverScale }
+                }
+                whileTap={reduceMotion ? undefined : { scale: MOTION_TOKENS.pressScale }}
+                transition={reduceMotion ? { duration: 0 } : MOTION_TOKENS.portfolioHoverSpring}
               >
                 <div
                   className={`aspect-[16/9] bg-gradient-to-br ${gradientVariants[i % gradientVariants.length]} flex items-center justify-center relative overflow-hidden`}
@@ -67,15 +88,22 @@ const PortfolioSection = () => {
                   )}
                   <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{item.descriptor}</p>
                 </div>
-              </a>
-            </AnimatedSection>
+              </motion.a>
+            </motion.div>
           ))}
         </div>
 
-        {collectionItems.map((item, i) => (
-          <AnimatedSection key={item.id} delay={0.05 * (projectItems.length + i)}>
+        {collectionItems.map((item) => (
+          <motion.div
+            key={item.id}
+            initial={entryInitial}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-72px" }}
+            transition={entryTransition}
+            style={reduceMotion ? undefined : { willChange: "opacity, transform" }}
+          >
             <CollectionCard item={item} />
-          </AnimatedSection>
+          </motion.div>
         ))}
       </div>
     </section>
