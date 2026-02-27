@@ -138,6 +138,21 @@ const Navigation = () => {
     metricsRef.current = navMetrics;
   }, [navMetrics]);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    const previousRootOverflowX = root.style.overflowX;
+    const previousBodyOverflowX = body.style.overflowX;
+
+    root.style.overflowX = "clip";
+    body.style.overflowX = "clip";
+
+    return () => {
+      root.style.overflowX = previousRootOverflowX;
+      body.style.overflowX = previousBodyOverflowX;
+    };
+  }, []);
+
   const queueProgressFrame = useCallback(() => {
     if (progressRafRef.current != null || reduceMotion) {
       return;
@@ -262,13 +277,14 @@ const Navigation = () => {
           : { duration: MOTION_TOKENS.durationMed, ease: MOTION_TOKENS.easingDefault }
       }
       className={cn(
-        "fixed inset-x-0 top-0 z-50 overflow-x-hidden border-b border-transparent transition-colors motion-medium",
+        "fixed inset-x-0 top-0 z-50 overflow-hidden border-b border-transparent transition-colors motion-medium",
         scrolled ? "border-border bg-background/92 backdrop-blur-md shadow-sm" : "bg-transparent"
       )}
+      style={{ contain: "paint", willChange: "transform" }}
       ref={navRef}
     >
       <div className="mx-auto flex h-16 w-full max-w-4xl items-center px-3 sm:px-5 md:h-14 md:px-8">
-        <motion.ul className="flex w-full items-center justify-between gap-1 sm:gap-2">
+        <ul className="relative flex w-full items-center justify-between gap-1 overflow-hidden sm:gap-2">
           {navItems.map((navItem, index) => {
             const isActive = activeSection === navItem.id;
             const showAvatarForHome = navItem.id === "hero" && showAvatar;
@@ -296,7 +312,7 @@ const Navigation = () => {
             const homeScale = isHomeItem && !reduceMotion ? getHomeScale(scrollProgress) : 1;
 
             return (
-              <motion.li
+              <li
                 key={navItem.id}
                 ref={(node) => {
                   itemRefs.current[index] = node;
@@ -318,66 +334,83 @@ const Navigation = () => {
                   )}
                   whileTap={reduceMotion ? undefined : { scale: MOTION_TOKENS.pressScale }}
                 >
-                  <motion.span
-                    className="flex flex-col items-center justify-center gap-0.5 md:flex-row md:gap-1.5"
-                    style={
-                      isHomeItem
-                        ? {
-                            x: homeTranslateX,
-                            y: homeTranslateY,
-                            opacity: homeOpacity,
-                            scale: homeScale,
-                          }
-                        : { x: spreadDistance }
-                    }
-                  >
-                    {showAvatarForHome ? (
+                  {isHomeItem ? (
+                    <span className="pointer-events-none absolute inset-0">
                       <motion.span
-                        initial={reduceMotion ? false : { opacity: 0, x: -4, scale: 0.98 }}
-                        animate={
-                          reduceMotion
-                            ? { opacity: 1, x: 0, scale: 1 }
-                            : { opacity: 1, x: 0, scale: [0.98, 1.03, 1] }
-                        }
-                        transition={
-                          reduceMotion
-                            ? { duration: 0 }
-                            : {
-                                duration: MOTION_TOKENS.durationAvatar,
-                                ease: MOTION_TOKENS.easingDefault,
-                                times: [0, 0.65, 1],
-                              }
-                        }
-                        className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-border/70 md:h-8 md:w-8"
+                        className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-0.5 will-change-transform md:flex-row md:gap-1.5"
+                        style={{
+                          x: homeTranslateX,
+                          y: homeTranslateY,
+                          opacity: homeOpacity,
+                          scale: homeScale,
+                        }}
                       >
-                        {avatarCurrentSrc ? (
-                          <img
-                            src={avatarCurrentSrc}
-                            alt=""
-                            aria-hidden="true"
-                            className="h-full w-full object-cover"
-                            loading="eager"
-                            decoding="async"
-                            onError={() => setAvatarCurrentSrc(fallbackHeroPhoto)}
-                          />
+                        {showAvatarForHome ? (
+                          <motion.span
+                            initial={reduceMotion ? false : { opacity: 0, x: -4, scale: 0.98 }}
+                            animate={
+                              reduceMotion
+                                ? { opacity: 1, x: 0, scale: 1 }
+                                : { opacity: 1, x: 0, scale: [0.98, 1.03, 1] }
+                            }
+                            transition={
+                              reduceMotion
+                                ? { duration: 0 }
+                                : {
+                                    duration: MOTION_TOKENS.durationAvatar,
+                                    ease: MOTION_TOKENS.easingDefault,
+                                    times: [0, 0.65, 1],
+                                  }
+                            }
+                            className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-border/70 md:h-8 md:w-8"
+                          >
+                            {avatarCurrentSrc ? (
+                              <img
+                                src={avatarCurrentSrc}
+                                alt=""
+                                aria-hidden="true"
+                                className="h-full w-full object-cover"
+                                loading="eager"
+                                decoding="async"
+                                onError={() => setAvatarCurrentSrc(fallbackHeroPhoto)}
+                              />
+                            ) : (
+                              <User className="h-[18px] w-[18px] text-muted-foreground" aria-hidden="true" />
+                            )}
+                          </motion.span>
                         ) : (
-                          <User className="h-[18px] w-[18px] text-muted-foreground" aria-hidden="true" />
+                          <navItem.Icon
+                            className="h-[17px] w-[17px] shrink-0 md:h-4 md:w-4"
+                            strokeWidth={1.9}
+                            aria-hidden="true"
+                          />
                         )}
+                        <span
+                          aria-hidden="true"
+                          className="hidden whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.08em] md:inline"
+                        >
+                          {navItem.label}
+                        </span>
                       </motion.span>
-                    ) : (
+                    </span>
+                  ) : (
+                    <motion.span
+                      className="flex flex-col items-center justify-center gap-0.5 will-change-transform md:flex-row md:gap-1.5"
+                      style={{ x: spreadDistance }}
+                    >
                       <navItem.Icon
                         className="h-[17px] w-[17px] shrink-0 md:h-4 md:w-4"
                         strokeWidth={1.9}
                         aria-hidden="true"
                       />
-                    )}
-                    <span
-                      aria-hidden="true"
-                      className="hidden whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.08em] md:inline"
-                    >
-                      {navItem.label}
-                    </span>
-                  </motion.span>
+                      <span
+                        aria-hidden="true"
+                        className="hidden whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.08em] md:inline"
+                      >
+                        {navItem.label}
+                      </span>
+                    </motion.span>
+                  )}
                   {isActive && (
                     <>
                       <span className="pointer-events-none absolute inset-x-0 bottom-1.5 flex justify-center md:hidden">
@@ -416,10 +449,10 @@ const Navigation = () => {
                     </>
                   )}
                 </motion.a>
-              </motion.li>
+              </li>
             );
           })}
-        </motion.ul>
+        </ul>
       </div>
     </motion.nav>
   );
