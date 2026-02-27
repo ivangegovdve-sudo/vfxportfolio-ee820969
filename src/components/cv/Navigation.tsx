@@ -16,6 +16,11 @@ import fallbackHeroPhoto from "@/data/assets/slackPic.webp";
 import { MOTION_TOKENS } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { resolvePhotoUrl } from "@/utils/resolvePhotoUrl";
+import {
+  HERO_NAV_MORPH_ANCHOR_ID,
+  HERO_NAV_MORPH_LAYOUT_EVENT,
+  HERO_NAV_MORPH_STATE_EVENT,
+} from "@/lib/heroNavMorph";
 
 type SectionNavItem = {
   id: ActiveSectionId;
@@ -33,34 +38,32 @@ const sectionNavItems: SectionNavItem[] = [
   { id: "education", href: "#education", label: "Education", shortLabel: "Edu", Icon: GraduationCap },
   { id: "contact", href: "#contact", label: "Contact", shortLabel: "Contact", Icon: Mail },
 ];
+
 const PROGRAMMATIC_SCROLL_START_EVENT = "cv:programmatic-scroll-start";
-const NAV_SCROLL_PROGRESS_RANGE_PX = 120;
 const NAV_SCROLL_PROGRESS_LERP = 0.12;
 const NAV_ICON_SPREAD_END_PROGRESS = 0.6;
 const NAV_ICON_SPREAD_MAX_RATIO = 0.22;
-const NAV_HOME_EMERGE_START = 0.25;
-const NAV_HOME_EMERGE_OVERSHOOT = 0.65;
-const NAV_HOME_EMERGE_SETTLE = 0.85;
-const NAV_HOME_START_SCALE = 0.2;
-const NAV_HOME_PRESETTLE_SCALE = 3.2;
-const NAV_HOME_OVERSHOOT_SCALE = 3.4;
-const NAV_HOME_START_Y = 10;
+const NAV_MORPH_START_VIEWPORT_RATIO = 0.25;
+const NAV_MORPH_RETURN_HOLD_THRESHOLD = 0.1;
+const NAV_MORPH_PROGRESS_EPSILON = 0.0005;
+const NAV_HOME_FINAL_SIZE_BOOST = 1.08;
+const NAV_RETURN_OVERSHOOT = 1.22;
 
 type NavMetrics = {
   startScroll: number;
   endScroll: number;
-  homeCenterShiftPx: number;
   itemWidths: number[];
+  morphStartX: number;
+  morphStartY: number;
+  morphStartSize: number;
+  morphEndX: number;
+  morphEndY: number;
+  morphEndSize: number;
 };
 
 const clamp01 = (value: number) => Math.min(Math.max(value, 0), 1);
-const mapRange = (
-  value: number,
-  inMin: number,
-  inMax: number,
-  outMin: number,
-  outMax: number
-) => {
+
+const mapRange = (value: number, inMin: number, inMax: number, outMin: number, outMax: number) => {
   if (inMax === inMin) {
     return outMin;
   }
@@ -68,29 +71,12 @@ const mapRange = (
   return outMin + (outMax - outMin) * t;
 };
 
-const getHomeScale = (progress: number) => {
-  if (progress <= NAV_HOME_EMERGE_START) {
-    return NAV_HOME_START_SCALE;
-  }
-  if (progress <= NAV_HOME_EMERGE_OVERSHOOT) {
-    return mapRange(
-      progress,
-      NAV_HOME_EMERGE_START,
-      NAV_HOME_EMERGE_OVERSHOOT,
-      NAV_HOME_START_SCALE,
-      NAV_HOME_OVERSHOOT_SCALE
-    );
-  }
-  if (progress <= NAV_HOME_EMERGE_SETTLE) {
-    return mapRange(
-      progress,
-      NAV_HOME_EMERGE_OVERSHOOT,
-      NAV_HOME_EMERGE_SETTLE,
-      NAV_HOME_OVERSHOOT_SCALE,
-      NAV_HOME_PRESETTLE_SCALE
-    );
-  }
-  return mapRange(progress, NAV_HOME_EMERGE_SETTLE, 1, NAV_HOME_PRESETTLE_SCALE, 1);
+const lerp = (start: number, end: number, t: number) => start + (end - start) * t;
+
+const easeOutBack = (t: number, overshoot = 1.08) => {
+  const c1 = overshoot;
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
 };
 
 const Navigation = () => {
@@ -99,18 +85,27 @@ const Navigation = () => {
   const reduceMotion = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [rawProgress, setRawProgress] = useState(0);
   const [navMetrics, setNavMetrics] = useState<NavMetrics>({
     startScroll: 0,
     endScroll: 1,
-    homeCenterShiftPx: 0,
     itemWidths: [],
+    morphStartX: 0,
+    morphStartY: 0,
+    morphStartSize: 160,
+    morphEndX: 0,
+    morphEndY: 0,
+    morphEndSize: 40,
   });
   const navRef = useRef<HTMLElement | null>(null);
+  const homeMorphTargetRef = useRef<HTMLSpanElement | null>(null);
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
   const renderCountRef = useRef(0);
   const progressRafRef = useRef<number | null>(null);
   const targetProgressRef = useRef(0);
   const currentProgressRef = useRef(0);
+  const rawTargetProgressRef = useRef(0);
+  const isReturnPhaseRef = useRef(false);
   const metricsRef = useRef<NavMetrics>(navMetrics);
 
   const avatarSrc = useMemo(
@@ -153,6 +148,28 @@ const Navigation = () => {
     };
   }, []);
 
+  const mapDirectionalTarget = useCallback((nextRawTarget: number, movingUp: boolean) => {
+    if (!movingUp) {
+      return nextRawTarget;
+    }
+
+    if (nextRawTarget >= NAV_MORPH_RETURN_HOLD_THRESHOLD) {
+      return 1;
+    }
+
+    const finalPhaseProgress = clamp01(1 - nextRawTarget / NAV_MORPH_RETURN_HOLD_THRESHOLD);
+    const acceleratedPhase = Math.pow(finalPhaseProgress, 1.35);
+    const baseReturn = 1 - easeOutBack(acceleratedPhase, NAV_RETURN_OVERSHOOT);
+
+    if (finalPhaseProgress <= 0.62) {
+      return baseReturn;
+    }
+
+    const overshootPhase = clamp01((finalPhaseProgress - 0.62) / 0.38);
+    const overshootEnvelope = Math.sin(Math.PI * overshootPhase);
+    return baseReturn - overshootEnvelope * 0.032;
+  }, []);
+
   const queueProgressFrame = useCallback(() => {
     if (progressRafRef.current != null || reduceMotion) {
       return;
@@ -166,7 +183,7 @@ const Navigation = () => {
 
       currentProgressRef.current = resolvedProgress;
       setScrollProgress((current) =>
-        Math.abs(current - resolvedProgress) < 0.0005 ? current : resolvedProgress
+        Math.abs(current - resolvedProgress) < NAV_MORPH_PROGRESS_EPSILON ? current : resolvedProgress
       );
 
       if (settled) {
@@ -184,50 +201,70 @@ const Navigation = () => {
     (scrollY: number) => {
       const { startScroll, endScroll } = metricsRef.current;
       const range = Math.max(endScroll - startScroll, 1);
-      const nextTarget = clamp01((scrollY - startScroll) / range);
+      const nextRawTarget = clamp01((scrollY - startScroll) / range);
+      const previousRawTarget = rawTargetProgressRef.current;
+      const movingUp = nextRawTarget < previousRawTarget - 0.0001;
+      const nextDirectionalTarget = mapDirectionalTarget(nextRawTarget, movingUp);
 
-      targetProgressRef.current = nextTarget;
+      rawTargetProgressRef.current = nextRawTarget;
+      targetProgressRef.current = nextDirectionalTarget;
+      isReturnPhaseRef.current = movingUp && nextRawTarget < NAV_MORPH_RETURN_HOLD_THRESHOLD;
+      setRawProgress((current) =>
+        Math.abs(current - nextRawTarget) < NAV_MORPH_PROGRESS_EPSILON ? current : nextRawTarget
+      );
 
       if (reduceMotion) {
-        currentProgressRef.current = nextTarget;
-        setScrollProgress(nextTarget);
+        currentProgressRef.current = nextRawTarget;
+        setScrollProgress(nextRawTarget);
         return;
       }
 
       queueProgressFrame();
     },
-    [queueProgressFrame, reduceMotion]
+    [mapDirectionalTarget, queueProgressFrame, reduceMotion]
   );
 
   const recomputeMetrics = useCallback(() => {
-    const heroElement = document.getElementById("hero");
-    const navElement = navRef.current;
-    if (!heroElement || !navElement) {
+    const heroMorphAnchor = document.getElementById(HERO_NAV_MORPH_ANCHOR_ID);
+    const nextSection = document.getElementById("portfolio");
+    const homeMorphTarget = homeMorphTargetRef.current;
+
+    if (!heroMorphAnchor || !nextSection || !homeMorphTarget) {
       return;
     }
 
-    const navRect = navElement.getBoundingClientRect();
-    const heroRect = heroElement.getBoundingClientRect();
-    const heroBottomDocument = heroRect.bottom + window.scrollY;
-    const startScroll = heroBottomDocument - (navRect.top + NAV_SCROLL_PROGRESS_RANGE_PX);
-    const endScroll = heroBottomDocument - navRect.top;
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+    const scrollX = window.scrollX || window.pageXOffset || 0;
+    const viewportHeight = Math.max(window.innerHeight || 0, 1);
+
+    const heroRect = heroMorphAnchor.getBoundingClientRect();
+    const nextSectionRect = nextSection.getBoundingClientRect();
+    const homeMorphTargetRect = homeMorphTarget.getBoundingClientRect();
+    const heroTopDocument = heroRect.top + scrollY;
+    const heroCenterXDocument = heroRect.left + scrollX + heroRect.width / 2;
+    const heroCenterYDocument = heroRect.top + scrollY + heroRect.height / 2;
+    const startScroll = heroTopDocument - viewportHeight * NAV_MORPH_START_VIEWPORT_RATIO;
+    const endScroll = Math.max(nextSectionRect.top + scrollY, startScroll + 1);
     const itemWidths = sectionNavItems.map(
       (_, index) => itemRefs.current[index]?.getBoundingClientRect().width ?? 44
     );
-    const homeRect = itemRefs.current[0]?.getBoundingClientRect();
-    const navCenter = navRect.left + navRect.width / 2;
-    const homeCenter = homeRect ? homeRect.left + homeRect.width / 2 : navCenter;
 
     const nextMetrics: NavMetrics = {
       startScroll,
       endScroll,
-      homeCenterShiftPx: navCenter - homeCenter,
       itemWidths,
+      morphStartX: heroCenterXDocument - scrollX,
+      morphStartY: heroCenterYDocument - startScroll,
+      morphStartSize: Math.max(heroRect.width, heroRect.height, 1),
+      morphEndX: homeMorphTargetRect.left + homeMorphTargetRect.width / 2,
+      morphEndY: homeMorphTargetRect.top + homeMorphTargetRect.height / 2,
+      morphEndSize:
+        Math.max(homeMorphTargetRect.width, homeMorphTargetRect.height, 1) * NAV_HOME_FINAL_SIZE_BOOST,
     };
 
     setNavMetrics(nextMetrics);
     metricsRef.current = nextMetrics;
-    syncTargetProgress(window.scrollY || window.pageYOffset || 0);
+    syncTargetProgress(scrollY);
   }, [syncTargetProgress]);
 
   useEffect(() => {
@@ -241,15 +278,23 @@ const Navigation = () => {
       recomputeMetrics();
     };
 
+    const onMorphLayout = () => {
+      recomputeMetrics();
+    };
+
     recomputeMetrics();
     onScroll();
 
+    const settleTimer = window.setTimeout(recomputeMetrics, 0);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
+    window.addEventListener(HERO_NAV_MORPH_LAYOUT_EVENT, onMorphLayout as EventListener);
 
     return () => {
+      window.clearTimeout(settleTimer);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener(HERO_NAV_MORPH_LAYOUT_EVENT, onMorphLayout as EventListener);
       if (progressRafRef.current != null) {
         window.cancelAnimationFrame(progressRafRef.current);
         progressRafRef.current = null;
@@ -257,11 +302,72 @@ const Navigation = () => {
     };
   }, [recomputeMetrics, syncTargetProgress]);
 
+  const morphVisible =
+    !reduceMotion &&
+    (rawProgress > NAV_MORPH_PROGRESS_EPSILON ||
+      Math.abs(scrollProgress) > NAV_MORPH_PROGRESS_EPSILON);
+
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent(HERO_NAV_MORPH_STATE_EVENT, {
+        detail: {
+          active: morphVisible,
+          rawProgress,
+          visualProgress: scrollProgress,
+        },
+      })
+    );
+  }, [morphVisible, rawProgress, scrollProgress]);
+
+  useEffect(() => {
+    return () => {
+      window.dispatchEvent(
+        new CustomEvent(HERO_NAV_MORPH_STATE_EVENT, {
+          detail: {
+            active: false,
+            rawProgress: 0,
+            visualProgress: 0,
+          },
+        })
+      );
+    };
+  }, []);
+
+  const getReturnNudgeScale = (currentRawProgress: number) => {
+    if (!isReturnPhaseRef.current) {
+      return 1;
+    }
+
+    const finalPhaseProgress = clamp01(1 - currentRawProgress / NAV_MORPH_RETURN_HOLD_THRESHOLD);
+
+    if (finalPhaseProgress <= 0.2) {
+      return mapRange(finalPhaseProgress, 0, 0.2, 1, 0.93);
+    }
+    if (finalPhaseProgress <= 0.5) {
+      return mapRange(finalPhaseProgress, 0.2, 0.5, 0.93, 1);
+    }
+    if (finalPhaseProgress <= 0.85) {
+      return mapRange(finalPhaseProgress, 0.5, 0.85, 1, 1.03);
+    }
+    return mapRange(finalPhaseProgress, 0.85, 1, 1.03, 1);
+  };
+
   const showAvatar = activeSection !== "hero";
   const navItems = sectionNavItems;
   const navStateTransition = reduceMotion
     ? { duration: 0 }
     : { duration: MOTION_TOKENS.durationShort, ease: MOTION_TOKENS.easingDefault };
+  const iconSpreadProgress = clamp01(Math.max(scrollProgress, 0) / NAV_ICON_SPREAD_END_PROGRESS);
+  const morphTravelProgress = scrollProgress;
+  const morphTravelProgressClamped = clamp01(morphTravelProgress);
+  const morphCenterX = lerp(navMetrics.morphStartX, navMetrics.morphEndX, morphTravelProgress);
+  const morphCenterY = lerp(navMetrics.morphStartY, navMetrics.morphEndY, morphTravelProgress);
+  const morphScaleTarget = navMetrics.morphEndSize / Math.max(navMetrics.morphStartSize, 1);
+  const morphScale =
+    lerp(1, morphScaleTarget, morphTravelProgressClamped) * getReturnNudgeScale(rawProgress);
+  const morphPlateProgress = mapRange(morphTravelProgressClamped, 0.84, 1, 0, 1);
+  const morphAccentProgress = mapRange(morphTravelProgressClamped, 0.9, 1, 0, 1);
+
   const handleNavItemClick = (sectionId: ActiveSectionId) => {
     setActiveSection(sectionId);
     window.dispatchEvent(new CustomEvent(PROGRAMMATIC_SCROLL_START_EVENT));
@@ -287,9 +393,8 @@ const Navigation = () => {
         <ul className="relative flex w-full items-center justify-between gap-1 overflow-hidden sm:gap-2">
           {navItems.map((navItem, index) => {
             const isActive = activeSection === navItem.id;
-            const showAvatarForHome = navItem.id === "hero" && showAvatar;
             const isHomeItem = navItem.id === "hero";
-            const iconSpreadProgress = clamp01(scrollProgress / NAV_ICON_SPREAD_END_PROGRESS);
+            const showAvatarForHome = isHomeItem && showAvatar && !morphVisible;
             const midpointIndex = (navItems.length - 1) / 2;
             const spreadDirection = index < midpointIndex ? -1 : 1;
             const spreadDistance =
@@ -299,17 +404,6 @@ const Navigation = () => {
                   iconSpreadProgress *
                   spreadDirection
                 : 0;
-            const homeTranslateX =
-              isHomeItem && !reduceMotion ? navMetrics.homeCenterShiftPx * scrollProgress : 0;
-            const homeTranslateY =
-              isHomeItem && !reduceMotion
-                ? mapRange(scrollProgress, NAV_HOME_EMERGE_START, NAV_HOME_EMERGE_SETTLE, NAV_HOME_START_Y, 0)
-                : 0;
-            const homeOpacity =
-              isHomeItem && !reduceMotion
-                ? mapRange(scrollProgress, NAV_HOME_EMERGE_START, NAV_HOME_EMERGE_SETTLE, 0, 1)
-                : 1;
-            const homeScale = isHomeItem && !reduceMotion ? getHomeScale(scrollProgress) : 1;
 
             return (
               <li
@@ -336,14 +430,17 @@ const Navigation = () => {
                 >
                   {isHomeItem ? (
                     <span className="pointer-events-none absolute inset-0">
-                      <motion.span
-                        className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-0.5 will-change-transform md:flex-row md:gap-1.5"
-                        style={{
-                          x: homeTranslateX,
-                          y: homeTranslateY,
-                          opacity: homeOpacity,
-                          scale: homeScale,
-                        }}
+                      <span
+                        ref={homeMorphTargetRef}
+                        data-testid="home-morph-target"
+                        className="absolute left-1/2 top-1/2 h-9 w-9 -translate-x-1/2 -translate-y-1/2 rounded-full md:h-8 md:w-8"
+                      />
+                      <span
+                        className={cn(
+                          "absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-0.5 transition-opacity md:flex-row md:gap-1.5",
+                          morphVisible ? "opacity-0" : "opacity-100"
+                        )}
+                        style={{ willChange: "opacity, transform" }}
                       >
                         {showAvatarForHome ? (
                           <motion.span
@@ -391,7 +488,7 @@ const Navigation = () => {
                         >
                           {navItem.label}
                         </span>
-                      </motion.span>
+                      </span>
                     </span>
                   ) : (
                     <motion.span
@@ -422,7 +519,7 @@ const Navigation = () => {
                             reduceMotion
                               ? { duration: 0 }
                               : {
-                          duration: 0.24,
+                                  duration: 0.24,
                                   ease: MOTION_TOKENS.easingDefault,
                                 }
                           }
@@ -439,7 +536,7 @@ const Navigation = () => {
                           reduceMotion
                             ? { duration: 0 }
                             : {
-                            duration: 0.24,
+                                duration: 0.24,
                                 ease: MOTION_TOKENS.easingDefault,
                               }
                         }
@@ -454,9 +551,61 @@ const Navigation = () => {
           })}
         </ul>
       </div>
+      {!reduceMotion && (
+        <span
+          aria-hidden="true"
+          data-testid="hero-nav-morph-proxy"
+          className="pointer-events-none fixed left-0 top-0 z-[70] will-change-transform"
+          style={{
+            opacity: morphVisible ? 1 : 0,
+            transform: `translate3d(${morphCenterX - navMetrics.morphStartSize / 2}px, ${
+              morphCenterY - navMetrics.morphStartSize / 2
+            }px, 0) scale(${morphScale})`,
+            transformOrigin: "top left",
+          }}
+        >
+          <span
+            className="relative block overflow-hidden rounded-full border-4 border-primary/20 shadow-lg will-change-transform"
+            style={{
+              width: navMetrics.morphStartSize,
+              height: navMetrics.morphStartSize,
+            }}
+          >
+            {avatarCurrentSrc ? (
+              <img
+                src={avatarCurrentSrc}
+                alt=""
+                aria-hidden="true"
+                className="h-full w-full object-cover"
+                loading="eager"
+                decoding="async"
+                onError={() => setAvatarCurrentSrc(fallbackHeroPhoto)}
+              />
+            ) : (
+              <span className="flex h-full w-full items-center justify-center bg-secondary">
+                <User className="h-10 w-10 text-muted-foreground" aria-hidden="true" />
+              </span>
+            )}
+            <span
+              className="absolute inset-0 rounded-full bg-background/35"
+              style={{ opacity: morphPlateProgress * 0.25 }}
+            />
+            <span
+              className="absolute inset-0 rounded-full"
+              style={{
+                boxShadow: "0 6px 14px rgba(15, 23, 42, 0.24)",
+                opacity: morphPlateProgress * 0.85,
+              }}
+            />
+            <span
+              className="absolute inset-0 rounded-full border border-primary/40"
+              style={{ opacity: morphAccentProgress * 0.6 }}
+            />
+          </span>
+        </span>
+      )}
     </motion.nav>
   );
 };
 
 export default Navigation;
-

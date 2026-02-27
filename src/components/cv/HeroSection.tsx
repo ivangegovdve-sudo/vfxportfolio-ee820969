@@ -5,6 +5,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import fallbackHeroPhoto from "@/data/assets/slackPic.webp";
 import { MOTION_TOKENS } from "@/lib/motion";
 import { resolvePhotoUrl } from "@/utils/resolvePhotoUrl";
+import {
+  HERO_NAV_MORPH_ANCHOR_ID,
+  HERO_NAV_MORPH_LAYOUT_EVENT,
+  HERO_NAV_MORPH_STATE_EVENT,
+  HeroNavMorphStateDetail,
+} from "@/lib/heroNavMorph";
 
 const FALLBACK_PHOTO_URL = "/placeholder.svg";
 
@@ -15,8 +21,12 @@ const HeroSection = () => {
   const resolvedPrimaryPhotoUrl = useMemo(() => resolvePhotoUrl(photoUrl, fallbackHeroPhoto), [photoUrl]);
   const [currentPhotoUrl, setCurrentPhotoUrl] = useState(resolvedPrimaryPhotoUrl);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [morphProxyActive, setMorphProxyActive] = useState(false);
   const aboutMeasureRef = useRef<HTMLDivElement | null>(null);
   const [aboutPx, setAboutPx] = useState(0);
+  const announceMorphLayout = useCallback(() => {
+    window.dispatchEvent(new CustomEvent(HERO_NAV_MORPH_LAYOUT_EVENT));
+  }, []);
 
   const measureAboutHeight = useCallback(() => {
     const nextHeight = aboutMeasureRef.current?.scrollHeight ?? 0;
@@ -26,6 +36,22 @@ const HeroSection = () => {
   useEffect(() => {
     setCurrentPhotoUrl(resolvedPrimaryPhotoUrl);
   }, [resolvedPrimaryPhotoUrl]);
+
+  useEffect(() => {
+    const handleMorphState = (event: Event) => {
+      const detail = (event as CustomEvent<HeroNavMorphStateDetail>).detail;
+      setMorphProxyActive(Boolean(detail?.active));
+    };
+
+    window.addEventListener(HERO_NAV_MORPH_STATE_EVENT, handleMorphState as EventListener);
+    return () => {
+      window.removeEventListener(HERO_NAV_MORPH_STATE_EVENT, handleMorphState as EventListener);
+    };
+  }, []);
+
+  useEffect(() => {
+    announceMorphLayout();
+  }, [announceMorphLayout, currentPhotoUrl]);
 
   useEffect(() => {
     measureAboutHeight();
@@ -85,7 +111,9 @@ const HeroSection = () => {
                   ? { duration: 0 }
                   : { duration: MOTION_TOKENS.durationAvatar, ease: MOTION_TOKENS.easingDefault }
               }
+              id={HERO_NAV_MORPH_ANCHOR_ID}
               className="shrink-0"
+              style={!reduceMotion && morphProxyActive ? { opacity: 0 } : undefined}
             >
               {currentPhotoUrl ? (
                 <img
@@ -96,6 +124,7 @@ const HeroSection = () => {
                   onError={handleImageError}
                   loading="eager"
                   decoding="async"
+                  onLoad={announceMorphLayout}
                   width={208}
                   height={208}
                   className="hero-breathe w-40 h-40 md:w-52 md:h-52 rounded-full object-cover border-4 border-primary/20 shadow-lg"
