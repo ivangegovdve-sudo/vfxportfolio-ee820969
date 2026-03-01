@@ -1,0 +1,541 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - list [ref=e5]:
+      - listitem [ref=e6]:
+        - link "Home" [ref=e7] [cursor=pointer]:
+          - /url: "#hero"
+          - img [ref=e10]
+      - listitem [ref=e11]:
+        - link "Portfolio" [ref=e12] [cursor=pointer]:
+          - /url: "#portfolio"
+          - img [ref=e14]
+      - listitem [ref=e19]:
+        - link "Skills" [ref=e20] [cursor=pointer]:
+          - /url: "#skills"
+          - img [ref=e22]
+      - listitem [ref=e23]:
+        - link "Experience" [ref=e24] [cursor=pointer]:
+          - /url: "#experience"
+          - img [ref=e26]
+      - listitem [ref=e30]:
+        - link "Education" [ref=e31] [cursor=pointer]:
+          - /url: "#education"
+          - img [ref=e33]
+      - listitem [ref=e36]:
+        - link "Contact" [ref=e37] [cursor=pointer]:
+          - /url: "#contact"
+          - img [ref=e39]
+  - main [ref=e42]:
+    - generic [ref=e45]:
+      - img "Ivan Gegov" [ref=e47]
+      - generic [ref=e48]:
+        - heading "Ivan Gegov" [level=1] [ref=e49]
+        - paragraph [ref=e50]: Animation · Compositing · VFX
+        - paragraph [ref=e51]: Where imagination meets the timeline — crafting worlds, one frame at a time.
+        - generic [ref=e52]:
+          - link "View Experience" [ref=e53] [cursor=pointer]:
+            - /url: "#experience"
+          - link "Get in Touch" [ref=e54] [cursor=pointer]:
+            - /url: "#contact"
+          - button "ABOUT" [ref=e55] [cursor=pointer]:
+            - text: ABOUT
+            - img [ref=e56]
+        - generic [ref=e60]:
+          - paragraph [ref=e61]: Animation Lead and VFX professional with a track record spanning animated series, casino game development, commercials, and music videos. Experienced in leading animation teams, defining quality standards, and delivering visually polished content under tight deadlines.
+          - paragraph [ref=e62]: Comfortable working in fast-paced studio environments as well as independently on freelance projects. Experienced in multicultural teams and international productions. Always looking for the next compelling visual challenge.
+    - region "Portfolio" [ref=e65]:
+      - generic [ref=e66]:
+        - heading "Portfolio" [level=2] [ref=e68]
+        - generic [ref=e69]:
+          - link "National Geographic® — Brain Freeze Watch National Geographic — Brain Freeze 2018 | Series Animation · Compositing" [ref=e71] [cursor=pointer]:
+            - /url: https://vimeo.com/283914588
+            - generic [ref=e72]:
+              - img "National Geographic® — Brain Freeze" [ref=e73]
+              - generic [ref=e74]:
+                - text: Watch
+                - img [ref=e75]
+            - generic [ref=e79]:
+              - heading "National Geographic — Brain Freeze" [level=3] [ref=e80]:
+                - generic [ref=e81]:
+                  - text: National
+                  - generic [ref=e82]:
+                    - text: Geographic
+                    - superscript [ref=e83]: ®
+                  - text: — Brain Freeze
+              - paragraph [ref=e84]: 2018 | Series
+              - paragraph [ref=e85]: Animation · Compositing
+          - link "Rescue Heroes Watch Rescue Heroes 2020 | Series Animation · Series (14 episodes)" [ref=e87] [cursor=pointer]:
+            - /url: https://www.youtube.com/watch?v=SOjHSKbRVCQ
+            - generic [ref=e88]:
+              - img "Rescue Heroes" [ref=e89]
+              - generic [ref=e90]:
+                - text: Watch
+                - img [ref=e91]
+            - generic [ref=e95]:
+              - heading "Rescue Heroes" [level=3] [ref=e96]
+              - paragraph [ref=e97]: 2020 | Series
+              - paragraph [ref=e98]: Animation · Series (14 episodes)
+          - link "Miro — Souvenir Watch Miro — Souvenir 2013 | Music Video Music Video · VFX" [ref=e100] [cursor=pointer]:
+            - /url: https://youtu.be/C8Mwkhu3iq4
+            - generic [ref=e101]:
+              - img "Miro — Souvenir" [ref=e102]
+              - generic [ref=e103]:
+                - text: Watch
+                - img [ref=e104]
+            - generic [ref=e108]:
+              - heading "Miro — Souvenir" [level=3] [ref=e109]
+              - paragraph [ref=e110]: 2013 | Music Video
+              - paragraph [ref=e111]: Music Video · VFX
+          - link "Showreel Watch Showreel 2024 | Showreel Animation · Compositing · VFX" [ref=e113] [cursor=pointer]:
+            - /url: https://youtu.be/ogwVYZrWI6s
+            - generic [ref=e114]:
+              - img "Showreel" [ref=e115]
+              - generic [ref=e116]:
+                - text: Watch
+                - img [ref=e117]
+            - generic [ref=e121]:
+              - heading "Showreel" [level=3] [ref=e122]
+              - paragraph [ref=e123]: 2024 | Showreel
+              - paragraph [ref=e124]: Animation · Compositing · VFX
+          - link "Arcana Magica Watch Arcana Magica 2019 | Promo Animation · Promotional" [ref=e126] [cursor=pointer]:
+            - /url: https://www.youtube.com/watch?v=qeevdrluvnA
+            - generic [ref=e127]:
+              - img "Arcana Magica" [ref=e128]
+              - generic [ref=e129]:
+                - text: Watch
+                - img [ref=e130]
+            - generic [ref=e134]:
+              - heading "Arcana Magica" [level=3] [ref=e135]
+              - paragraph [ref=e136]: 2019 | Promo
+              - paragraph [ref=e137]: Animation · Promotional
+          - link "In Author’s Hands Watch In Author’s Hands 2020 | Short Film Short Film · VFX" [ref=e139] [cursor=pointer]:
+            - /url: https://youtu.be/pInnrhghaxY
+            - generic [ref=e140]:
+              - img "In Author’s Hands" [ref=e141]
+              - generic [ref=e142]:
+                - text: Watch
+                - img [ref=e143]
+            - generic [ref=e147]:
+              - heading "In Author’s Hands" [level=3] [ref=e148]
+              - paragraph [ref=e149]: 2020 | Short Film
+              - paragraph [ref=e150]: Short Film · VFX
+        - generic [ref=e152]:
+          - generic [ref=e155]:
+            - heading "Red Tiger collection" [level=3] [ref=e156]
+            - paragraph [ref=e157]: Slot games I helped develop and animate as Lead Animator in GameDev team at Dopamine (Red Tiger brand).
+          - generic [ref=e158]:
+            - generic [ref=e161]:
+              - article [ref=e162]:
+                - link "Open DragonBoyz in a new tab" [ref=e163] [cursor=pointer]:
+                  - /url: https://redtiger.com/games/dragon-boyz
+                  - generic [ref=e164]:
+                    - img "DragonBoyz poster placeholder" [ref=e165]
+                    - generic [ref=e167]:
+                      - paragraph [ref=e168]: "2025"
+                      - paragraph [ref=e169]: DragonBoyz
+              - article [ref=e170]:
+                - link "Open Big Rich Turkeys in a new tab" [ref=e171] [cursor=pointer]:
+                  - /url: https://redtiger.com/games/big-rich-turkeys
+                  - generic [ref=e172]:
+                    - img "Big Rich Turkeys poster placeholder" [ref=e173]
+                    - generic [ref=e175]:
+                      - paragraph [ref=e176]: "2025"
+                      - paragraph [ref=e177]: Big Rich Turkeys
+              - article [ref=e178]:
+                - link "Open Cash Lamps in a new tab" [ref=e179] [cursor=pointer]:
+                  - /url: https://redtiger.com/games/cash-lamps
+                  - generic [ref=e180]:
+                    - img "Cash Lamps poster placeholder" [ref=e181]
+                    - generic [ref=e183]:
+                      - paragraph [ref=e184]: "2025"
+                      - paragraph [ref=e185]: Cash Lamps
+              - article [ref=e186]:
+                - link "Open Monopoly® Rent Rush in a new tab" [ref=e187] [cursor=pointer]:
+                  - /url: https://redtiger.com/games/monopoly-rent-rush
+                  - generic [ref=e188]:
+                    - img "Monopoly® Rent Rush poster placeholder" [ref=e189]
+                    - generic [ref=e191]:
+                      - paragraph [ref=e192]: "2025"
+                      - paragraph [ref=e193]:
+                        - generic [ref=e194]:
+                          - generic [ref=e195]:
+                            - text: Monopoly
+                            - superscript [ref=e196]: ®
+                          - text: Rent Rush
+              - article [ref=e197]:
+                - link "Open Piggy Riches 2 Megaways in a new tab" [ref=e198] [cursor=pointer]:
+                  - /url: https://redtiger.com/games/piggy-riches-2-megaways
+                  - generic [ref=e199]:
+                    - img "Piggy Riches 2 Megaways poster placeholder" [ref=e200]
+                    - generic [ref=e202]:
+                      - paragraph [ref=e203]: "2025"
+                      - paragraph [ref=e204]: Piggy Riches 2 Megaways
+              - article [ref=e205]:
+                - link "Open Piggy Riches Begins in a new tab" [ref=e206] [cursor=pointer]:
+                  - /url: https://redtiger.com/games/piggy-riches-begins
+                  - generic [ref=e207]:
+                    - img "Piggy Riches Begins poster placeholder" [ref=e208]
+                    - generic [ref=e210]:
+                      - paragraph [ref=e211]: "2025"
+                      - paragraph [ref=e212]: Piggy Riches Begins
+              - article [ref=e213]:
+                - link "Open Bass Boss in a new tab" [ref=e214] [cursor=pointer]:
+                  - /url: https://redtiger.com/games/bass-boss
+                  - generic [ref=e215]:
+                    - img "Bass Boss poster placeholder" [ref=e216]
+                    - generic [ref=e218]:
+                      - paragraph [ref=e219]: "2025"
+                      - paragraph [ref=e220]: Bass Boss
+              - article [ref=e221]:
+                - link "Open Bass Boss 2 in a new tab" [ref=e222] [cursor=pointer]:
+                  - /url: https://redtiger.com/games/bass-boss
+                  - generic [ref=e223]:
+                    - img "Bass Boss 2 poster placeholder" [ref=e224]
+                    - generic [ref=e226]:
+                      - paragraph [ref=e227]: "2025"
+                      - paragraph [ref=e228]: Bass Boss 2
+            - generic [ref=e229]:
+              - heading "Featured releases" [level=4] [ref=e230]
+              - generic [ref=e231]:
+                - link "Open DragonBoyz (2025) in a new tab" [ref=e232] [cursor=pointer]:
+                  - /url: https://redtiger.com/games/dragon-boyz
+                  - generic [ref=e233]: DragonBoyz
+                  - img [ref=e234]
+                - link "Open Big Rich Turkeys (2025) in a new tab" [ref=e238] [cursor=pointer]:
+                  - /url: https://redtiger.com/games/big-rich-turkeys
+                  - generic [ref=e239]: Big Rich Turkeys
+                  - img [ref=e240]
+                - link "Open Cash Lamps (2025) in a new tab" [ref=e244] [cursor=pointer]:
+                  - /url: https://redtiger.com/games/cash-lamps
+                  - generic [ref=e245]: Cash Lamps
+                  - img [ref=e246]
+                - link "Open Monopoly® Rent Rush (2025) in a new tab" [ref=e250] [cursor=pointer]:
+                  - /url: https://redtiger.com/games/monopoly-rent-rush
+                  - generic [ref=e252]:
+                    - generic [ref=e253]:
+                      - text: Monopoly
+                      - superscript [ref=e254]: ®
+                    - text: Rent Rush
+                  - img [ref=e255]
+                - link "Open Piggy Riches 2 Megaways (2025) in a new tab" [ref=e259] [cursor=pointer]:
+                  - /url: https://redtiger.com/games/piggy-riches-2-megaways
+                  - generic [ref=e260]: Piggy Riches 2 Megaways
+                  - img [ref=e261]
+                - link "Open Piggy Riches Begins (2025) in a new tab" [ref=e265] [cursor=pointer]:
+                  - /url: https://redtiger.com/games/piggy-riches-begins
+                  - generic [ref=e266]: Piggy Riches Begins
+                  - img [ref=e267]
+            - generic [ref=e271]:
+              - paragraph [ref=e272]: Published under the Red Tiger brand
+              - link "Visit Red Tiger" [ref=e273] [cursor=pointer]:
+                - /url: https://redtiger.com/games
+                - text: Visit Red Tiger
+                - img [ref=e274]
+    - region "Skills" [ref=e278]:
+      - generic [ref=e279]:
+        - heading "Skills" [level=2] [ref=e281]
+        - generic [ref=e282]:
+          - generic [ref=e284]:
+            - heading "Technical & Production" [level=3] [ref=e285]
+            - generic [ref=e286]:
+              - generic [ref=e287]:
+                - paragraph [ref=e288]: Adobe
+                - generic [ref=e289]:
+                  - generic [ref=e290]: After Effects
+                  - generic [ref=e291]: Animate
+                  - generic [ref=e292]: Photoshop
+                  - generic [ref=e293]: Character Animator
+                  - generic [ref=e294]: Premiere
+              - generic [ref=e295]:
+                - paragraph [ref=e296]: Animation
+                - generic [ref=e298]: Spine 2D (2.5D animation software)
+              - generic [ref=e299]:
+                - paragraph [ref=e300]: Production & Optimization
+                - list [ref=e301]:
+                  - listitem [ref=e302]: Scripting (ActionScript) for procedural animation and optimization
+                  - listitem [ref=e304]: Animation structures and logic optimized for JavaScript / runtime implementation
+                  - listitem [ref=e306]: UI, symbol, character, and FX animation
+                  - listitem [ref=e308]: Asset optimization for browser and mobile performance
+                  - listitem [ref=e310]: Asset compression and optimizing export workflows
+          - generic [ref=e313]:
+            - heading "Tools & Pipelines" [level=3] [ref=e314]
+            - generic [ref=e315]:
+              - generic [ref=e316]:
+                - paragraph [ref=e317]: Production Tools
+                - list [ref=e318]:
+                  - listitem [ref=e319]: Git and repository-based workflows
+                  - listitem [ref=e321]: Jira and Notion for production tracking and documentation
+              - generic [ref=e323]:
+                - paragraph [ref=e324]: Exploratory
+                - paragraph [ref=e325]: Amateur / exploratory experience
+                - generic [ref=e326]:
+                  - generic [ref=e327]: Postshot Jawset
+                  - generic [ref=e328]: Cascadeur
+                  - generic [ref=e329]: JangaFX
+                  - generic [ref=e330]: Unreal Engine
+                  - generic [ref=e331]: Dragon Bones
+          - generic [ref=e333]:
+            - heading "AI & Emerging Tools" [level=3] [ref=e334]
+            - generic [ref=e335]:
+              - generic [ref=e336]:
+                - paragraph [ref=e337]: Practical Familiarity
+                - paragraph [ref=e338]: Basic hands-on familiarity
+                - generic [ref=e339]:
+                  - generic [ref=e340]: Stable Diffusion
+                  - generic [ref=e341]: ControlNet
+                  - generic [ref=e342]: LoRAs
+                  - generic [ref=e343]: ComfyUI
+              - list [ref=e345]:
+                - listitem [ref=e346]: Interest in open-source AI models for workflow optimization and pipeline automation
+          - generic [ref=e348]:
+            - generic [ref=e350]:
+              - heading "Personal" [level=3] [ref=e351]
+              - list [ref=e352]:
+                - listitem [ref=e353]: Strong communication and teamwork
+                - listitem [ref=e355]: Ability to manage multiple tasks and deadlines
+                - listitem [ref=e357]: High attention to detail
+                - listitem [ref=e359]: Adaptability to different art and animation styles
+            - generic [ref=e362]:
+              - heading "Languages" [level=3] [ref=e363]
+              - generic [ref=e364]:
+                - generic [ref=e365]:
+                  - generic [ref=e366]: Bulgarian
+                  - generic [ref=e373]: Native
+                - generic [ref=e374]:
+                  - generic [ref=e375]: English
+                  - generic [ref=e382]: C1 — Advanced
+                - generic [ref=e383]:
+                  - generic [ref=e384]: French
+                  - generic [ref=e391]: B2 — Upper Intermediate
+                - generic [ref=e392]:
+                  - generic [ref=e393]: Spanish
+                  - generic [ref=e400]: A1 — Beginner
+    - region "Experience" [ref=e401]:
+      - generic [ref=e402]:
+        - heading "Experience" [level=2] [ref=e404]
+        - generic [ref=e405]:
+          - generic [ref=e410]:
+            - generic [ref=e411]:
+              - heading "Senior Animator / Animation Lead" [level=3] [ref=e412]
+              - generic [ref=e413]: Mar 2021 — Present
+            - paragraph [ref=e414]:
+              - text: Dopamine (Red Tiger)
+              - generic [ref=e415]: · Sofia, Bulgaria
+            - paragraph [ref=e416]: Joined as Senior Animator producing 2D animation, VFX, and in-engine implementation for slot games published under the Red Tiger brand. Progressed into Animation Lead, taking ownership of animation execution and quality across a full game development team while continuing hands-on production.
+            - list [ref=e417]:
+              - listitem [ref=e418]:
+                - generic [ref=e419]: •
+                - generic [ref=e420]: Leading and coordinating animation work within a multidisciplinary game team
+              - listitem [ref=e421]:
+                - generic [ref=e422]: •
+                - generic [ref=e423]: Defining and maintaining animation quality standards and visual consistency
+              - listitem [ref=e424]:
+                - generic [ref=e425]: •
+                - generic [ref=e426]: Hands-on production of animations and VFX for slot games
+              - listitem [ref=e427]:
+                - generic [ref=e428]: •
+                - generic [ref=e429]: Close collaboration with game designers, developers, and artists
+              - listitem [ref=e430]:
+                - generic [ref=e431]: •
+                - generic [ref=e432]: Supporting and improving animation pipelines and workflows
+            - generic [ref=e433]:
+              - generic [ref=e434]: Animation Lead
+              - generic [ref=e435]: 2D Animation
+              - generic [ref=e436]: VFX
+              - generic [ref=e437]: Slot Games
+              - generic [ref=e438]: Red Tiger
+          - generic [ref=e443]:
+            - generic [ref=e444]:
+              - heading "Animation, Compositing & VFX Artist" [level=3] [ref=e445]
+              - generic [ref=e446]: Mar 2013 — Present
+            - paragraph [ref=e447]:
+              - text: Freelance
+              - generic [ref=e448]: · Sofia, Bulgaria
+            - paragraph [ref=e449]: Animation, compositing, and visual effects across a variety of freelance projects for studios, agencies, and independent productions.
+            - generic [ref=e450]:
+              - generic [ref=e451]: After Effects
+              - generic [ref=e452]: Compositing
+              - generic [ref=e453]: VFX
+              - generic [ref=e454]: Animation
+              - link "Showreel" [ref=e455] [cursor=pointer]:
+                - /url: https://youtu.be/ogwVYZrWI6s
+                - text: Showreel
+                - img [ref=e456]
+          - generic [ref=e464]:
+            - generic [ref=e465]:
+              - heading "Compositing & VFX Artist" [level=3] [ref=e466]
+              - generic [ref=e467]: Jul 2020 — Aug 2020
+            - paragraph [ref=e468]:
+              - text: Semperia Films
+              - generic [ref=e469]: · Sofia, Bulgaria
+            - paragraph [ref=e470]: Compositing and visual effects for the short film "In Author's Hands".
+            - generic [ref=e471]:
+              - generic [ref=e472]: Compositing
+              - generic [ref=e473]: VFX
+              - link "In Author's Hands" [ref=e474] [cursor=pointer]:
+                - /url: https://youtu.be/pInnrhghaxY
+                - text: In Author's Hands
+                - img [ref=e475]
+          - generic [ref=e483]:
+            - generic [ref=e484]:
+              - heading "Animation, Compositing & VFX Artist" [level=3] [ref=e485]
+              - generic [ref=e486]: Aug 2018 — Jun 2020
+            - paragraph [ref=e487]:
+              - text: Chase a Cloud
+              - generic [ref=e488]: · Sofia, Bulgaria
+            - paragraph [ref=e489]: Part of the compositing and VFX team working on animated series and promotional content for international clients.
+            - list [ref=e490]:
+              - listitem [ref=e491]:
+                - generic [ref=e492]: •
+                - generic [ref=e493]: National Geographic's Explorers Academy — "Brain Freeze"
+              - listitem [ref=e494]:
+                - generic [ref=e495]: •
+                - generic [ref=e496]:
+                  - text: "\"Rescue Heroes\" — contributed to production by TONGAL for"
+                  - generic [ref=e497]:
+                    - text: Fisher-Price
+                    - superscript [ref=e498]: ®
+                  - text: (14 episodes)
+              - listitem [ref=e499]:
+                - generic [ref=e500]: •
+                - generic [ref=e501]: "\"Arcana Magica\" — Kickstarter promotional video"
+              - listitem [ref=e502]:
+                - generic [ref=e503]: •
+                - generic [ref=e504]: John Vardar vs the Galaxy — animated feature film (limited compositing work, uncredited)
+            - generic [ref=e505]:
+              - generic [ref=e506]: After Effects
+              - generic [ref=e507]: Compositing
+              - generic [ref=e508]: VFX
+              - generic [ref=e509]: Animation
+              - link "Brain Freeze" [ref=e510] [cursor=pointer]:
+                - /url: https://vimeo.com/283914588
+                - text: Brain Freeze
+                - img [ref=e511]
+              - link "Rescue Heroes" [ref=e515] [cursor=pointer]:
+                - /url: https://www.youtube.com/watch?v=SOjHSKbRVCQ
+                - text: Rescue Heroes
+                - img [ref=e516]
+              - link "Arcana Magica" [ref=e520] [cursor=pointer]:
+                - /url: https://www.youtube.com/watch?v=qeevdrluvnA
+                - text: Arcana Magica
+                - img [ref=e521]
+          - generic [ref=e529]:
+            - generic [ref=e530]:
+              - heading "Coordinator" [level=3] [ref=e531]
+              - generic [ref=e532]: Sep 2015 — Nov 2015
+            - paragraph [ref=e533]:
+              - text: DVE Events
+              - generic [ref=e534]: · Zaragoza, Spain
+            - paragraph [ref=e535]: Construction and maintenance of a temporary base for the German army during NATO's "Trident Juncture" 2015 exercise at the Academia General Militar.
+            - generic [ref=e536]:
+              - generic [ref=e537]: Logistics
+              - generic [ref=e538]: Coordination
+          - generic [ref=e543]:
+            - generic [ref=e544]:
+              - heading "Chief Assistant for Network Specialist" [level=3] [ref=e545]
+              - generic [ref=e546]: May 2015 — Aug 2015
+            - paragraph [ref=e547]:
+              - text: YouChip Cashless Systems
+              - generic [ref=e548]: · Germany, England, Sweden
+            - paragraph [ref=e549]: LAN and WAN network cabling and setup, OS installation, configuration of work software and peripheral devices for RFID payment systems at music festivals.
+            - generic [ref=e550]:
+              - generic [ref=e551]: LAN/WAN
+              - generic [ref=e552]: Hardware
+              - generic [ref=e553]: RFID
+          - generic [ref=e558]:
+            - generic [ref=e559]:
+              - heading "Translator & Coordinator" [level=3] [ref=e560]
+              - generic [ref=e561]: May 2014 — Jun 2014
+            - paragraph [ref=e562]:
+              - text: DVE Events
+              - generic [ref=e563]: · Normandy, France
+            - paragraph [ref=e564]: Translator and coordinator at the 70th anniversary of D-Day in Normandy.
+            - generic [ref=e565]:
+              - generic [ref=e566]: Translation
+              - generic [ref=e567]: Coordination
+          - generic [ref=e572]:
+            - generic [ref=e573]:
+              - heading "Screenwriter, Second Director & VFX" [level=3] [ref=e574]
+              - generic [ref=e575]: Jan 2013 — May 2013
+            - paragraph [ref=e576]:
+              - text: Miroslav Kostadinov — Miro
+              - generic [ref=e577]: · Sofia, Bulgaria
+            - paragraph [ref=e578]: Screenwriting, second directing, and visual effects for the music video "Souvenir".
+            - generic [ref=e579]:
+              - generic [ref=e580]: VFX
+              - generic [ref=e581]: Screenwriting
+              - generic [ref=e582]: Directing
+              - link "Souvenir" [ref=e583] [cursor=pointer]:
+                - /url: https://youtu.be/C8Mwkhu3iq4
+                - text: Souvenir
+                - img [ref=e584]
+          - generic [ref=e592]:
+            - generic [ref=e593]:
+              - heading "Warehouse & Communications Manager" [level=3] [ref=e594]
+              - generic [ref=e595]: Jun 2009 — Oct 2009
+            - paragraph [ref=e596]:
+              - text: "\"Big Sky\" Tent & Party Rentals"
+              - generic [ref=e597]: · Oak Bluffs, USA
+            - paragraph [ref=e598]: Coordinating teams, controlling inventory, and managing communications for a tent and event rental company.
+            - generic [ref=e599]:
+              - generic [ref=e600]: Logistics
+              - generic [ref=e601]: Inventory
+              - generic [ref=e602]: Team Coordination
+    - region "Education" [ref=e603]:
+      - generic [ref=e604]:
+        - heading "Education" [level=2] [ref=e606]
+        - generic [ref=e607]:
+          - generic [ref=e609]:
+            - img [ref=e612]
+            - generic [ref=e615]:
+              - heading "\"Drugs and the Brain\" Course" [level=3] [ref=e616]
+              - paragraph [ref=e617]:
+                - text: California Institute of Technology
+                - generic [ref=e618]: · Remote
+              - paragraph [ref=e619]: Sep 2012 — Jan 2013
+              - paragraph [ref=e620]: Completed an online course exploring the neuroscience of drugs and their effects on the brain.
+          - generic [ref=e622]:
+            - img [ref=e625]
+            - generic [ref=e628]:
+              - heading "First Academic Year" [level=3] [ref=e629]
+              - paragraph [ref=e630]:
+                - text: American University in Bulgaria
+                - generic [ref=e631]: · Blagoevgrad, Bulgaria
+              - paragraph [ref=e632]: Sep 2008 — May 2009
+    - region "Contact" [ref=e633]:
+      - generic [ref=e634]:
+        - heading "Contact" [level=2] [ref=e636]
+        - generic [ref=e638]:
+          - heading "Let's work together" [level=3] [ref=e639]
+          - paragraph [ref=e640]: Available for freelance compositing, VFX, and animation projects. Feel free to reach out.
+          - generic [ref=e641]:
+            - link "ivangegov.dve@gmail.com" [ref=e642] [cursor=pointer]:
+              - /url: mailto:ivangegov.dve@gmail.com
+              - img [ref=e643]
+              - generic [ref=e646]: ivangegov.dve@gmail.com
+            - generic [ref=e647]:
+              - img [ref=e648]
+              - text: Sofia, Bulgaria
+          - generic [ref=e651]:
+            - link "Email" [ref=e652] [cursor=pointer]:
+              - /url: mailto:ivangegov.dve@gmail.com
+              - text: Email
+              - img [ref=e653]
+            - link "YouTube" [ref=e657] [cursor=pointer]:
+              - /url: https://youtu.be/ogwVYZrWI6s
+              - text: YouTube
+              - img [ref=e658]
+            - link "Vimeo" [ref=e662] [cursor=pointer]:
+              - /url: https://vimeo.com/283914588
+              - text: Vimeo
+              - img [ref=e663]
+            - button "Download JSON Resume" [ref=e667] [cursor=pointer]:
+              - text: Download JSON Resume
+              - img [ref=e668]
+  - contentinfo [ref=e671]:
+    - paragraph [ref=e672]: (c) 2026 - Built with care
+    - paragraph [ref=e673]: All trademarks and brand names are the property of their respective owners. Project references are presented for portfolio purposes only.
+```
