@@ -275,3 +275,154 @@ const RedTigerPosterRail = ({ item }: { item: PortfolioItem }) => {
 };
 
 export default RedTigerPosterRail;
+import { useMemo } from "react";
+import { ExternalLink } from "lucide-react";
+import type { PortfolioItem } from "@/data/cvData";
+import TrademarkText from "./TrademarkText";
+
+type RedTigerPosterRailProps = {
+  item: PortfolioItem;
+};
+
+type RailGame = NonNullable<PortfolioItem["games"]>[number];
+
+const POSTER_COUNT = 8;
+const COMPACT_LIST_COUNT = 6;
+
+const toYearNumber = (year?: string) => {
+  const parsed = Number(year);
+  return Number.isFinite(parsed) ? parsed : 0;
+};
+
+const RedTigerPosterRail = ({ item }: RedTigerPosterRailProps) => {
+  const sortedGames = useMemo(() => {
+    if (!item.games) {
+      return [] as RailGame[];
+    }
+
+    return item.games
+      .map((game, index) => ({ game, index, yearNumber: toYearNumber(game.year) }))
+      .sort((a, b) => {
+        if (b.yearNumber !== a.yearNumber) {
+          return b.yearNumber - a.yearNumber;
+        }
+        return a.index - b.index;
+      })
+      .map(({ game }) => game);
+  }, [item.games]);
+
+  const railGames = useMemo(() => sortedGames.slice(0, POSTER_COUNT), [sortedGames]);
+  const compactGames = useMemo(() => sortedGames.slice(0, COMPACT_LIST_COUNT), [sortedGames]);
+
+  return (
+    <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-background shadow-sm transition-shadow motion-medium md:hover:shadow-md">
+      <div className="relative overflow-hidden border-b border-border bg-gradient-to-br from-primary/15 via-accent/8 to-secondary/10 p-6 md:p-8">
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground/15 via-transparent to-transparent" aria-hidden="true" />
+        <div className="relative">
+          <h3 className="font-display font-bold text-xl md:text-2xl text-foreground leading-tight">
+            <TrademarkText text={item.title} />
+          </h3>
+          <p className="mt-1 text-sm text-muted-foreground max-w-2xl leading-relaxed">{item.descriptor}</p>
+        </div>
+      </div>
+
+      <div className="p-6 md:p-8">
+        <div className="rounded-xl border border-border/70 bg-secondary/20 p-4 md:p-5">
+          <div className="overflow-x-auto">
+            <div className="flex min-w-max items-start gap-4 md:gap-5">
+              {railGames.map((game) => (
+                <article key={game.name} className="group relative w-40 shrink-0 sm:w-44 md:w-48">
+                  <a
+                    href={game.url || item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block overflow-hidden rounded-lg border border-border bg-background shadow-sm transition-[border-color,box-shadow] motion-medium md:hover:border-primary/40 md:hover:shadow-md"
+                    aria-label={`Open ${game.name} in a new tab`}
+                  >
+                    <div className="relative aspect-[2/3] overflow-hidden bg-muted">
+                      <img
+                        src={item.thumbnail}
+                        alt={`${game.name} poster placeholder`}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                        width={400}
+                        height={600}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
+                      <div className="absolute inset-x-0 bottom-0 p-3">
+                        <p className="text-[10px] uppercase tracking-[0.08em] text-white/75">
+                          {game.year || item.year || "Red Tiger"}
+                        </p>
+                        <p className="mt-1 text-sm font-medium leading-snug text-white">
+                          <TrademarkText text={game.name} />
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6">
+          <h4 className="text-sm font-medium text-foreground">Featured releases</h4>
+          {compactGames.length > 0 ? (
+            <div className="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-2 md:grid-cols-3">
+              {compactGames.map((game) => {
+                const hasUrl = !!game.url;
+                return hasUrl ? (
+                  <a
+                    key={game.name}
+                    href={game.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group tag !flex items-center justify-between gap-2 text-left transition-colors motion-short hover:text-primary"
+                    aria-label={`Open ${game.name}${game.year ? ` (${game.year})` : ""} in a new tab`}
+                    title={game.name}
+                  >
+                    <span className="truncate">
+                      <TrademarkText text={game.name} />
+                    </span>
+                    <ExternalLink
+                      className="h-3.5 w-3.5 shrink-0 opacity-100 transition-opacity motion-short md:opacity-0 md:group-hover:opacity-100"
+                      aria-hidden="true"
+                    />
+                  </a>
+                ) : (
+                  <span
+                    key={game.name}
+                    className="tag !flex items-center justify-between gap-2 text-left opacity-80"
+                    title={game.name}
+                  >
+                    <span className="truncate">
+                      <TrademarkText text={game.name} />
+                    </span>
+                  </span>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="mt-3 text-xs text-muted-foreground">No featured releases available yet.</p>
+          )}
+        </div>
+
+        <div className="mt-6 flex items-center justify-between gap-3 border-t border-border pt-5">
+          <p className="text-xs text-muted-foreground">Published under the Red Tiger brand</p>
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-[box-shadow,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hover:-translate-y-0.5 md:hover:shadow-md"
+          >
+            {item.ctaLabel || "View"}
+            <ExternalLink className="h-3.5 w-3.5" />
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default RedTigerPosterRail;

@@ -325,7 +325,7 @@ const cvData: CVData = {
       order: 7,
       title: "Red Tiger collection",
       descriptor:
-        "Selection of slot games animated and developed while working at Dopamine (published under the Red Tiger brand).",
+      "Slot games I helped develop and animate as Lead Animator in GameDev team at Dopamine (Red Tiger brand).",
       year: "2021-2025",
       category: "Game Collection",
       url: "https://redtiger.com/games",
