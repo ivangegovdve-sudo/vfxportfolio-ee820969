@@ -105,24 +105,14 @@ const Navigation = () => {
       )}
     >
       <div className="mx-auto flex h-16 w-full max-w-4xl items-center px-3 sm:px-5 md:h-14 md:px-8">
-        <motion.ul layout className="flex w-full items-center justify-between gap-1 sm:gap-2">
+        <ul className="flex w-full items-center justify-between gap-1 sm:gap-2">
           {navItems.map((navItem) => {
-            const layoutTransition = reduceMotion
-              ? { duration: 0 }
-              : {
-                  layout: {
-                    duration: MOTION_TOKENS.durationMed,
-                    ease: MOTION_TOKENS.easingDefault,
-                  },
-                };
             const isActive = activeSection === navItem.id;
             const showAvatarForHome = navItem.id === "hero" && showAvatar;
 
             return (
-              <motion.li
+              <li
                 key={navItem.id}
-                layout
-                transition={layoutTransition}
                 className="flex min-w-0 flex-1"
               >
                 <motion.a
@@ -206,11 +196,11 @@ const Navigation = () => {
                       style={{ originX: 0.5 }}
                     />
                   )}
-                </motion.a>
-              </motion.li>
+              </motion.a>
+              </li>
             );
           })}
-        </motion.ul>
+        </ul>
       </div>
     </motion.nav>
   );

@@ -97,8 +97,8 @@ const SkillsSection = () => {
                                 <motion.span
                                   aria-hidden="true"
                                   layout={false}
-                                  initial={reduceMotion ? {} : { scale: 0.8 }}
-                                  whileInView={reduceMotion ? {} : { scale: [0.8, 1.2, 1] }}
+                                initial={reduceMotion ? { scale: 1 } : { scale: 0.8 }}
+                                  whileInView={{ scale: reduceMotion ? 1 : [0.8, 1.15, 1] }}
                                   viewport={{ once: true, amount: 0.2 }}
                                   transition={getDotTransition(skillIndex)}
                                   className="mt-[0.4rem] h-2 w-2 shrink-0 rounded-full bg-primary"
@@ -138,8 +138,8 @@ const SkillsSection = () => {
                       <motion.span
                         aria-hidden="true"
                         layout={false}
-                        initial={reduceMotion ? {} : { scale: 0.8 }}
-                        whileInView={reduceMotion ? {} : { scale: [0.8, 1.2, 1] }}
+                        initial={reduceMotion ? { scale: 1 } : { scale: 0.8 }}
+                        whileInView={{ scale: reduceMotion ? 1 : [0.8, 1.15, 1] }}
                         viewport={{ once: true, amount: 0.2 }}
                         transition={getDotTransition(skillIndex)}
                         className="mt-[0.4rem] h-2 w-2 shrink-0 rounded-full bg-primary"
