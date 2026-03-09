@@ -123,15 +123,18 @@ const ExperienceSection = () => {
 
                   <motion.div
                     className="absolute left-0 top-1.5"
-                    initial={reduceMotion ? { scale: 1, opacity: 1 } : { scale: 0.5, opacity: 0 }}
-                    animate={isRevealed ? { scale: [0.5, 1.4, 1], opacity: 1 } : { scale: 0.5, opacity: 0 }}
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={
+                      isRevealed
+                        ? { scale: 1, opacity: 1 }
+                        : { scale: 0.5, opacity: 0 }
+                    }
                     transition={
                       reduceMotion
                         ? { duration: 0 }
                         : {
                             duration: MOTION_TOKENS.durationTimelineDotReveal,
                             ease: MOTION_TOKENS.easingReveal,
-                            times: [0, 0.55, 1],
                           }
                     }
                   >

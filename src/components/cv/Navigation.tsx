@@ -182,18 +182,17 @@ const Navigation = () => {
                     <motion.span
                       layoutId="active-nav-indicator"
                       aria-hidden="true"
-                      initial={reduceMotion ? false : { scaleX: 0.55 }}
-                      animate={{ scaleX: 1 }}
                       transition={
                         reduceMotion
                           ? { duration: 0 }
                           : {
-                              duration: 0.2,
-                              ease: MOTION_TOKENS.easingDefault,
+                              type: "spring",
+                              stiffness: 380,
+                              damping: 30,
+                              mass: 0.8,
                             }
                       }
-                      className="pointer-events-none absolute bottom-1.5 left-1/2 h-0.5 w-6 -translate-x-1/2 rounded-full bg-primary"
-                      style={{ originX: 0.5 }}
+                      className="pointer-events-none absolute bottom-1.5 left-0 right-0 mx-auto h-0.5 w-5 rounded-full bg-primary"
                     />
                   )}
               </motion.a>

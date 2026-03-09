@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { MOTION_TOKENS } from "@/lib/motion";
 
 const IS_TAG_THRESHOLD = 45;
+const FEATURED_SECTION_TITLE = "Animation & VFX";
 
 const SkillsSection = () => {
   const { data } = useCvData();
@@ -45,6 +46,7 @@ const SkillsSection = () => {
                 </h3>
                 <div className="space-y-5">
                   {section.groups.map((group, gi) => {
+                    const isFeatured = section.title === FEATURED_SECTION_TITLE;
                     const allShort = group.skills.every((s) => s.length < IS_TAG_THRESHOLD);
                     return (
                       <div key={`${section.title}-${gi}`}>
@@ -76,7 +78,7 @@ const SkillsSection = () => {
                                         ease: MOTION_TOKENS.easingDefault,
                                       }
                                 }
-                                className="tag"
+                                className={isFeatured ? "tag text-sm px-4 py-1.5 font-semibold" : "tag"}
                               >
                                 {skill}
                               </motion.span>

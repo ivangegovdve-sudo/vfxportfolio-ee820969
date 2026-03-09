@@ -10,7 +10,7 @@ import { CVDataContext, CVDataContextValue, STORAGE_KEY } from "@/contexts/cvDat
 
 
 // Bump this version whenever cvData.ts defaults change to invalidate stale localStorage
-const DATA_VERSION = 3;
+const DATA_VERSION = 4;
 const VERSION_KEY = "cv-data-version";
 
 function loadFromStorage(): CVData {

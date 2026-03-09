@@ -94,7 +94,7 @@ export default {
           "100%": { opacity: "1", transform: "translateX(0)" },
         },
         "nav-fadein": {
-          "0%": { opacity: "0.3" },
+          "0%": { opacity: "0.88" },
           "100%": { opacity: "1" },
         },
       },
