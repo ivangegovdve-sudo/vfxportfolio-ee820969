@@ -378,42 +378,61 @@ const cvData: CVData = {
   skills: {
     sections: [
       {
-        title: "Technical & Production",
+        title: "Animation & VFX",
         groups: [
           {
-            category: "Adobe",
-            skills: ["After Effects", "Animate", "Photoshop", "Character Animator", "Premiere"],
-          },
-          {
-            category: "Animation",
-            skills: ["Spine 2D (2.5D animation software)"],
-          },
-          {
-            category: "Production & Optimization",
+            category: "",
             skills: [
-              "Scripting (ActionScript) for procedural animation and optimization",
-              "Animation structures and logic optimized for JavaScript / runtime implementation",
-              "UI, symbol, character, and FX animation",
-              "Asset optimization for browser and mobile performance",
-              "Asset compression and optimizing export workflows",
+              "After Effects",
+              "Spine 2D",
+              "Adobe Animate",
+              "Adobe Character Animator",
+              "UI, character, symbol, and FX animation",
             ],
           },
         ],
       },
       {
-        title: "Tools & Pipelines",
+        title: "Production & Optimization",
         groups: [
           {
-            category: "Production Tools",
+            category: "",
             skills: [
-              "Git and repository-based workflows",
-              "Jira and Notion for production tracking and documentation",
+              "ActionScript procedural animation (After Effects / Animate)",
+              "Animation structures optimized for JavaScript runtimes",
+              "UI and FX animation systems",
+              "Asset compression and optimization for browser and mobile",
             ],
           },
+        ],
+      },
+      {
+        title: "Tools & Workflow",
+        groups: [
           {
-            category: "Exploratory",
-            skills: ["Postshot Jawset", "Cascadeur", "JangaFX", "Unreal Engine", "Dragon Bones"],
-            note: "Amateur / exploratory experience",
+            category: "",
+            skills: [
+              "Git and repository-based workflows",
+              "Jira for production tracking",
+              "Notion for documentation and production coordination",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Additional Software",
+        groups: [
+          {
+            category: "",
+            skills: [
+              "Premiere",
+              "Photoshop",
+              "Unreal Engine",
+              "Postshot (Jawset)",
+              "DragonBones",
+              "Cascadeur (exploratory)",
+              "JangaFX (exploratory)",
+            ],
           },
         ],
       },
@@ -421,15 +440,8 @@ const cvData: CVData = {
         title: "AI & Emerging Tools",
         groups: [
           {
-            category: "Practical Familiarity",
-            skills: ["Stable Diffusion", "ControlNet", "LoRAs", "ComfyUI"],
-            note: "Basic hands-on familiarity",
-          },
-          {
             category: "",
-            skills: [
-              "Interest in open-source AI models for workflow optimization and pipeline automation",
-            ],
+            skills: ["Stable Diffusion", "ControlNet", "LoRAs", "ComfyUI"],
           },
         ],
       },
