@@ -103,7 +103,11 @@ const PortfolioSection = () => {
             transition={entryTransition}
             style={reduceMotion ? undefined : { willChange: "opacity, transform" }}
           >
-            <CollectionCard item={item} />
+            {item.id === "pf-redtiger" ? (
+              <RedTigerPosterRail item={item} />
+            ) : (
+              <CollectionCard item={item} />
+            )}
           </motion.div>
         ))}
       </div>
