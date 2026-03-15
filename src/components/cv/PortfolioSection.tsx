@@ -5,6 +5,7 @@ import { ExternalLink, Gamepad2, ChevronDown } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { MOTION_TOKENS } from "@/lib/motion";
 import TrademarkText from "./TrademarkText";
+import RedTigerPosterRail from "./RedTigerPosterRail";
 
 const gradientVariants = [
   "from-primary/15 via-primary/5 to-transparent",
@@ -102,7 +103,11 @@ const PortfolioSection = () => {
             transition={entryTransition}
             style={reduceMotion ? undefined : { willChange: "opacity, transform" }}
           >
-            <CollectionCard item={item} />
+            {item.id === "pf-redtiger" ? (
+              <RedTigerPosterRail item={item} />
+            ) : (
+              <CollectionCard item={item} />
+            )}
           </motion.div>
         ))}
       </div>
