@@ -57,7 +57,7 @@ export interface PortfolioItem {
   ctaLabel?: string;
   thumbnail: string;
   type?: "project" | "collection";
-  games?: { name: string; url?: string; year?: string }[];
+  games?: { name: string; url?: string; year?: string; posterUrl?: string }[];
 }
 
 export interface CVData {
@@ -333,16 +333,16 @@ const cvData: CVData = {
       type: "collection",
       thumbnail: portfolioThumbnails.redtiger,
       games: [
-        { name: "DragonBoyz", url: "https://redtiger.com/games/dragon-boyz", year: "2025" },
-        { name: "Big Rich Turkeys", url: "https://redtiger.com/games/big-rich-turkeys", year: "2025" },
-        { name: "Cash Lamps", url: "https://redtiger.com/games/cash-lamps", year: "2025" },
-        { name: "Monopoly\u00AE Rent Rush", url: "https://redtiger.com/games/monopoly-rent-rush", year: "2025" },
-        { name: "Piggy Riches 2 Megaways", url: "https://redtiger.com/games/piggy-riches-2-megaways", year: "2025" },
-        { name: "Piggy Riches Begins", url: "https://redtiger.com/games/piggy-riches-begins", year: "2025" },
-        { name: "Bass Boss", url: "https://redtiger.com/games/bass-boss", year: "2025" },
-        { name: "Bass Boss 2", url: "https://redtiger.com/games/bass-boss", year: "2025" },
-        { name: "Judgment Day MegaWays", url: "https://redtiger.com/games/judgement-day-megaways", year: "2024" },
-        { name: "Monsters Unchained", url: "https://redtiger.com/games/monsters-unchained", year: "2024" },
+        { name: "DragonBoyz", url: "https://redtiger.com/games/dragon-boyz", year: "2025", posterUrl: "https://fan-cdn.nolimitcity.com/dragon_boyz_rt_fansite_splashpost_2560x820_39960009b9.png" },
+        { name: "Big Rich Turkeys", url: "https://redtiger.com/games/big-rich-turkeys", year: "2025", posterUrl: "https://fan-cdn.nolimitcity.com/big_rich_turkeys_rt_fansite_splashpost_2560x820_9c03a22d16.png" },
+        { name: "Cash Lamps", url: "https://redtiger.com/games/cash-lamps", year: "2025", posterUrl: "https://fan-cdn.nolimitcity.com/cash_lamps_rt_fansite_splashpost_2560x820_12435fcc5e.png" },
+        { name: "Monopoly\u00AE Rent Rush", url: "https://redtiger.com/games/monopoly-rent-rush", year: "2025", posterUrl: "https://fan-cdn.nolimitcity.com/monopoly_rent_rush_rt_fansite_splashpost_2560x820_278a845f43.png" },
+        { name: "Piggy Riches 2 Megaways", url: "https://redtiger.com/games/piggy-riches-2-megaways", year: "2025", posterUrl: "https://fan-cdn.nolimitcity.com/piggy_riches_megaways_2_rt_fansite_splashposter_2560x820px_98d7a6d429.jpg" },
+        { name: "Piggy Riches Begins", url: "https://redtiger.com/games/piggy-riches-begins", year: "2025", posterUrl: "https://fan-cdn.nolimitcity.com/piggy_riches_begins_rt_fansite_splashpost_2560x820_01_eec12dd361.png" },
+        { name: "Bass Boss", url: "https://redtiger.com/games/bass-boss", year: "2025", posterUrl: "https://fan-cdn.nolimitcity.com/bass_boss_rt_fansite_splashposter_2560x820px_f87fb493a0.jpg" },
+        { name: "Bass Boss 2", url: "https://redtiger.com/games/bass-boss", year: "2025", posterUrl: "https://fan-cdn.nolimitcity.com/bass_boss_rt_fansite_splashposter_2560x820px_f87fb493a0.jpg" },
+        { name: "Judgment Day MegaWays", url: "https://redtiger.com/games/judgement-day-megaways", year: "2024", posterUrl: "https://fan-cdn.nolimitcity.com/judgement_day_megaways_rt_splashpost_2560x820px_17e4378ab3.png" },
+        { name: "Monsters Unchained", url: "https://redtiger.com/games/monsters-unchained", year: "2024", posterUrl: "https://fan-cdn.nolimitcity.com/monsters_unchained_rt_fansite_splashposter_2560x820px_74868c68b2.jpg" },
         { name: "Cake and Ice Cream", url: "https://redtiger.com/games/cake-and-ice-cream", year: "2024" },
         { name: "Cai Shen 168", url: "https://redtiger.com/games/cai-shen-168", year: "2024" },
         { name: "Piñatas & Ponies", url: "https://redtiger.com/games/pinatas-and-ponies", year: "2024" },

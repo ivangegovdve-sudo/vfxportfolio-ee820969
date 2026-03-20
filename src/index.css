@@ -187,14 +187,14 @@
     }
   }
 
-  /* Hero avatar breathing animation */
+  /* Hero avatar breathing animation — slow 2.5s, 2.5% scale */
   .hero-breathe {
-    animation: hero-breathe 6s ease-in-out infinite;
+    animation: hero-breathe 2.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   }
 
   @keyframes hero-breathe {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.015); }
+    50% { transform: scale(1.025); }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -205,5 +205,14 @@
 
   .hero-breathe:hover {
     animation-play-state: paused;
+  }
+
+  /* Red Tiger rail scroll-trap */
+  .rail-scroll-trap {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .rail-scroll-trap::-webkit-scrollbar {
+    display: none;
   }
 }

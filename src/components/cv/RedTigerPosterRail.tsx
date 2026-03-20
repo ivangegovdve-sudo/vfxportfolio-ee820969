@@ -1,531 +1,277 @@
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { ExternalLink, Gamepad2 } from "lucide-react";
-import { motion, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ExternalLink, Gamepad2, ChevronDown } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import TrademarkText from "./TrademarkText";
 import type { PortfolioItem } from "@/data/cvData";
 
-const NAV_OFFSET_PX = 64;
-const EXIT_BUFFER_PX = 96;
-const POSTER_COUNT = 8;
-const COMPACT_LIST_COUNT = 6;
+const POSTER_COUNT = 10;
+const DEFAULT_VISIBLE_GAMES = 8;
 
 type RailGame = NonNullable<PortfolioItem["games"]>[number];
-type MeasureNode = HTMLAnchorElement | HTMLDivElement;
-
-type PosterCard = {
-  name: string;
-  year: string;
-  url?: string;
-  posterSrc: string;
-};
-
-type LayoutMetrics = {
-  viewportHeightPx: number;
-  stickyHeightPx: number;
-  viewportWidthPx: number;
-  trackWidthPx: number;
-  cardWidthPx: number;
-  gapPx: number;
-  travelPx: number;
-  wrapperHeightPx: number;
-  trackStartPadPx: number;
-};
-
-const EMPTY_METRICS: LayoutMetrics = {
-  viewportHeightPx: 0,
-  stickyHeightPx: 0,
-  viewportWidthPx: 0,
-  trackWidthPx: 0,
-  cardWidthPx: 0,
-  gapPx: 0,
-  travelPx: 0,
-  wrapperHeightPx: 0,
-  trackStartPadPx: 0,
-};
-
-const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
-
-const smoothstep = (value: number) => value * value * (3 - 2 * value);
 
 const toYearNumber = (year?: string) => {
   const parsed = Number(year);
   return Number.isFinite(parsed) ? parsed : 0;
 };
 
-const hasMetricsChanged = (current: LayoutMetrics, next: LayoutMetrics) =>
-  Object.keys(current).some((key) => current[key as keyof LayoutMetrics] !== next[key as keyof LayoutMetrics]);
-
 const RedTigerPosterRail = ({ item }: { item: PortfolioItem }) => {
   const reduceMotion = useReducedMotion();
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const viewportRef = useRef<HTMLDivElement | null>(null);
-  const trackRef = useRef<HTMLDivElement | null>(null);
-  const firstCardRef = useRef<MeasureNode | null>(null);
-  const [metrics, setMetrics] = useState<LayoutMetrics>(EMPTY_METRICS);
+  const railRef = useRef<HTMLDivElement | null>(null);
+  const shellRef = useRef<HTMLDivElement | null>(null);
+  const [isHovering, setIsHovering] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedYear, setSelectedYear] = useState("all");
 
   const sortedGames = useMemo(() => {
-    if (!item.games) {
-      return [] as RailGame[];
-    }
-
+    if (!item.games) return [] as RailGame[];
     return item.games
       .map((game, index) => ({ game, index, yearNumber: toYearNumber(game.year) }))
-      .sort((a, b) => {
-        if (b.yearNumber !== a.yearNumber) {
-          return b.yearNumber - a.yearNumber;
-        }
-
-        return a.index - b.index;
-      })
+      .sort((a, b) => (b.yearNumber !== a.yearNumber ? b.yearNumber - a.yearNumber : a.index - b.index))
       .map(({ game }) => game);
   }, [item.games]);
 
-  const posters = useMemo<PosterCard[]>(
-    () =>
-      sortedGames.slice(0, POSTER_COUNT).map((game) => ({
-        name: game.name,
-        year: game.year ?? "",
-        url: game.url,
-        posterSrc: item.thumbnail,
-      })),
-    [item.thumbnail, sortedGames]
+  const posters = useMemo(
+    () => sortedGames.filter((g) => g.posterUrl).slice(0, POSTER_COUNT),
+    [sortedGames]
   );
 
-  const compactList = useMemo(() => sortedGames.filter((game) => game.url).slice(0, COMPACT_LIST_COUNT), [sortedGames]);
+  const years = useMemo(() => {
+    if (!item.games) return [];
+    return [...new Set(item.games.map((g) => g.year).filter(Boolean))]
+      .sort((a, b) => Number(b) - Number(a))
+      .map(String);
+  }, [item.games]);
 
-  const setFirstCardNode = useCallback((node: MeasureNode | null) => {
-    firstCardRef.current = node;
+  const filteredGames = useMemo(() => {
+    if (!item.games) return [];
+    if (selectedYear === "all") return sortedGames;
+    return sortedGames.filter((g) => String(g.year) === selectedYear);
+  }, [sortedGames, selectedYear, item.games]);
+
+  const visibleGames = isExpanded ? filteredGames : filteredGames.slice(0, DEFAULT_VISIBLE_GAMES);
+  const canToggle = filteredGames.length > DEFAULT_VISIBLE_GAMES;
+  const listId = `${item.id}-games-list`;
+
+  // Wheel-trap: when mouse is over the rail, capture wheel events and scroll the rail horizontally
+  useEffect(() => {
+    const rail = railRef.current;
+    const shell = shellRef.current;
+    if (!rail || !shell) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      const { scrollLeft, scrollWidth, clientWidth } = rail;
+      const maxScroll = scrollWidth - clientWidth;
+      if (maxScroll <= 0) return;
+
+      const atStart = scrollLeft <= 0 && e.deltaY < 0;
+      const atEnd = scrollLeft >= maxScroll - 1 && e.deltaY > 0;
+
+      if (!atStart && !atEnd) {
+        e.preventDefault();
+        rail.scrollLeft += e.deltaY;
+      }
+    };
+
+    shell.addEventListener("wheel", handleWheel, { passive: false });
+    return () => shell.removeEventListener("wheel", handleWheel);
   }, []);
 
-  const measureLayout = useCallback(() => {
-    if (
-      typeof window === "undefined" ||
-      !viewportRef.current ||
-      !trackRef.current ||
-      !firstCardRef.current ||
-      posters.length === 0
-    ) {
-      return;
-    }
-
-    const viewportHeightPx = window.innerHeight;
-    const stickyHeightPx = Math.max(viewportHeightPx - NAV_OFFSET_PX, 0);
-    const viewportWidthPx = Math.round(viewportRef.current.clientWidth);
-    const cardWidthPx = Math.round(firstCardRef.current.getBoundingClientRect().width);
-    const trackStyles = window.getComputedStyle(trackRef.current);
-    const gapPx = Math.round(parseFloat(trackStyles.columnGap || trackStyles.gap || "0") || 0);
-    const trackStartPadPx = Math.max(Math.round((viewportWidthPx - cardWidthPx) / 2), 0);
-    const derivedTrackWidthPx =
-      posters.length * cardWidthPx + Math.max(posters.length - 1, 0) * gapPx + trackStartPadPx * 2;
-    const trackWidthPx = Math.max(Math.round(trackRef.current.scrollWidth), derivedTrackWidthPx);
-    const travelPx = Math.max(trackWidthPx - viewportWidthPx, 0);
-    const wrapperHeightPx = stickyHeightPx + travelPx + EXIT_BUFFER_PX;
-
-    const nextMetrics: LayoutMetrics = {
-      viewportHeightPx,
-      stickyHeightPx,
-      viewportWidthPx,
-      trackWidthPx,
-      cardWidthPx,
-      gapPx,
-      travelPx,
-      wrapperHeightPx,
-      trackStartPadPx,
-    };
-
-    setMetrics((current) => (hasMetricsChanged(current, nextMetrics) ? nextMetrics : current));
-  }, [posters.length]);
-
-  useLayoutEffect(() => {
-    if (reduceMotion) {
-      return;
-    }
-
-    measureLayout();
-    const frame = window.requestAnimationFrame(measureLayout);
-
-    if (typeof ResizeObserver === "undefined") {
-      window.addEventListener("resize", measureLayout);
-
-      return () => {
-        window.cancelAnimationFrame(frame);
-        window.removeEventListener("resize", measureLayout);
-      };
-    }
-
-    const observer = new ResizeObserver(() => measureLayout());
-
-    if (viewportRef.current) {
-      observer.observe(viewportRef.current);
-    }
-
-    if (trackRef.current) {
-      observer.observe(trackRef.current);
-    }
-
-    if (firstCardRef.current) {
-      observer.observe(firstCardRef.current);
-    }
-
-    window.addEventListener("resize", measureLayout);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      observer.disconnect();
-      window.removeEventListener("resize", measureLayout);
-    };
-  }, [measureLayout, reduceMotion]);
-
-  const { scrollYProgress } = useScroll({
-    target: wrapperRef,
-    offset: ["start start", "end start"],
-  });
-
-  const xRaw = useTransform(scrollYProgress, (value) => -metrics.travelPx * value);
-  const x = useSpring(xRaw, {
-    stiffness: 320,
-    damping: 34,
-    mass: 0.45,
-  });
-  const ambientShift = useTransform(x, (latest) => latest * -0.08);
-
-  const renderStaticRail = reduceMotion || posters.length === 0;
+  const entryVariants = {
+    hidden: reduceMotion ? { opacity: 1 } : { opacity: 0, y: 24, filter: "blur(4px)" },
+    visible: reduceMotion
+      ? { opacity: 1 }
+      : { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const } },
+  };
 
   return (
-    <div
-      data-red-tiger-shell
-      className="relative mt-10 overflow-hidden rounded-[1.75rem] border border-border/70 bg-[linear-gradient(180deg,rgba(12,16,26,0.98)_0%,rgba(22,29,42,0.92)_26%,rgba(245,243,238,0.98)_65%,rgba(252,251,248,1)_100%)] shadow-[0_24px_80px_rgba(15,23,42,0.16)]"
+    <motion.div
+      ref={shellRef}
+      variants={entryVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.15 }}
+      className="mt-8 overflow-hidden rounded-2xl border border-border bg-background shadow-sm transition-shadow motion-medium md:hover:shadow-lg"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
     >
-      <div className="pointer-events-none absolute inset-x-10 top-6 h-28 rounded-full bg-primary/15 blur-3xl" aria-hidden="true" />
-      <div className="pointer-events-none absolute inset-x-[18%] top-24 h-32 rounded-full bg-white/10 blur-3xl" aria-hidden="true" />
-
-      <div className="relative overflow-hidden border-b border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.2),transparent_38%),linear-gradient(180deg,rgba(17,24,39,0.96),rgba(15,23,42,0.88))] px-6 pb-8 pt-8 md:px-8 md:pb-10 md:pt-9">
-        <div className="absolute inset-0 bg-[linear-gradient(140deg,rgba(255,255,255,0.06),transparent_42%,rgba(251,191,36,0.08)_100%)]" aria-hidden="true" />
+      {/* Header */}
+      <div className="relative overflow-hidden border-b border-white/10 bg-[linear-gradient(135deg,hsl(220_20%_10%)_0%,hsl(220_18%_14%)_100%)] px-6 pb-6 pt-7 md:px-8 md:pb-7 md:pt-8">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(140deg,rgba(251,191,36,0.12),transparent_42%)]" aria-hidden="true" />
         <div className="relative">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/70">
             <Gamepad2 className="h-3.5 w-3.5 text-primary" />
             Featured Releases
           </div>
-          <h3 className="mt-4 font-display text-2xl font-bold leading-tight text-white md:text-[2rem]">
+          <h3 className="mt-3 font-display text-xl font-bold leading-tight text-white md:text-2xl">
             <TrademarkText text={item.title} />
           </h3>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/75 md:text-[0.95rem]">
-            {item.descriptor}
-          </p>
+          <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-white/70">{item.descriptor}</p>
         </div>
       </div>
 
-      {renderStaticRail ? (
-        <StaticPosterStrip
-          compactList={compactList}
-          item={item}
-          posters={posters}
-          setFirstCardNode={setFirstCardNode}
-        />
-      ) : (
-        <div
-          ref={wrapperRef}
-          data-red-tiger-sticky-wrapper
-          className="relative"
-          style={{ height: metrics.wrapperHeightPx || undefined }}
-        >
+      {/* Poster Rail — horizontal scroll with wheel trap */}
+      {posters.length > 0 && (
+        <div className="relative border-b border-border/60">
+          {/* Edge fades */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-background to-transparent" aria-hidden="true" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-background to-transparent" aria-hidden="true" />
+
           <div
-            ref={viewportRef}
-            className="sticky overflow-hidden border-b border-border/60 bg-[linear-gradient(180deg,rgba(250,248,243,0.98)_0%,rgba(245,242,235,0.96)_100%)]"
-            style={{
-              top: NAV_OFFSET_PX,
-              height: metrics.stickyHeightPx || undefined,
-            }}
+            ref={railRef}
+            className="rail-scroll-trap flex gap-4 overflow-x-auto px-6 py-6 md:gap-5 md:px-8 md:py-8"
           >
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(255,255,255,0.48),transparent)]" aria-hidden="true" />
-            <motion.div
-              aria-hidden="true"
-              className="pointer-events-none absolute left-[18%] top-12 h-32 w-40 rounded-full bg-primary/12 blur-3xl"
-              style={{ x: ambientShift }}
-            />
-            <motion.div
-              aria-hidden="true"
-              className="pointer-events-none absolute bottom-14 right-[16%] h-24 w-32 rounded-full bg-slate-900/10 blur-3xl"
-              style={{ x: ambientShift }}
-            />
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-14 bg-[linear-gradient(90deg,rgba(245,242,235,0.96),transparent)]" aria-hidden="true" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-14 bg-[linear-gradient(270deg,rgba(245,242,235,0.96),transparent)]" aria-hidden="true" />
-
-            <div className="flex h-full flex-col justify-between px-6 pb-7 pt-8 md:px-8 md:pb-8 md:pt-10">
-              <div className="relative flex-1 overflow-hidden" data-red-tiger-viewport>
-                <motion.div
-                  ref={trackRef}
-                  data-red-tiger-track
-                  className="flex h-full items-center gap-5"
-                  style={{
-                    x,
-                    paddingLeft: metrics.trackStartPadPx,
-                    paddingRight: metrics.trackStartPadPx,
-                    willChange: "transform",
-                  }}
-                >
-                  {posters.map((poster, index) => (
-                    <PosterCardComponent
-                      key={poster.name}
-                      index={index}
-                      metrics={metrics}
-                      poster={poster}
-                      setMeasureNode={index === 0 ? setFirstCardNode : undefined}
-                      x={x}
-                    />
-                  ))}
-                </motion.div>
-              </div>
-
-              <CompactReleaseList compactList={compactList} />
-              <RailFooter item={item} />
-            </div>
+            {posters.map((game, i) => (
+              <motion.a
+                key={game.name}
+                href={game.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={reduceMotion ? false : { opacity: 0, scale: 0.92 }}
+                whileInView={reduceMotion ? undefined : { opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={
+                  reduceMotion
+                    ? { duration: 0 }
+                    : { duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }
+                }
+                whileHover={reduceMotion ? undefined : { y: -6, scale: 1.03 }}
+                whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+                className="group relative block w-[11rem] shrink-0 overflow-hidden rounded-xl border border-border/60 bg-slate-950 shadow-sm transition-[border-color,box-shadow] motion-medium hover:border-primary/40 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:w-[13rem]"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <img
+                    src={game.posterUrl || item.thumbnail}
+                    alt={game.name}
+                    className="h-full w-full object-cover transition-transform duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
+                    loading="lazy"
+                    decoding="async"
+                    width={480}
+                    height={300}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                  {/* Hover glow */}
+                  <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.15),transparent_60%)]" />
+                  </div>
+                </div>
+                <div className="relative px-3 pb-3 pt-2">
+                  <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{game.year}</p>
+                  <p className="mt-0.5 font-display text-sm font-semibold leading-snug text-foreground line-clamp-2">
+                    <TrademarkText text={game.name} />
+                  </p>
+                </div>
+                <span className="absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-black/30 text-white opacity-0 backdrop-blur-sm transition-opacity motion-medium group-hover:opacity-100">
+                  <ExternalLink className="h-3 w-3" />
+                </span>
+              </motion.a>
+            ))}
           </div>
         </div>
       )}
-    </div>
-  );
-};
 
-function StaticPosterStrip({
-  compactList,
-  item,
-  posters,
-  setFirstCardNode,
-}: {
-  compactList: RailGame[];
-  item: PortfolioItem;
-  posters: PosterCard[];
-  setFirstCardNode: (node: MeasureNode | null) => void;
-}) {
-  return (
-    <div className="relative border-t border-white/8 bg-[linear-gradient(180deg,rgba(250,248,243,0.98)_0%,rgba(245,242,235,0.96)_100%)] px-6 pb-7 pt-8 md:px-8 md:pb-8 md:pt-10">
-      <div className="-mx-6 overflow-x-auto px-6 pb-4 md:-mx-8 md:px-8">
-        <div className="flex min-w-max gap-5">
-          {posters.map((poster, index) => (
-            <PosterCardComponent
-              key={poster.name}
-              index={index}
-              interactive={false}
-              metrics={EMPTY_METRICS}
-              poster={poster}
-              setMeasureNode={index === 0 ? setFirstCardNode : undefined}
-            />
-          ))}
-        </div>
-      </div>
+      {/* Games Dashboard */}
+      <div className="p-6 md:p-8">
+        {item.games && item.games.length > 0 && (
+          <div>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h4 className="inline-flex items-center gap-2 text-sm font-medium text-foreground">
+                <Gamepad2 className="w-4 h-4 text-primary" />
+                Released / Published games
+              </h4>
+              {years.length > 0 && (
+                <div className="inline-flex items-center gap-2">
+                  <label htmlFor={`${item.id}-year-filter`} className="text-xs text-muted-foreground">
+                    Filter by year
+                  </label>
+                  <select
+                    id={`${item.id}-year-filter`}
+                    value={selectedYear}
+                    onChange={(event) => {
+                      setSelectedYear(event.target.value);
+                      setIsExpanded(false);
+                    }}
+                    className="h-8 rounded-md border border-border bg-background px-2.5 text-xs text-foreground transition-colors motion-short focus:outline-none focus:ring-2 focus:ring-ring"
+                    aria-label="Filter released games by year"
+                  >
+                    <option value="all">All years</option>
+                    {years.map((year) => (
+                      <option key={year} value={year}>{year}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
 
-      <CompactReleaseList compactList={compactList} />
-      <RailFooter item={item} />
-    </div>
-  );
-}
+            <div id={listId} className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+              {visibleGames.map((game) => {
+                const hasUrl = !!game.url;
+                const gameMeta = game.year ? ` (${game.year})` : "";
+                return hasUrl ? (
+                  <a
+                    key={game.name}
+                    href={game.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group tag !flex cursor-pointer items-center justify-between gap-2 text-left transition-colors motion-short hover:text-primary"
+                    title={game.name}
+                    aria-label={`Open ${game.name}${gameMeta} in a new tab`}
+                  >
+                    <span className="truncate">
+                      <TrademarkText text={game.name} />
+                    </span>
+                    <ExternalLink
+                      className="h-3.5 w-3.5 shrink-0 opacity-100 transition-opacity motion-short md:opacity-0 md:group-hover:opacity-100"
+                      aria-hidden="true"
+                    />
+                  </a>
+                ) : (
+                  <span
+                    key={game.name}
+                    className="tag !flex items-center justify-between gap-2 text-left opacity-80"
+                    title={game.name}
+                  >
+                    <span className="truncate">
+                      <TrademarkText text={game.name} />
+                    </span>
+                  </span>
+                );
+              })}
+            </div>
 
-function CompactReleaseList({ compactList }: { compactList: RailGame[] }) {
-  if (compactList.length === 0) {
-    return null;
-  }
+            {filteredGames.length === 0 && (
+              <p className="mt-4 text-xs text-muted-foreground">No released games found for this year.</p>
+            )}
 
-  return (
-    <div className="mt-8 border-t border-border/70 pt-5" data-red-tiger-compact-list>
-      <p className="mb-3 text-xs uppercase tracking-[0.18em] text-muted-foreground/80">More releases</p>
-      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 md:grid-cols-3">
-        {compactList.map((game) => (
+            {canToggle && (
+              <button
+                type="button"
+                onClick={() => setIsExpanded((prev) => !prev)}
+                className="mt-4 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-lg border border-border px-4 text-sm font-medium text-primary transition-[background-color,color,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:w-auto md:hover:bg-secondary/60 md:hover:text-primary/80"
+                aria-expanded={isExpanded}
+                aria-controls={listId}
+              >
+                {isExpanded ? "Show fewer games" : "View all released games"}
+                <ChevronDown className={`h-4 w-4 transition-transform motion-short ${isExpanded ? "rotate-180" : ""}`} />
+              </button>
+            )}
+          </div>
+        )}
+
+        <div className="mt-6 pt-5 border-t border-border flex items-center justify-between gap-3">
+          <p className="text-xs text-muted-foreground">Published under the Red Tiger brand</p>
           <a
-            key={game.name}
-            href={game.url}
+            href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group tag !flex min-h-11 items-center justify-between gap-2 text-left transition-[transform,color,box-shadow] motion-medium hover:-translate-y-0.5 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            aria-label={`Open ${game.name}${game.year ? ` (${game.year})` : ""} in a new tab`}
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-[box-shadow,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hover:-translate-y-0.5 md:hover:shadow-md"
           >
-            <span className="truncate">
-              <TrademarkText text={game.name} />
-            </span>
-            <ExternalLink
-              className="h-3.5 w-3.5 shrink-0 opacity-100 transition-opacity motion-short md:opacity-0 md:group-hover:opacity-100"
-              aria-hidden="true"
-            />
+            {item.ctaLabel || "View"}
+            <ExternalLink className="w-3.5 h-3.5" />
           </a>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function RailFooter({ item }: { item: PortfolioItem }) {
-  return (
-    <div className="mt-6 flex items-center justify-between gap-3 border-t border-border/70 pt-5">
-      <p className="text-xs text-muted-foreground">Published under the Red Tiger brand</p>
-      <a
-        href={item.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-[box-shadow,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hover:-translate-y-0.5 md:hover:shadow-md"
-      >
-        {item.ctaLabel || "View"}
-        <ExternalLink className="h-3.5 w-3.5" />
-      </a>
-    </div>
-  );
-}
-
-function PosterCardComponent({
-  index,
-  interactive = true,
-  metrics,
-  poster,
-  setMeasureNode,
-  x,
-}: {
-  index: number;
-  interactive?: boolean;
-  metrics: LayoutMetrics;
-  poster: PosterCard;
-  setMeasureNode?: (node: MeasureNode | null) => void;
-  x?: MotionValue<number>;
-}) {
-  const stepPx = metrics.cardWidthPx + metrics.gapPx || 1;
-
-  const emphasis = useTransform(() => {
-    if (!interactive || !x || !metrics.viewportWidthPx || !metrics.cardWidthPx) {
-      return 1;
-    }
-
-    const cardCenterX = metrics.trackStartPadPx + index * stepPx + metrics.cardWidthPx / 2 + x.get();
-    const viewportCenterX = metrics.viewportWidthPx / 2;
-    const distPx = Math.abs(cardCenterX - viewportCenterX);
-    const d = clamp(distPx / (stepPx * 1.5), 0, 1);
-    const u = 1 - d;
-    return smoothstep(u);
-  });
-
-  const offsetRatio = useTransform(() => {
-    if (!interactive || !x || !metrics.viewportWidthPx || !metrics.cardWidthPx) {
-      return 0;
-    }
-
-    const cardCenterX = metrics.trackStartPadPx + index * stepPx + metrics.cardWidthPx / 2 + x.get();
-    const viewportCenterX = metrics.viewportWidthPx / 2;
-    return (cardCenterX - viewportCenterX) / stepPx;
-  });
-
-  const scale = useTransform(() => (interactive ? 0.92 + emphasis.get() * 0.12 : 1));
-  const opacity = useTransform(() => (interactive ? 0.58 + emphasis.get() * 0.42 : 1));
-  const lift = useTransform(() => (interactive ? 18 - emphasis.get() * 18 : 0));
-  const zIndex = useTransform(() => Math.round(interactive ? 10 + emphasis.get() * 40 : 1));
-  const rotate = useTransform(() => {
-    if (!interactive) {
-      return 0;
-    }
-
-    const smooth = emphasis.get();
-    if (smooth > 0.85) {
-      return 0;
-    }
-
-    return clamp(-offsetRatio.get() * 5.5, -7, 7);
-  });
-
-  const shadow = useTransform(() => {
-    const smooth = emphasis.get();
-    const y = Math.round(18 + smooth * 22);
-    const blur = Math.round(32 + smooth * 26);
-    const alpha = (0.14 + smooth * 0.14).toFixed(3);
-    return `0 ${y}px ${blur}px rgba(15, 23, 42, ${alpha})`;
-  });
-
-  const borderColor = useTransform(() => {
-    const smooth = emphasis.get();
-    return `rgba(251, 191, 36, ${(0.14 + smooth * 0.2).toFixed(3)})`;
-  });
-
-  const baseClassName =
-    "group relative block w-[13.75rem] shrink-0 overflow-hidden rounded-[1.35rem] border bg-slate-950 text-left transition-[border-color,box-shadow,opacity] motion-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:w-[15.5rem]";
-
-  const posterContent = (
-    <>
-      <div className="relative aspect-[3/4] overflow-hidden">
-        <img
-          src={poster.posterSrc}
-          alt={poster.name}
-          className="h-full w-full object-cover transition-transform duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04] group-focus-visible:scale-[1.04]"
-          loading="lazy"
-          decoding="async"
-          width={480}
-          height={640}
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.12),transparent_26%,rgba(15,23,42,0.78)_100%)]" />
-        <div className="absolute inset-0 opacity-0 transition-opacity motion-medium group-hover:opacity-100 group-focus-visible:opacity-100">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.26),transparent_45%)]" />
-        </div>
-
-        <div className="absolute inset-x-0 bottom-0 p-4">
-          <p className="text-[11px] uppercase tracking-[0.12em] text-white/70">{poster.year || "Red Tiger"}</p>
-          <p className="mt-1 font-display text-base font-semibold leading-snug text-white">
-            <TrademarkText text={poster.name} />
-          </p>
         </div>
       </div>
-
-      {poster.url && (
-        <span className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-black/20 text-white/85 opacity-0 shadow-sm backdrop-blur-sm transition-opacity motion-medium group-hover:opacity-100 group-focus-visible:opacity-100">
-          <ExternalLink className="h-3.5 w-3.5" />
-        </span>
-      )}
-    </>
-  );
-
-  if (poster.url) {
-    return (
-      <motion.a
-        ref={setMeasureNode}
-        data-red-tiger-poster
-        href={poster.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`${baseClassName} md:hover:border-primary/35`}
-        style={
-          interactive
-            ? {
-                borderColor,
-                boxShadow: shadow,
-                opacity,
-                rotate,
-                scale,
-                y: lift,
-                zIndex,
-              }
-            : undefined
-        }
-      >
-        {posterContent}
-      </motion.a>
-    );
-  }
-
-  return (
-    <motion.div
-      ref={setMeasureNode}
-      data-red-tiger-poster
-      className={baseClassName}
-      style={
-        interactive
-          ? {
-              borderColor,
-              boxShadow: shadow,
-              opacity,
-              rotate,
-              scale,
-              y: lift,
-              zIndex,
-            }
-          : undefined
-      }
-    >
-      {posterContent}
     </motion.div>
   );
-}
+};
 
 export default RedTigerPosterRail;
