@@ -1,6 +1,7 @@
 import { expect, Page, test } from "@playwright/test";
 
 const MOBILE_WIDTHS = [320, 375, 430] as const;
+const POSTER_COUNT = 8;
 
 const normalizeUrl = (rawUrl: string): string => {
   try {
@@ -46,6 +47,57 @@ const getNavMetrics = () => {
   }
 
   return { minWidth, minHeight, hasOverlap, outOfBounds };
+};
+
+const getRedTigerRailMetrics = () => {
+  const parseTranslateX = (transform: string) => {
+    if (!transform || transform === "none") {
+      return 0;
+    }
+
+    const matrix3dMatch = transform.match(/matrix3d\((.+)\)/);
+    if (matrix3dMatch) {
+      const values = matrix3dMatch[1].split(",").map((value) => Number.parseFloat(value.trim()));
+      return Number.isFinite(values[12]) ? values[12] : 0;
+    }
+
+    const matrixMatch = transform.match(/matrix\((.+)\)/);
+    if (matrixMatch) {
+      const values = matrixMatch[1].split(",").map((value) => Number.parseFloat(value.trim()));
+      return Number.isFinite(values[4]) ? values[4] : 0;
+    }
+
+    return 0;
+  };
+
+  const wrapper = document.querySelector("[data-red-tiger-sticky-wrapper]") as HTMLElement | null;
+  const viewport = document.querySelector("[data-red-tiger-viewport]") as HTMLElement | null;
+  const track = document.querySelector("[data-red-tiger-track]") as HTMLElement | null;
+  const posters = Array.from(document.querySelectorAll("[data-red-tiger-poster]")) as HTMLElement[];
+
+  if (!wrapper || !viewport || !track || posters.length === 0) {
+    return {
+      focusWithinBounds: false,
+      posterCount: 0,
+      scrollWidth: document.documentElement.scrollWidth,
+      stickyEngaged: false,
+      translateX: 0,
+      viewportHeight: 0,
+      wrapperHeight: 0,
+    };
+  }
+
+  const firstPosterRect = posters[0].getBoundingClientRect();
+
+  return {
+    focusWithinBounds: firstPosterRect.left >= -1 && firstPosterRect.right <= window.innerWidth + 1,
+    posterCount: posters.length,
+    scrollWidth: document.documentElement.scrollWidth,
+    stickyEngaged: wrapper.getBoundingClientRect().height > viewport.getBoundingClientRect().height,
+    translateX: parseTranslateX(getComputedStyle(track).transform),
+    viewportHeight: Math.round(viewport.getBoundingClientRect().height),
+    wrapperHeight: Math.round(wrapper.getBoundingClientRect().height),
+  };
 };
 
 const attachProbe = (page: Page) => {
@@ -238,54 +290,51 @@ test("stage-a smoke matrices", async ({ page, request }) => {
     navRows.push(`${width} | ${overlap} | ${boundsOK} | ${touchTargets} | ${consoleClean}`);
 
     await page.locator("#portfolio").scrollIntoViewIfNeeded();
-    const toggleButton = page.locator("#portfolio button[aria-controls$='games-list']").first();
-    await expect(toggleButton).toBeVisible();
+    const railWrapper = page.locator("[data-red-tiger-sticky-wrapper]");
+    await expect(railWrapper).toBeVisible();
+    await expect(page.locator("[data-red-tiger-track]")).toBeVisible();
+    await expect(page.locator("[data-red-tiger-poster]")).toHaveCount(POSTER_COUNT);
+    await page.locator("[data-red-tiger-poster]").first().focus();
 
-    const buttonSemantics = (await toggleButton.evaluate((element) => {
-      const node = element;
-      return (
-        node.tagName.toLowerCase() === "button" &&
-        node.hasAttribute("aria-controls") &&
-        node.hasAttribute("aria-expanded")
-      );
-    }))
-      ? "Y"
-      : "N";
+    await page.evaluate(() => {
+      const wrapper = document.querySelector("[data-red-tiger-sticky-wrapper]") as HTMLElement | null;
+      if (!wrapper) {
+        return;
+      }
 
-    const gamesGrid = page.locator("#portfolio [id$='games-list']").first();
-    const collapsedCount = await gamesGrid.locator(":scope > *").count();
-    const heights = [await gamesGrid.evaluate((node) => Math.round(node.getBoundingClientRect().height))];
+      const nextTop = wrapper.getBoundingClientRect().top + window.scrollY - 72;
+      window.scrollTo({ top: Math.max(nextTop, 0), behavior: "instant" });
+    });
+    await page.waitForTimeout(220);
 
-    await toggleButton.click();
-    await expect(toggleButton).toHaveAttribute("aria-expanded", "true");
-    for (const delay of [60, 130, 240]) {
-      await page.waitForTimeout(delay);
-      heights.push(await gamesGrid.evaluate((node) => Math.round(node.getBoundingClientRect().height)));
-    }
-
-    const expandedCount = await gamesGrid.locator(":scope > *").count();
-    const toggleWorks = expandedCount > collapsedCount ? "Y" : "N";
-    const noOverflow = (await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1))
-      ? "Y"
-      : "N";
-
+    const railStart = await page.evaluate(getRedTigerRailMetrics);
     const scrollBefore = await page.evaluate(() => window.scrollY);
-    await page.mouse.wheel(0, 420);
-    await page.waitForTimeout(120);
+    await page.mouse.wheel(0, 320);
+    await page.waitForTimeout(180);
+    const railMid = await page.evaluate(getRedTigerRailMetrics);
+    await page.mouse.wheel(0, 320);
+    await page.waitForTimeout(180);
+    const railEnd = await page.evaluate(getRedTigerRailMetrics);
     const scrollAfter = await page.evaluate(() => window.scrollY);
+
+    const stickyEngaged = railStart.stickyEngaged ? "Y" : "N";
+    const directionOK = railMid.translateX < railStart.translateX - 2 ? "Y" : "N";
+    const monotonic = railEnd.translateX <= railMid.translateX - 2 ? "Y" : "N";
+    const noOverflow = railEnd.scrollWidth <= width + 1 ? "Y" : "N";
     const scrollOK = scrollAfter > scrollBefore ? "Y" : "N";
-    const noSnap = new Set(heights).size > 1 ? "Y" : "N";
+    const focusSafe = railStart.focusWithinBounds ? "Y" : "N";
 
-    await toggleButton.click();
-    await expect(toggleButton).toHaveAttribute("aria-expanded", "false");
-
-    expect(buttonSemantics).toBe("Y");
-    expect(toggleWorks).toBe("Y");
+    expect(railStart.posterCount).toBe(POSTER_COUNT);
+    expect(stickyEngaged).toBe("Y");
+    expect(directionOK).toBe("Y");
+    expect(monotonic).toBe("Y");
     expect(noOverflow).toBe("Y");
     expect(scrollOK).toBe("Y");
-    expect(noSnap).toBe("Y");
+    expect(focusSafe).toBe("Y");
 
-    redTigerRows.push(`${width} | ${buttonSemantics} | ${toggleWorks} | ${noOverflow} | ${scrollOK} | ${noSnap}`);
+    redTigerRows.push(
+      `${width} | ${stickyEngaged} | ${directionOK} | ${monotonic} | ${noOverflow} | ${scrollOK} | ${focusSafe}`
+    );
 
     if (width === 320) {
       previewThumbnailRows = await collectPreviewThumbnailRows(page, probe);
@@ -307,7 +356,7 @@ test("stage-a smoke matrices", async ({ page, request }) => {
   }
 
   console.log("RED TIGER MATRIX (320/375/430)");
-  console.log("width | buttonSemantics(Y/N) | toggleWorks(Y/N) | noOverflow(Y/N) | scrollOK(Y/N) | noSnap(Y/N)");
+  console.log("width | stickyEngaged(Y/N) | directionOK(Y/N) | monotonic(Y/N) | noOverflow(Y/N) | scrollOK(Y/N) | focusSafe(Y/N)");
   for (const row of redTigerRows) {
     console.log(row);
   }
