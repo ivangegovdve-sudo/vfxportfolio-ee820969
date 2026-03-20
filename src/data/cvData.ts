@@ -57,7 +57,7 @@ export interface PortfolioItem {
   ctaLabel?: string;
   thumbnail: string;
   type?: "project" | "collection";
-  games?: { name: string; url?: string; year?: string }[];
+  games?: { name: string; url?: string; year?: string; posterUrl?: string }[];
 }
 
 export interface CVData {
