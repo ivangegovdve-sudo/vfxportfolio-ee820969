@@ -90,6 +90,7 @@ const RedTigerPosterRail = ({ item }: { item: PortfolioItem }) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.15 }}
+      data-red-tiger-sticky-wrapper
       className="mt-8 overflow-hidden rounded-2xl border border-border bg-background shadow-sm transition-shadow motion-medium md:hover:shadow-lg"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -111,18 +112,20 @@ const RedTigerPosterRail = ({ item }: { item: PortfolioItem }) => {
 
       {/* Poster Rail — horizontal scroll with wheel trap */}
       {posters.length > 0 && (
-        <div className="relative border-b border-border/60">
+        <div className="relative border-b border-border/60" data-red-tiger-viewport>
           {/* Edge fades */}
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-background to-transparent" aria-hidden="true" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-background to-transparent" aria-hidden="true" />
 
           <div
             ref={railRef}
+            data-red-tiger-track
             className="rail-scroll-trap flex gap-4 overflow-x-auto px-6 py-6 md:gap-5 md:px-8 md:py-8"
           >
             {posters.map((game, i) => (
               <motion.a
                 key={game.name}
+                data-red-tiger-poster
                 href={game.url}
                 target="_blank"
                 rel="noopener noreferrer"

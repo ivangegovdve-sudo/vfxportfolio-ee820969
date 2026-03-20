@@ -1,7 +1,7 @@
 import { expect, Page, test } from "@playwright/test";
 
 const MOBILE_WIDTHS = [320, 375, 430] as const;
-const POSTER_COUNT = 8;
+const POSTER_COUNT = 10;
 
 const normalizeUrl = (rawUrl: string): string => {
   try {
@@ -50,26 +50,6 @@ const getNavMetrics = () => {
 };
 
 const getRedTigerRailMetrics = () => {
-  const parseTranslateX = (transform: string) => {
-    if (!transform || transform === "none") {
-      return 0;
-    }
-
-    const matrix3dMatch = transform.match(/matrix3d\((.+)\)/);
-    if (matrix3dMatch) {
-      const values = matrix3dMatch[1].split(",").map((value) => Number.parseFloat(value.trim()));
-      return Number.isFinite(values[12]) ? values[12] : 0;
-    }
-
-    const matrixMatch = transform.match(/matrix\((.+)\)/);
-    if (matrixMatch) {
-      const values = matrixMatch[1].split(",").map((value) => Number.parseFloat(value.trim()));
-      return Number.isFinite(values[4]) ? values[4] : 0;
-    }
-
-    return 0;
-  };
-
   const wrapper = document.querySelector("[data-red-tiger-sticky-wrapper]") as HTMLElement | null;
   const viewport = document.querySelector("[data-red-tiger-viewport]") as HTMLElement | null;
   const track = document.querySelector("[data-red-tiger-track]") as HTMLElement | null;
@@ -80,8 +60,8 @@ const getRedTigerRailMetrics = () => {
       focusWithinBounds: false,
       posterCount: 0,
       scrollWidth: document.documentElement.scrollWidth,
-      stickyEngaged: false,
-      translateX: 0,
+      canScrollHorizontally: false,
+      horizontalOffset: 0,
       viewportHeight: 0,
       wrapperHeight: 0,
     };
@@ -93,8 +73,8 @@ const getRedTigerRailMetrics = () => {
     focusWithinBounds: firstPosterRect.left >= -1 && firstPosterRect.right <= window.innerWidth + 1,
     posterCount: posters.length,
     scrollWidth: document.documentElement.scrollWidth,
-    stickyEngaged: wrapper.getBoundingClientRect().height > viewport.getBoundingClientRect().height,
-    translateX: parseTranslateX(getComputedStyle(track).transform),
+    canScrollHorizontally: track.scrollWidth > track.clientWidth,
+    horizontalOffset: track.scrollLeft,
     viewportHeight: Math.round(viewport.getBoundingClientRect().height),
     wrapperHeight: Math.round(wrapper.getBoundingClientRect().height),
   };
@@ -292,9 +272,11 @@ test("stage-a smoke matrices", async ({ page, request }) => {
     await page.locator("#portfolio").scrollIntoViewIfNeeded();
     const railWrapper = page.locator("[data-red-tiger-sticky-wrapper]");
     await expect(railWrapper).toBeVisible();
-    await expect(page.locator("[data-red-tiger-track]")).toBeVisible();
+    const railTrack = page.locator("[data-red-tiger-track]");
+    await expect(railTrack).toBeVisible();
     await expect(page.locator("[data-red-tiger-poster]")).toHaveCount(POSTER_COUNT);
     await page.locator("[data-red-tiger-poster]").first().focus();
+    await railTrack.hover();
 
     await page.evaluate(() => {
       const wrapper = document.querySelector("[data-red-tiger-sticky-wrapper]") as HTMLElement | null;
@@ -317,23 +299,23 @@ test("stage-a smoke matrices", async ({ page, request }) => {
     const railEnd = await page.evaluate(getRedTigerRailMetrics);
     const scrollAfter = await page.evaluate(() => window.scrollY);
 
-    const stickyEngaged = railStart.stickyEngaged ? "Y" : "N";
-    const directionOK = railMid.translateX < railStart.translateX - 2 ? "Y" : "N";
-    const monotonic = railEnd.translateX <= railMid.translateX - 2 ? "Y" : "N";
+    const canScrollHorizontally = railStart.canScrollHorizontally ? "Y" : "N";
+    const directionOK = railMid.horizontalOffset > railStart.horizontalOffset + 2 ? "Y" : "N";
+    const monotonic = railEnd.horizontalOffset >= railMid.horizontalOffset + 2 ? "Y" : "N";
     const noOverflow = railEnd.scrollWidth <= width + 1 ? "Y" : "N";
-    const scrollOK = scrollAfter > scrollBefore ? "Y" : "N";
+    const scrollLocked = Math.abs(scrollAfter - scrollBefore) <= 2 ? "Y" : "N";
     const focusSafe = railStart.focusWithinBounds ? "Y" : "N";
 
     expect(railStart.posterCount).toBe(POSTER_COUNT);
-    expect(stickyEngaged).toBe("Y");
+    expect(canScrollHorizontally).toBe("Y");
     expect(directionOK).toBe("Y");
     expect(monotonic).toBe("Y");
     expect(noOverflow).toBe("Y");
-    expect(scrollOK).toBe("Y");
+    expect(scrollLocked).toBe("Y");
     expect(focusSafe).toBe("Y");
 
     redTigerRows.push(
-      `${width} | ${stickyEngaged} | ${directionOK} | ${monotonic} | ${noOverflow} | ${scrollOK} | ${focusSafe}`
+      `${width} | ${canScrollHorizontally} | ${directionOK} | ${monotonic} | ${noOverflow} | ${scrollLocked} | ${focusSafe}`
     );
 
     if (width === 320) {
@@ -356,7 +338,7 @@ test("stage-a smoke matrices", async ({ page, request }) => {
   }
 
   console.log("RED TIGER MATRIX (320/375/430)");
-  console.log("width | stickyEngaged(Y/N) | directionOK(Y/N) | monotonic(Y/N) | noOverflow(Y/N) | scrollOK(Y/N) | focusSafe(Y/N)");
+  console.log("width | canScrollHorizontally(Y/N) | directionOK(Y/N) | monotonic(Y/N) | noOverflow(Y/N) | scrollLocked(Y/N) | focusSafe(Y/N)");
   for (const row of redTigerRows) {
     console.log(row);
   }
