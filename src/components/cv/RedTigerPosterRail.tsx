@@ -80,7 +80,7 @@ const RedTigerPosterRail = ({ item }: { item: PortfolioItem }) => {
     hidden: reduceMotion ? { opacity: 1 } : { opacity: 0, y: 24, filter: "blur(4px)" },
     visible: reduceMotion
       ? { opacity: 1 }
-      : { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
+      : { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const } },
   };
 
   return (
