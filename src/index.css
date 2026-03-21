@@ -215,4 +215,27 @@
   .rail-scroll-trap::-webkit-scrollbar {
     display: none;
   }
+
+  /* Portfolio card premium styling */
+  .portfolio-card-wrapper {
+    perspective: 900px;
+  }
+
+  .portfolio-card {
+    box-shadow: 0 2px 8px -2px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    transition: box-shadow 0.4s ease-out, border-color 0.3s ease-out;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .portfolio-card:hover {
+      box-shadow: 0 16px 32px -8px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.06);
+      border-color: hsl(var(--primary) / 0.3);
+    }
+  }
+
+  /* Poster card depth */
+  .poster-card {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+  }
 }

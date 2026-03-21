@@ -2,11 +2,12 @@ import { useEffect, useRef } from "react";
 import { useActiveSection } from "@/context/useActiveSection";
 import { ActiveSectionId, TRACKED_SECTION_IDS } from "@/context/activeSectionIds";
 
-const OBSERVER_THRESHOLDS = [0, 0.3, 0.6, 0.9];
+const OBSERVER_THRESHOLDS = [0, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9];
 const PROGRAMMATIC_SCROLL_START_EVENT = "cv:programmatic-scroll-start";
-const PROGRAMMATIC_SCROLL_SETTLE_MS = 300;
-const ACTIVE_TOP_RATIO = 0.35;
-const HERO_ACTIVE_SCROLL_MAX = 40;
+const PROGRAMMATIC_SCROLL_SETTLE_MS = 400;
+const ACTIVE_TOP_RATIO = 0.38;
+const HERO_ACTIVE_SCROLL_MAX = 180;
+const HYSTERESIS_SCORE_BONUS = 0.12;
 
 const getScore = (entry: IntersectionObserverEntry, viewportHeight: number) => {
   const ratio = entry.intersectionRatio;
@@ -15,7 +16,7 @@ const getScore = (entry: IntersectionObserverEntry, viewportHeight: number) => {
   const sectionCenter = rect.top + rect.height / 2;
   const centerDistance = Math.abs(sectionCenter - viewportCenter);
   const centerScore = 1 - Math.min(centerDistance / viewportHeight, 1);
-  return ratio * 0.8 + centerScore * 0.2;
+  return ratio * 0.7 + centerScore * 0.3;
 };
 
 export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] = TRACKED_SECTION_IDS) {
@@ -25,6 +26,7 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
   const rafRef = useRef<number | null>(null);
   const isProgrammaticScrollRef = useRef(false);
   const scrollUnlockTimeoutRef = useRef<number | null>(null);
+  const currentActiveRef = useRef<ActiveSectionId>("hero");
 
   useEffect(() => {
     const entriesMap = entriesRef.current;
@@ -32,36 +34,39 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
       .map((id) => document.getElementById(id))
       .filter((element): element is HTMLElement => Boolean(element));
 
-    if (sectionElements.length === 0) {
-      return;
-    }
+    if (sectionElements.length === 0) return;
 
     const evaluateActiveSection = () => {
       rafRef.current = null;
-
-      if (isProgrammaticScrollRef.current) {
-        return;
-      }
+      if (isProgrammaticScrollRef.current) return;
 
       const viewportHeight = Math.max(window.innerHeight || 0, 1);
       const activeTopBoundary = viewportHeight * ACTIVE_TOP_RATIO;
       const scrollY = window.scrollY || window.pageYOffset || 0;
+
+      // At very top of page, hero is always active
+      if (scrollY < 10) {
+        currentActiveRef.current = "hero";
+        setActiveSection((current) => (current === "hero" ? current : "hero"));
+        return;
+      }
+
       let bestId: ActiveSectionId | null = null;
       let bestScore = -1;
 
       for (const id of sectionIds) {
         const entry = entriesMap.get(id);
-        if (!entry || !entry.isIntersecting) {
-          continue;
-        }
-        if (entry.boundingClientRect.top > activeTopBoundary) {
-          continue;
-        }
-        if (id === "hero" && scrollY >= HERO_ACTIVE_SCROLL_MAX) {
-          continue;
+        if (!entry || !entry.isIntersecting) continue;
+        if (entry.boundingClientRect.top > activeTopBoundary) continue;
+        if (id === "hero" && scrollY >= HERO_ACTIVE_SCROLL_MAX) continue;
+
+        let score = getScore(entry, viewportHeight);
+
+        // Hysteresis: give a bonus to the currently active section to prevent flickering
+        if (id === currentActiveRef.current) {
+          score += HYSTERESIS_SCORE_BONUS;
         }
 
-        const score = getScore(entry, viewportHeight);
         if (score > bestScore) {
           bestScore = score;
           bestId = id;
@@ -69,17 +74,14 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
       }
 
       if (!bestId) {
+        // Fallback: find the section whose top is closest to the active boundary
         let fallbackId: ActiveSectionId | null = null;
         let fallbackDistance = Number.POSITIVE_INFINITY;
 
         for (const id of sectionIds) {
-          if (id === "hero" && scrollY >= HERO_ACTIVE_SCROLL_MAX) {
-            continue;
-          }
+          if (id === "hero" && scrollY >= HERO_ACTIVE_SCROLL_MAX) continue;
           const element = document.getElementById(id);
-          if (!element) {
-            continue;
-          }
+          if (!element) continue;
 
           const distance = Math.abs(element.getBoundingClientRect().top - activeTopBoundary);
           if (distance < fallbackDistance) {
@@ -88,20 +90,16 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
           }
         }
 
-        if (!fallbackId) {
-          return;
-        }
-
+        if (!fallbackId) return;
         bestId = fallbackId;
       }
 
+      currentActiveRef.current = bestId;
       setActiveSection((current) => (current === bestId ? current : bestId));
     };
 
     const queueEvaluation = () => {
-      if (rafRef.current != null) {
-        cancelAnimationFrame(rafRef.current);
-      }
+      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
       rafRef.current = requestAnimationFrame(evaluateActiveSection);
     };
 
@@ -109,7 +107,6 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
       if (scrollUnlockTimeoutRef.current != null) {
         window.clearTimeout(scrollUnlockTimeoutRef.current);
       }
-
       scrollUnlockTimeoutRef.current = window.setTimeout(() => {
         isProgrammaticScrollRef.current = false;
         queueEvaluation();
@@ -122,11 +119,11 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
     };
 
     const handleScroll = () => {
-      if (!isProgrammaticScrollRef.current) {
+      if (isProgrammaticScrollRef.current) {
+        scheduleProgrammaticUnlock();
         return;
       }
-
-      scheduleProgrammaticUnlock();
+      queueEvaluation();
     };
 
     observerRef.current = new IntersectionObserver(
@@ -137,9 +134,7 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
         }
         queueEvaluation();
       },
-      {
-        threshold: OBSERVER_THRESHOLDS,
-      }
+      { threshold: OBSERVER_THRESHOLDS }
     );
 
     for (const section of sectionElements) {
@@ -151,12 +146,8 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
     queueEvaluation();
 
     return () => {
-      if (rafRef.current != null) {
-        cancelAnimationFrame(rafRef.current);
-      }
-      if (scrollUnlockTimeoutRef.current != null) {
-        window.clearTimeout(scrollUnlockTimeoutRef.current);
-      }
+      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+      if (scrollUnlockTimeoutRef.current != null) window.clearTimeout(scrollUnlockTimeoutRef.current);
       isProgrammaticScrollRef.current = false;
       window.removeEventListener(PROGRAMMATIC_SCROLL_START_EVENT, handleProgrammaticScrollStart);
       window.removeEventListener("scroll", handleScroll);
