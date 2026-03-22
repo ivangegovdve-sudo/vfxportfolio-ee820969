@@ -1,70 +1,91 @@
-# Portfolio Guardrails
+# AGENTS.md - Ivan Gegov Portfolio Working Guide
 
-## Environment And Safety Rules
-- Dual Node policy:
-  - This portfolio repo uses Node 20 for runtime/build/test tasks.
-  - Other work repos can remain on Node 16.
-  - Switching must stay explicit and repo-scoped.
-- Windows reality:
-  - Assume `nvm-windows`, not Unix shell behavior.
-  - Do not assume automatic `.nvmrc` switching in PowerShell or Git Bash.
-- Hard stop on environment mutation unless the user explicitly asks:
-  - no global PATH edits
-  - no uninstalling Node 16
-  - no global `npm -g` installs
+This repository is the personal portfolio and CV site for Ivan Gegov. Treat it as a real public-facing product where credibility, clarity, performance, and polish matter.
 
-## Commit And Push Gates
-- `pre-commit` must remain lightweight and lint-only.
-- `pre-commit` must not require the user to switch away from Node 16.
-- `pre-push` is the strict gate and must enforce:
-  - production build
-  - preview-based smoke tests
+## Goal
 
-## Runtime Guard Requirements
-- `dev`, `build`, `preview`, `test`, and smoke commands must fail fast on Node < 20 with a helpful message.
-- The guard must never block lint.
-- The guard must never prevent committing from Node 16.
+- present Ivan Gegov as a senior animator / animation lead with strong VFX and production experience
+- showcase work, case studies, reels, and CV material clearly
+- make the site useful both as a portfolio and as a business-facing credibility surface
 
-## Asset And Build Reliability Rules
-- Never change image format/path without updating all references.
-- For portfolio thumbnails:
-  - do not use runtime `/src/...` URLs
-  - prefer imported assets (bundler-managed) or `/assets/...` from `public`
-- Keep file-name casing exact between file system and import path.
-- Post-optimization checks are mandatory:
-  - `build` + `preview` + Playwright smoke
-  - all portfolio thumbnails must load (no broken images)
-- Missing image diagnosis must include network evidence:
-  - requested vs not requested
-  - HTTP status (200 vs 404/other)
-  - request failures
+## Current Idea And Progress
 
-## UX And Animation Governance
-- Use shared motion tokens for durations/easing.
-- Default easing: `cubic-bezier(0.22, 1, 0.36, 1)`.
-- Restraint standard:
-  - micro-interactions only
-  - no over-produced "demo reel" motion patterns
-- Timing guide:
-  - typical transitions: 120-240ms
-  - avatar reveal: 180-250ms
-- Mobile navigation requirements:
-  - icon-first on mobile
-  - evenly distributed
-  - touch targets >= 44px
-  - no overlap at 320px width
-  - "Home" avatar appears only when hero is out of view
-  - rearrangement stays smooth (no snap)
-- Regressions in nav animation/usability are blockers and must be refined or reverted.
+- Product idea:
+  portfolio, CV, and case-study site
+- Current state:
+  active Vite + React + TypeScript site with tests, docs, and deployment-oriented structure
+- Progress level:
+  live-product stage, not a raw scaffold
+- Current opportunity:
+  strengthen content depth, project storytelling, and optional lead-capture / CMS support
 
-## Agent Process Rules
-- Do not guess. If an assumption fails twice, switch to diagnostics mode.
-- Diagnostics mode uses minimal probes first (targeted Playwright checks, missing-asset checks, etc.).
-- Verify after each fix:
-  - console clean
-  - build/preview pass
-  - smoke tests pass
-  - targeted checks pass
-- Stop gate:
-  - if prerequisites are missing, stop and report safe next steps
-  - do not force risky environment changes
+## Initial Setup Requirements
+
+- Node.js 20+
+- install dependencies:
+  `npm install`
+- run locally:
+  `npm run dev`
+- quality checks:
+  `npm run lint`
+  `npm run typecheck`
+  `npm run test`
+  `npm run build`
+
+## Environments
+
+- local development:
+  Vite dev server
+- preview:
+  `npm run preview`
+- production:
+  static site deployment
+- optional service environment:
+  Supabase or other hosted services if forms, CMS, or analytics become active
+
+## Dependencies
+
+- Vite
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- optional Supabase-related infrastructure indicated by the repo structure
+
+## Backend Need
+
+- backend required now:
+  no mandatory custom backend
+- backend recommended later:
+  optional
+- likely future backend:
+  Supabase or another lightweight backend for contact forms, content management, protected admin updates, analytics, or asset metadata
+
+## How Development Should Progress
+
+1. Keep the public portfolio experience excellent first.
+2. Prioritize truthful work presentation over decorative complexity.
+3. Improve case studies, reel navigation, and project detail pages.
+4. Add backend features only when they support real business needs such as contact capture or content updates.
+5. Keep accessibility, load performance, and mobile presentation high.
+
+## Product Roadmap
+
+- Short term:
+  sharpen homepage narrative, project cards, resume / CV clarity, and contact flow
+- Medium term:
+  add richer case studies, motion samples, testimonials, and press / credits structure
+- Long term:
+  optional CMS-backed content editing, protected admin updates, analytics, and downloadable tailored resume variants
+
+## Repository Guardrails
+
+- keep Node 20 usage repo-scoped
+- do not require global Node version mutation
+- keep pre-commit lightweight and fast
+- keep pre-push as the stricter build / test gate if hooks are used
+- do not introduce backend complexity unless the user-facing benefit is clear
+
+## End Goal
+
+The end goal is a high-confidence professional portfolio site that communicates skill, taste, and production leadership clearly enough to win attention, trust, and work.
