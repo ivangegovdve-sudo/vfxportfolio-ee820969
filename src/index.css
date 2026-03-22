@@ -189,12 +189,12 @@
 
   /* Hero avatar breathing animation — subtle */
   .hero-breathe {
-    animation: hero-breathe 4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    animation: hero-breathe 6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   }
 
   @keyframes hero-breathe {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.008); }
+    50% { transform: scale(1.004); }
   }
 
   @media (prefers-reduced-motion: reduce) {
