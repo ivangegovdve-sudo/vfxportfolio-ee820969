@@ -252,6 +252,44 @@
     animation-play-state: paused;
   }
 
+  /* ── Hero atmospheric motes ── */
+  .hero-mote {
+    background: radial-gradient(circle, hsl(var(--primary) / 0.6) 0%, hsl(var(--primary) / 0) 70%);
+    opacity: var(--mote-opacity, 0.2);
+    animation: hero-mote-float var(--mote-duration, 18s) var(--mote-delay, 0s) ease-in-out infinite;
+    will-change: transform, opacity;
+    transition: animation-duration 2s ease;
+  }
+
+  @keyframes hero-mote-float {
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: var(--mote-opacity, 0.2);
+    }
+    25% {
+      transform: translate(var(--mote-drift-x, 12px), calc(var(--mote-drift-y, 14px) * -0.6)) scale(1.15);
+      opacity: calc(var(--mote-opacity, 0.2) * 1.4);
+    }
+    50% {
+      transform: translate(calc(var(--mote-drift-x, 12px) * -0.5), calc(var(--mote-drift-y, 14px) * -1)) scale(0.9);
+      opacity: calc(var(--mote-opacity, 0.2) * 0.6);
+    }
+    75% {
+      transform: translate(calc(var(--mote-drift-x, 12px) * -1), calc(var(--mote-drift-y, 14px) * -0.3)) scale(1.1);
+      opacity: calc(var(--mote-opacity, 0.2) * 1.2);
+    }
+    100% {
+      transform: translate(0, 0) scale(1);
+      opacity: var(--mote-opacity, 0.2);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-mote {
+      animation: none !important;
+    }
+  }
+
   /* Red Tiger rail scroll-trap */
   .rail-scroll-trap {
     scrollbar-width: none;
