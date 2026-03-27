@@ -75,7 +75,8 @@ const HeroSection = () => {
 
   return (
     <section id="hero" className="hero-gradient min-h-screen relative">
-      <div className="absolute inset-x-0 top-0 h-screen pt-14 md:pt-16 pb-6 md:pb-10 flex items-center justify-center pointer-events-none">
+      <HeroParticles />
+      <div className="absolute inset-x-0 top-0 h-screen pt-14 md:pt-16 pb-6 md:pb-10 flex items-center justify-center pointer-events-none z-10">
         <div className="section-container w-full pointer-events-auto">
           <div className="flex w-full flex-col items-center text-center md:flex-row md:items-center md:gap-10 md:text-left">
             <motion.div
