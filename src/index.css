@@ -47,10 +47,38 @@
     --font-display: 'Inter', sans-serif;
     --font-body: 'Inter', sans-serif;
     --section-spacing: 6rem;
-    --motion-duration-short: 160ms;
-    --motion-duration-med: 180ms;
+
+    /* ── Motion duration tiers ── */
+    --motion-duration-instant: 120ms;
+    --motion-duration-fast: 200ms;
+    --motion-duration-normal: 350ms;
+    --motion-duration-reveal: 750ms;
+    --motion-duration-cinematic: 1000ms;
+    --motion-duration-ambient: 6000ms;
+
+    /* Legacy aliases */
+    --motion-duration-short: var(--motion-duration-instant);
+    --motion-duration-med: var(--motion-duration-fast);
+
+    /* ── Easing curves ── */
     --motion-ease-default: cubic-bezier(0.22, 1, 0.36, 1);
+    --motion-ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+    --motion-ease-gentle: cubic-bezier(0.45, 0, 0.55, 1);
+    --motion-ease-snap: cubic-bezier(0.32, 0.72, 0, 1);
+
+    /* ── Hover / depth ── */
     --motion-hover-elevate: -4px;
+    --shadow-rest: 0 2px 8px -2px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-hover: 0 16px 32px -8px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.06);
+    --shadow-poster-rest: 0 4px 12px -4px rgba(0,0,0,0.15);
+    --shadow-poster-hover: 0 20px 40px -12px rgba(0,0,0,0.35), 0 0 0 1px rgba(251,191,36,0.15);
+
+    /* ── Glow / accent ── */
+    --glow-primary: rgba(251,191,36,0.2);
+    --glow-card: rgba(251,191,36,0.12);
+    --glow-edge: hsl(38 92% 50% / 0.5);
+
+    /* ── Semantic tokens ── */
     --timeline-accent: 38 92% 50%;
     --timeline-line: 220 14% 78%;
     --tag-bg: 38 92% 95%;
@@ -166,24 +194,41 @@
     background: var(--hero-gradient);
   }
 
+  .motion-instant {
+    transition-duration: var(--motion-duration-instant);
+    transition-timing-function: var(--motion-ease-snap);
+  }
+
+  .motion-fast {
+    transition-duration: var(--motion-duration-fast);
+    transition-timing-function: var(--motion-ease-default);
+  }
+
   .motion-short {
-    transition-duration: var(--motion-duration-short);
+    transition-duration: var(--motion-duration-instant);
     transition-timing-function: var(--motion-ease-default);
   }
 
   .motion-medium {
-    transition-duration: var(--motion-duration-med);
+    transition-duration: var(--motion-duration-fast);
+    transition-timing-function: var(--motion-ease-default);
+  }
+
+  .motion-normal {
+    transition-duration: var(--motion-duration-normal);
     transition-timing-function: var(--motion-ease-default);
   }
 
   .hover-elevate {
     transform: translateY(0);
-    transition: transform 240ms var(--motion-ease-default), box-shadow 240ms var(--motion-ease-default);
+    transition: transform var(--motion-duration-normal) var(--motion-ease-default),
+                box-shadow var(--motion-duration-normal) var(--motion-ease-default);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .hover-elevate:hover {
       transform: translateY(var(--motion-hover-elevate));
+      box-shadow: var(--shadow-hover);
     }
   }
 
@@ -222,13 +267,14 @@
   }
 
   .portfolio-card {
-    box-shadow: 0 2px 8px -2px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
-    transition: box-shadow 0.4s ease-out, border-color 0.3s ease-out;
+    box-shadow: var(--shadow-rest);
+    transition: box-shadow var(--motion-duration-normal) var(--motion-ease-default),
+                border-color var(--motion-duration-normal) var(--motion-ease-default);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .portfolio-card:hover {
-      box-shadow: 0 16px 32px -8px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.06);
+      box-shadow: var(--shadow-hover);
       border-color: hsl(var(--primary) / 0.3);
     }
   }
