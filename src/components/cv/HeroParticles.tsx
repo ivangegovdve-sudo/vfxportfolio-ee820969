@@ -1,96 +1,93 @@
 /**
  * HeroParticles — lightweight CSS-only atmospheric dust motes.
  *
- * ▸ No canvas, no heavy libraries — pure DOM + CSS animations.
- * ▸ Pointer proximity increases motion speed & brightness.
- * ▸ Mobile renders fewer particles.
- * ▸ prefers-reduced-motion freezes all animation.
+ * ▸ Pure DOM + CSS animations, no canvas.
+ * ▸ Pointer hover gently increases liveliness via CSS transition.
+ * ▸ Mobile renders fewer, smaller particles.
+ * ▸ prefers-reduced-motion renders only a few static dots.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-/* ── Particle generation ───────────────────────────────── */
-
-interface Mote {
-  id: number;
-  /** % from left */
-  x: number;
-  /** % from top */
-  y: number;
-  /** px diameter */
-  size: number;
-  /** seconds per full float cycle */
-  duration: number;
-  /** negative delay to stagger start */
-  delay: number;
-  /** base opacity 0–1 */
-  opacity: number;
-  /** horizontal drift amplitude in px */
-  driftX: number;
-  /** vertical drift amplitude in px */
-  driftY: number;
-}
+/* ── Deterministic RNG ─────────────────────────────────── */
 
 function seededRandom(seed: number) {
   let s = seed;
   return () => {
-    s = (s * 16807 + 0) % 2147483647;
+    s = (s * 16807) % 2147483647;
     return s / 2147483647;
   };
+}
+
+/* ── Mote shape ────────────────────────────────────────── */
+
+interface Mote {
+  id: number;
+  x: number;      // % from left
+  y: number;      // % from top
+  size: number;    // px
+  duration: number; // seconds
+  delay: number;   // negative offset
+  opacity: number; // 0–1
+  driftX: number;  // px amplitude
+  driftY: number;  // px amplitude
 }
 
 function generateMotes(count: number): Mote[] {
   const rng = seededRandom(42);
   return Array.from({ length: count }, (_, i) => ({
     id: i,
-    x: rng() * 100,
+    // Keep motes away from the centre band (30–70% x, 25–75% y)
+    // to avoid competing with text / avatar
+    x: rng() < 0.5 ? rng() * 25 : 75 + rng() * 25,
     y: rng() * 100,
-    size: 2 + rng() * 3,
-    duration: 14 + rng() * 18,
-    delay: -(rng() * 20),
-    opacity: 0.15 + rng() * 0.3,
-    driftX: 8 + rng() * 20,
-    driftY: 10 + rng() * 24,
+    size: 2 + rng() * 2.5,
+    duration: 20 + rng() * 16,
+    delay: -(rng() * 24),
+    opacity: 0.08 + rng() * 0.14,
+    driftX: 6 + rng() * 10,
+    driftY: 8 + rng() * 14,
   }));
 }
 
 /* ── Component ─────────────────────────────────────────── */
 
+const DESKTOP_COUNT = 16;
+const MOBILE_COUNT = 6;
+
 const HeroParticles = () => {
   const reduceMotion = useReducedMotion();
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [hovering, setHovering] = useState(false);
 
-  const count = isMobile ? 10 : 22;
+  const count = isMobile ? MOBILE_COUNT : DESKTOP_COUNT;
   const motes = useMemo(() => generateMotes(count), [count]);
 
-  /* Pointer enter/leave on hero section */
-  const handleEnter = useCallback(() => setHovering(true), []);
-  const handleLeave = useCallback(() => setHovering(false), []);
-
+  /* Toggle a CSS class on the container for hover — lets CSS
+     handle the timing transition smoothly without React re-renders. */
   useEffect(() => {
     const hero = document.getElementById("hero");
-    if (!hero) return;
-    hero.addEventListener("pointerenter", handleEnter);
-    hero.addEventListener("pointerleave", handleLeave);
-    return () => {
-      hero.removeEventListener("pointerenter", handleEnter);
-      hero.removeEventListener("pointerleave", handleLeave);
-    };
-  }, [handleEnter, handleLeave]);
+    const container = containerRef.current;
+    if (!hero || !container) return;
 
+    const onEnter = () => container.classList.add("hero-motes-active");
+    const onLeave = () => container.classList.remove("hero-motes-active");
+
+    hero.addEventListener("pointerenter", onEnter);
+    hero.addEventListener("pointerleave", onLeave);
+    return () => {
+      hero.removeEventListener("pointerenter", onEnter);
+      hero.removeEventListener("pointerleave", onLeave);
+    };
+  }, []);
+
+  /* Reduced-motion: a handful of static, barely-visible dots */
   if (reduceMotion) {
-    /* Render static faint dots — no animation at all */
     return (
-      <div
-        ref={containerRef}
-        aria-hidden="true"
-        className="absolute inset-0 overflow-hidden pointer-events-none z-0"
-      >
-        {motes.slice(0, 6).map((m) => (
+      <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        {motes.slice(0, 4).map((m) => (
           <div
             key={m.id}
             className="absolute rounded-full"
@@ -99,8 +96,8 @@ const HeroParticles = () => {
               top: `${m.y}%`,
               width: m.size,
               height: m.size,
-              opacity: m.opacity * 0.3,
-              background: "hsl(var(--primary) / 0.5)",
+              opacity: 0.06,
+              background: "hsl(var(--primary) / 0.4)",
             }}
           />
         ))}
@@ -128,10 +125,6 @@ const HeroParticles = () => {
             "--mote-delay": `${m.delay}s`,
             "--mote-drift-x": `${m.driftX}px`,
             "--mote-drift-y": `${m.driftY}px`,
-            animationPlayState: hovering ? "running" : "running",
-            animationDuration: hovering
-              ? `${m.duration * 0.55}s`
-              : `${m.duration}s`,
           } as React.CSSProperties}
         />
       ))}
