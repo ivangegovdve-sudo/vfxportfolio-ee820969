@@ -194,24 +194,41 @@
     background: var(--hero-gradient);
   }
 
+  .motion-instant {
+    transition-duration: var(--motion-duration-instant);
+    transition-timing-function: var(--motion-ease-snap);
+  }
+
+  .motion-fast {
+    transition-duration: var(--motion-duration-fast);
+    transition-timing-function: var(--motion-ease-default);
+  }
+
   .motion-short {
-    transition-duration: var(--motion-duration-short);
+    transition-duration: var(--motion-duration-instant);
     transition-timing-function: var(--motion-ease-default);
   }
 
   .motion-medium {
-    transition-duration: var(--motion-duration-med);
+    transition-duration: var(--motion-duration-fast);
+    transition-timing-function: var(--motion-ease-default);
+  }
+
+  .motion-normal {
+    transition-duration: var(--motion-duration-normal);
     transition-timing-function: var(--motion-ease-default);
   }
 
   .hover-elevate {
     transform: translateY(0);
-    transition: transform 240ms var(--motion-ease-default), box-shadow 240ms var(--motion-ease-default);
+    transition: transform var(--motion-duration-normal) var(--motion-ease-default),
+                box-shadow var(--motion-duration-normal) var(--motion-ease-default);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .hover-elevate:hover {
       transform: translateY(var(--motion-hover-elevate));
+      box-shadow: var(--shadow-hover);
     }
   }
 
