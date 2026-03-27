@@ -252,6 +252,30 @@
     animation-play-state: paused;
   }
 
+  /* Hero avatar depth on hover */
+  .hero-avatar-depth {
+    transition: transform var(--motion-duration-normal) var(--motion-ease-default),
+                box-shadow var(--motion-duration-normal) var(--motion-ease-default),
+                filter var(--motion-duration-normal) var(--motion-ease-default);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hero-avatar-depth:hover {
+      transform: scale(1.03);
+      box-shadow: 0 12px 32px -8px rgba(0,0,0,0.2), 0 0 24px -4px hsl(var(--primary) / 0.15);
+      filter: brightness(1.04);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-avatar-depth {
+      transition: none;
+    }
+    .hero-avatar-depth:hover {
+      transform: none;
+    }
+  }
+
   /* ── Hero atmospheric motes ── */
   .hero-mote {
     background: radial-gradient(circle, hsl(var(--primary) / 0.6) 0%, hsl(var(--primary) / 0) 70%);
