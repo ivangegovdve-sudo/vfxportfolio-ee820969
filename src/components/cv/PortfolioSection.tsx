@@ -16,8 +16,9 @@ const PortfolioSection = () => {
   const collectionItems = orderedItems.filter((p) => p.type === "collection");
 
   return (
-    <section id="portfolio" className="section-spacing bg-card" aria-labelledby="portfolio-title">
-      <div className="section-container">
+    <section id="portfolio" className="section-spacing bg-card relative" aria-labelledby="portfolio-title">
+      <AmbientMotes count={8} seed={221} color="hsl(var(--primary) / 0.18)" parallaxStrength={10} />
+      <div className="section-container relative z-10">
         <AnimatedSection>
           <h2 id="portfolio-title" className="section-title">
             Portfolio

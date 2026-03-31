@@ -248,6 +248,7 @@ const RedTigerPosterRail = ({ item }: { item: PortfolioItem }) => {
       {/* ── Poster Rail ── */}
       {posters.length > 0 && (
         <div className="relative border-b border-border/40 bg-gradient-to-b from-muted/30 via-background to-background" data-red-tiger-viewport>
+          <AmbientMotes count={6} seed={159} color="hsl(var(--primary) / 0.2)" mouseReactive={false} className="z-[1]" />
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent" aria-hidden="true" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent" aria-hidden="true" />
 
