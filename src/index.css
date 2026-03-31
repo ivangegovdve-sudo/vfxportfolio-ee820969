@@ -312,6 +312,41 @@
     }
   }
 
+  /* ── Ambient motes (reusable atmospheric particles) ── */
+  .ambient-mote {
+    background: radial-gradient(circle, var(--mote-color, hsl(var(--primary) / 0.3)) 0%, transparent 65%);
+    opacity: var(--mote-opacity, 0.08);
+    animation: ambient-mote-float var(--mote-duration, 20s) var(--mote-delay, 0s) cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    transform: translate(
+      calc(var(--parallax-x, 0px) * var(--mote-depth, 0.5)),
+      calc(var(--parallax-y, 0px) * var(--mote-depth, 0.5))
+    );
+    transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  @keyframes ambient-mote-float {
+    0%, 100% {
+      opacity: var(--mote-opacity, 0.08);
+      filter: none;
+    }
+    40% {
+      opacity: calc(var(--mote-opacity, 0.08) * 1.4);
+      filter: blur(0.5px);
+    }
+    70% {
+      opacity: calc(var(--mote-opacity, 0.08) * 0.6);
+      filter: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ambient-mote {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
   /* Red Tiger rail scroll-trap */
   .rail-scroll-trap {
     scrollbar-width: none;

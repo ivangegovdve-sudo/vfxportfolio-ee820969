@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { REVEAL, HOVER, SHADOW, GLOW, VIEWPORT } from "@/lib/motion";
 import TrademarkText from "./TrademarkText";
 import { useIsMobile } from "@/hooks/use-mobile";
+import AmbientMotes from "./AmbientMotes";
 import type { PortfolioItem } from "@/data/cvData";
 
 const POSTER_COUNT = 10;
@@ -227,6 +228,7 @@ const RedTigerPosterRail = ({ item }: { item: PortfolioItem }) => {
     >
       {/* ── Cinematic Header ── */}
       <div className="relative overflow-hidden border-b border-white/[0.06] bg-[linear-gradient(145deg,hsl(220_20%_8%)_0%,hsl(220_18%_13%)_60%,hsl(220_16%_16%)_100%)] px-6 pb-8 pt-8 md:px-10 md:pb-10 md:pt-10">
+        <AmbientMotes count={8} seed={314} color="rgba(251,191,36,0.25)" parallaxStrength={8} />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_0%,rgba(251,191,36,0.1),transparent_50%)]" aria-hidden="true" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_80%_100%,rgba(251,191,36,0.05),transparent_50%)]" aria-hidden="true" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px" style={{ background: GLOW.edgeLine }} aria-hidden="true" />
@@ -246,6 +248,7 @@ const RedTigerPosterRail = ({ item }: { item: PortfolioItem }) => {
       {/* ── Poster Rail ── */}
       {posters.length > 0 && (
         <div className="relative border-b border-border/40 bg-gradient-to-b from-muted/30 via-background to-background" data-red-tiger-viewport>
+          <AmbientMotes count={6} seed={159} color="hsl(var(--primary) / 0.2)" mouseReactive={false} className="z-[1]" />
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent" aria-hidden="true" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent" aria-hidden="true" />
 
