@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { REVEAL, HOVER, SHADOW, GLOW, VIEWPORT } from "@/lib/motion";
 import TrademarkText from "./TrademarkText";
 import { useIsMobile } from "@/hooks/use-mobile";
+import AmbientMotes from "./AmbientMotes";
 import type { PortfolioItem } from "@/data/cvData";
 
 const POSTER_COUNT = 10;
