@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { REVEAL, HOVER, HOVER_TRANSITION, SHADOW, GLOW, VIEWPORT } from "@/lib/motion";
 import TrademarkText from "./TrademarkText";
 import RedTigerPosterRail from "./RedTigerPosterRail";
+import AmbientMotes from "./AmbientMotes";
 
 const PortfolioSection = () => {
   const { data } = useCvData();
