@@ -228,6 +228,7 @@ const RedTigerPosterRail = ({ item }: { item: PortfolioItem }) => {
     >
       {/* ── Cinematic Header ── */}
       <div className="relative overflow-hidden border-b border-white/[0.06] bg-[linear-gradient(145deg,hsl(220_20%_8%)_0%,hsl(220_18%_13%)_60%,hsl(220_16%_16%)_100%)] px-6 pb-8 pt-8 md:px-10 md:pb-10 md:pt-10">
+        <AmbientMotes count={8} seed={314} color="rgba(251,191,36,0.25)" parallaxStrength={8} />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_0%,rgba(251,191,36,0.1),transparent_50%)]" aria-hidden="true" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_80%_100%,rgba(251,191,36,0.05),transparent_50%)]" aria-hidden="true" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px" style={{ background: GLOW.edgeLine }} aria-hidden="true" />
