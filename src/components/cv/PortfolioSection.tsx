@@ -16,7 +16,7 @@ const PortfolioSection = () => {
   const collectionItems = orderedItems.filter((p) => p.type === "collection");
 
   return (
-    <section id="portfolio" className="section-spacing bg-card relative" aria-labelledby="portfolio-title">
+    <section id="portfolio" className="section-spacing portfolio-stage relative" aria-labelledby="portfolio-title">
       <AmbientMotes count={8} seed={221} color="hsl(var(--primary) / 0.18)" parallaxStrength={10} />
       <div className="section-container relative z-10">
         <AnimatedSection>
@@ -25,7 +25,7 @@ const PortfolioSection = () => {
           </h2>
         </AnimatedSection>
 
-        <div className="grid gap-5 sm:grid-cols-2 md:gap-6">
+        <div className="portfolio-grid grid gap-5 sm:grid-cols-2 md:gap-6">
           {projectItems.map((item, i) => (
             <motion.div
               key={item.id}
@@ -45,10 +45,10 @@ const PortfolioSection = () => {
                 whileTap={reduceMotion ? undefined : HOVER.press}
                 transition={reduceMotion ? { duration: 0 } : HOVER_TRANSITION.portfolio}
               >
-                <div className="aspect-[16/9] bg-secondary/30 flex items-center justify-center relative overflow-hidden">
+                <div className="portfolio-card-media aspect-[16/9] bg-secondary/30 flex items-center justify-center relative overflow-hidden">
                   <img
                     src={item.thumbnail}
-                    alt={item.title}
+                    alt={`${item.title}${item.category ? ` - ${item.category}` : ""} project thumbnail`}
                     className="w-full h-full object-cover transition-transform duration-700 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
                     loading="lazy"
                     decoding="async"
@@ -63,11 +63,11 @@ const PortfolioSection = () => {
                   </div>
                   <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1.5 text-xs font-medium text-primary opacity-100 shadow-sm backdrop-blur-sm transition-all duration-300 sm:opacity-0 sm:translate-y-1 sm:group-hover:opacity-100 sm:group-hover:translate-y-0">
                     {item.ctaLabel || "View"}
-                    <ExternalLink className="w-3 h-3" />
+                    <ExternalLink className="w-3 h-3" aria-hidden="true" />
                   </span>
                 </div>
 
-                <div className="p-5 md:p-6">
+                <div className="portfolio-card-body p-5 md:p-6">
                   <h3 className="font-display text-lg font-bold leading-snug text-foreground transition-colors duration-300 md:text-xl md:group-hover:text-primary">
                     <TrademarkText text={item.title} />
                   </h3>
