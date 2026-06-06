@@ -74,11 +74,13 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="hero" className="hero-gradient min-h-screen relative">
+    <section id="hero" className="hero-gradient min-h-screen relative overflow-hidden" aria-labelledby="hero-heading">
       <HeroParticles />
-      <div className="absolute inset-x-0 top-0 h-screen pt-14 md:pt-16 pb-6 md:pb-10 flex items-center justify-center pointer-events-none z-10">
+      <div className="pointer-events-none absolute inset-4 z-[1] rounded-[2rem] border border-white/10 md:inset-8" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-x-8 top-24 z-[1] h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" aria-hidden="true" />
+      <div className="absolute inset-x-0 top-0 h-screen pt-16 pb-8 flex items-center justify-center pointer-events-none z-10 md:pt-20 md:pb-12">
         <div className="section-container w-full pointer-events-auto">
-          <div className="flex w-full flex-col items-center text-center md:flex-row md:items-center md:gap-10 md:text-left">
+          <div className="hero-command-panel flex w-full flex-col items-center gap-8 text-center md:grid md:grid-cols-[minmax(12rem,17rem)_1fr] md:items-center md:gap-10 md:text-left">
             <motion.div
               initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -87,30 +89,31 @@ const HeroSection = () => {
                   ? { duration: 0 }
                   : { duration: MOTION_TOKENS.durationAvatar, ease: MOTION_TOKENS.easingDefault }
               }
-              className="shrink-0"
+              className="hero-portrait-shell shrink-0"
             >
               {currentPhotoUrl ? (
                 <img
                   src={currentPhotoUrl}
                   srcSet={`${currentPhotoUrl} 1x, ${currentPhotoUrl} 2x`}
                   sizes="(max-width: 767px) 160px, 208px"
-                  alt={name}
+                  alt={`Portrait of ${name}`}
                   onError={handleImageError}
                   loading="eager"
                   decoding="async"
                   width={208}
                   height={208}
-                  className="w-40 h-40 md:w-52 md:h-52 rounded-full object-cover border-4 border-primary/20 shadow-lg hero-breathe hero-avatar-depth"
+                  className="hero-portrait-image w-40 h-40 md:w-52 md:h-52 rounded-full object-cover border border-primary/40 shadow-lg hero-breathe hero-avatar-depth"
                 />
               ) : (
-                <div className="w-40 h-40 md:w-52 md:h-52 rounded-full bg-secondary flex items-center justify-center border-4 border-primary/20 shadow-lg">
+                <div className="hero-portrait-image w-40 h-40 md:w-52 md:h-52 rounded-full bg-secondary flex items-center justify-center border border-primary/40 shadow-lg">
                   <User className="w-16 h-16 md:w-20 md:h-20 text-muted-foreground" />
                 </div>
               )}
             </motion.div>
 
-            <div className="relative w-full max-w-lg overflow-visible">
+            <div className="relative w-full max-w-2xl overflow-visible">
               <motion.h1
+                id="hero-heading"
                 initial={reduceMotion ? false : { opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={
@@ -122,7 +125,7 @@ const HeroSection = () => {
                         ease: MOTION_TOKENS.easingDefault,
                       }
                 }
-                className="font-display text-4xl md:text-6xl font-bold text-foreground tracking-tight leading-[1.15]"
+                className="hero-title font-display text-5xl font-bold text-foreground tracking-tight leading-[1.02] md:text-7xl"
               >
                 {name}
               </motion.h1>
@@ -138,7 +141,7 @@ const HeroSection = () => {
                         ease: MOTION_TOKENS.easingDefault,
                       }
                 }
-                className="mt-1.5 text-lg md:text-xl font-display font-medium text-primary"
+                className="mt-3 text-lg md:text-xl font-display font-medium text-primary"
               >
                 {"Animation \u00B7 Compositing \u00B7 VFX"}
               </motion.p>
@@ -154,7 +157,7 @@ const HeroSection = () => {
                         ease: MOTION_TOKENS.easingDefault,
                       }
                 }
-                className="mt-1.5 max-w-lg text-base text-muted-foreground md:text-lg"
+                className="mt-3 max-w-xl text-base text-muted-foreground md:text-lg"
               >
                 {subtitle}
               </motion.p>
@@ -170,17 +173,17 @@ const HeroSection = () => {
                         ease: MOTION_TOKENS.easingDefault,
                       }
                 }
-                className="mt-3.5 flex w-full flex-col justify-center gap-2.5 sm:flex-row sm:gap-3 md:mt-4 md:w-auto md:justify-start"
+                className="mt-6 flex w-full flex-col justify-center gap-2.5 sm:flex-row sm:gap-3 md:w-auto md:justify-start"
               >
                 <a
                   href="#experience"
-                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm transition-[background-color,box-shadow,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:w-auto md:hover:-translate-y-0.5 md:hover:shadow-md"
+                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/20 transition-[background-color,box-shadow,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:w-auto md:hover:-translate-y-0.5 md:hover:shadow-lg md:hover:shadow-primary/25"
                 >
                   View Experience
                 </a>
                 <a
                   href="#contact"
-                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-primary/40 px-5 text-sm font-medium text-foreground transition-[background-color,color,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:w-auto md:hover:-translate-y-0.5 md:hover:bg-secondary/80"
+                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-primary/40 bg-background/30 px-5 text-sm font-medium text-foreground backdrop-blur-md transition-[background-color,color,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:w-auto md:hover:-translate-y-0.5 md:hover:bg-secondary/80"
                 >
                   Get in Touch
                 </a>
@@ -214,7 +217,7 @@ const HeroSection = () => {
                 id="hero-about-panel"
               >
                 <div ref={aboutMeasureRef} className="w-full md:max-w-[30rem]">
-                  <div className="w-full rounded-xl border border-border/60 bg-card/80 p-5 backdrop-blur-sm">
+                  <div className="w-full rounded-xl border border-border/60 bg-card/90 p-5 shadow-2xl shadow-black/30 backdrop-blur-xl">
                     <div className="space-y-3">
                       {data.about.paragraphs.map((p, i) => (
                         <p key={i} className="text-sm leading-relaxed text-foreground/80">
