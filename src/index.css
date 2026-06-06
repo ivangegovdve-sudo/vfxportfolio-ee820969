@@ -4,33 +4,33 @@
 
 @layer base {
   :root {
-    --background: 40 25% 97%;
-    --foreground: 220 20% 12%;
+    --background: 226 31% 6%;
+    --foreground: 42 32% 92%;
 
-    --card: 40 20% 99%;
-    --card-foreground: 220 20% 12%;
+    --card: 226 28% 9%;
+    --card-foreground: 42 32% 92%;
 
-    --popover: 40 20% 99%;
-    --popover-foreground: 220 20% 12%;
+    --popover: 226 28% 9%;
+    --popover-foreground: 42 32% 92%;
 
-    --primary: 38 92% 50%;
-    --primary-foreground: 220 20% 8%;
+    --primary: 39 96% 58%;
+    --primary-foreground: 226 31% 6%;
 
-    --secondary: 220 14% 92%;
-    --secondary-foreground: 220 20% 12%;
+    --secondary: 214 30% 16%;
+    --secondary-foreground: 42 32% 92%;
 
-    --muted: 220 14% 94%;
-    --muted-foreground: 220 10% 46%;
+    --muted: 222 24% 15%;
+    --muted-foreground: 41 18% 68%;
 
-    --accent: 38 92% 50%;
-    --accent-foreground: 220 20% 8%;
+    --accent: 189 92% 56%;
+    --accent-foreground: 226 31% 6%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 14% 88%;
-    --input: 220 14% 88%;
-    --ring: 38 92% 50%;
+    --border: 218 23% 22%;
+    --input: 218 23% 22%;
+    --ring: 39 96% 58%;
 
     --radius: 0.5rem;
 
@@ -68,10 +68,10 @@
 
     /* ── Hover / depth ── */
     --motion-hover-elevate: -4px;
-    --shadow-rest: 0 2px 8px -2px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
-    --shadow-hover: 0 16px 32px -8px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.06);
-    --shadow-poster-rest: 0 4px 12px -4px rgba(0,0,0,0.15);
-    --shadow-poster-hover: 0 20px 40px -12px rgba(0,0,0,0.35), 0 0 0 1px rgba(251,191,36,0.15);
+    --shadow-rest: 0 12px 40px -28px rgba(0,0,0,0.75), 0 1px 0 rgba(255,255,255,0.04) inset;
+    --shadow-hover: 0 24px 64px -24px rgba(0,0,0,0.82), 0 0 36px -18px rgba(255,195,86,0.6);
+    --shadow-poster-rest: 0 12px 32px -20px rgba(0,0,0,0.75);
+    --shadow-poster-hover: 0 28px 70px -22px rgba(0,0,0,0.9), 0 0 0 1px rgba(251,191,36,0.2);
 
     /* ── Glow / accent ── */
     --glow-primary: rgba(251,191,36,0.2);
@@ -81,9 +81,12 @@
     /* ── Semantic tokens ── */
     --timeline-accent: 38 92% 50%;
     --timeline-line: 220 14% 78%;
-    --tag-bg: 38 92% 95%;
-    --tag-fg: 38 80% 30%;
-    --hero-gradient: linear-gradient(135deg, hsl(40 25% 97%) 0%, hsl(38 40% 92%) 100%);
+    --tag-bg: 218 30% 15%;
+    --tag-fg: 39 86% 72%;
+    --hero-gradient:
+      radial-gradient(circle at 18% 18%, hsl(39 96% 58% / 0.22), transparent 34%),
+      radial-gradient(circle at 84% 20%, hsl(189 92% 56% / 0.14), transparent 32%),
+      linear-gradient(135deg, hsl(226 31% 6%) 0%, hsl(228 29% 8%) 44%, hsl(224 32% 5%) 100%);
   }
 
   .dark {
@@ -129,6 +132,10 @@
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    background:
+      radial-gradient(circle at 12% 0%, hsl(39 96% 58% / 0.08), transparent 32rem),
+      radial-gradient(circle at 88% 8%, hsl(189 92% 56% / 0.08), transparent 30rem),
+      hsl(var(--background));
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -153,7 +160,7 @@
 
 @layer utilities {
   .section-container {
-    @apply max-w-4xl mx-auto px-5 md:px-8;
+    @apply max-w-6xl mx-auto px-5 md:px-8;
   }
 
   .section-spacing {
@@ -192,6 +199,114 @@
 
   .hero-gradient {
     background: var(--hero-gradient);
+  }
+
+  .hero-command-panel {
+    position: relative;
+    border: 1px solid hsl(var(--border) / 0.7);
+    border-radius: 1.75rem;
+    background:
+      linear-gradient(135deg, hsl(var(--card) / 0.68), hsl(var(--background) / 0.34)),
+      radial-gradient(circle at 20% 15%, hsl(var(--primary) / 0.16), transparent 18rem);
+    box-shadow: 0 30px 90px -42px rgba(0, 0, 0, 0.92), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    padding: clamp(1.35rem, 4vw, 3rem);
+    backdrop-filter: blur(22px);
+  }
+
+  .hero-command-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0.75rem;
+    pointer-events: none;
+    border-radius: 1.35rem;
+    border: 1px solid rgba(255, 255, 255, 0.045);
+  }
+
+  .hero-title {
+    text-shadow: 0 0 26px hsl(var(--primary) / 0.18), 0 16px 48px rgba(0, 0, 0, 0.55);
+  }
+
+  .hero-portrait-shell {
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+
+  .hero-portrait-shell::before,
+  .hero-portrait-shell::after {
+    content: "";
+    position: absolute;
+    border-radius: 999px;
+    pointer-events: none;
+  }
+
+  .hero-portrait-shell::before {
+    inset: -1.2rem;
+    border: 1px solid hsl(var(--primary) / 0.26);
+    box-shadow: 0 0 34px -14px hsl(var(--primary) / 0.8);
+  }
+
+  .hero-portrait-shell::after {
+    inset: -2.1rem;
+    border: 1px dashed hsl(var(--accent) / 0.24);
+    animation: hero-orbit 18s linear infinite;
+  }
+
+  .hero-portrait-image {
+    box-shadow:
+      0 24px 54px -28px rgba(0, 0, 0, 0.9),
+      0 0 48px -24px hsl(var(--primary) / 0.9);
+  }
+
+  .hero-particle-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .hero-particle-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-light-cloud {
+    position: absolute;
+    filter: blur(38px);
+    opacity: 0.55;
+    mix-blend-mode: screen;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .hero-light-cloud-a {
+    left: -8rem;
+    top: 14%;
+    width: 34rem;
+    height: 20rem;
+    background: radial-gradient(ellipse at center, rgba(255, 199, 92, 0.22), transparent 68%);
+  }
+
+  .hero-light-cloud-b {
+    right: -10rem;
+    bottom: 8%;
+    width: 38rem;
+    height: 24rem;
+    background: radial-gradient(ellipse at center, rgba(88, 166, 255, 0.18), transparent 70%);
+  }
+
+  .hero-scan-grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.16;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(circle at 70% 40%, black 0%, transparent 62%);
+    -webkit-mask-image: radial-gradient(circle at 70% 40%, black 0%, transparent 62%);
   }
 
   .motion-instant {
@@ -240,6 +355,10 @@
   @keyframes hero-breathe {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.004); }
+  }
+
+  @keyframes hero-orbit {
+    to { transform: rotate(360deg); }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -363,8 +482,38 @@
 
   .portfolio-card {
     box-shadow: var(--shadow-rest);
+    background:
+      linear-gradient(145deg, hsl(var(--card) / 0.92), hsl(var(--background) / 0.88)),
+      radial-gradient(circle at 15% 0%, hsl(var(--primary) / 0.12), transparent 16rem);
     transition: box-shadow var(--motion-duration-normal) var(--motion-ease-default),
                 border-color var(--motion-duration-normal) var(--motion-ease-default);
+  }
+
+  .portfolio-stage {
+    background:
+      radial-gradient(circle at 14% 12%, hsl(var(--primary) / 0.12), transparent 30rem),
+      radial-gradient(circle at 86% 18%, hsl(var(--accent) / 0.09), transparent 28rem),
+      hsl(var(--card));
+  }
+
+  .portfolio-grid {
+    perspective: 1200px;
+  }
+
+  .portfolio-card-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, transparent 45%, rgba(0, 0, 0, 0.55)),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.035), rgba(255,255,255,0.035) 1px, transparent 1px, transparent 9px);
+    opacity: 0.72;
+  }
+
+  .portfolio-card-body {
+    position: relative;
+    border-top: 1px solid hsl(var(--border) / 0.7);
   }
 
   @media (hover: hover) and (pointer: fine) {
