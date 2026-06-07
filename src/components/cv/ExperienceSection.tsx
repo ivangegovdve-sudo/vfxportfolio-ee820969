@@ -103,7 +103,7 @@ const ExperienceSection = () => {
                   ref={(entry) => {
                     entryRefs.current[i] = entry;
                   }}
-                  className="group relative pl-8 pb-12 last:pb-0"
+                  className="cv-module-card group relative mb-5 rounded-xl pb-6 pl-8 pr-5 pt-5 last:mb-0"
                 >
                   <motion.div
                     initial={reduceMotion ? { scaleY: 1 } : { scaleY: 0 }}

@@ -42,7 +42,7 @@ const ContactSection = () => {
         </AnimatedSection>
 
         <AnimatedSection delay={0.1}>
-          <div className="max-w-lg">
+          <div className="cv-surface-panel max-w-lg rounded-xl p-6 md:p-8">
             <h3 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
               Let's work together
             </h3>

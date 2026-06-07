@@ -172,6 +172,20 @@
     font-family: var(--font-display);
   }
 
+  .cv-surface-panel {
+    border: 1px solid hsl(var(--border) / 0.7);
+    background:
+      linear-gradient(145deg, hsl(var(--card) / 0.82), hsl(var(--background) / 0.72)),
+      radial-gradient(circle at 12% 0%, hsl(var(--primary) / 0.08), transparent 18rem);
+    box-shadow: var(--shadow-rest);
+  }
+
+  .cv-module-card {
+    border: 1px solid hsl(var(--border) / 0.65);
+    background: hsl(var(--card) / 0.72);
+    box-shadow: var(--shadow-rest);
+  }
+
   .tag {
     @apply inline-block px-3 py-1 text-xs font-medium rounded-full;
     background: hsl(var(--tag-bg));
