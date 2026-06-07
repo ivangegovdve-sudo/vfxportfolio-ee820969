@@ -529,8 +529,10 @@
     background:
       linear-gradient(145deg, hsl(var(--card) / 0.92), hsl(var(--background) / 0.88)),
       radial-gradient(circle at 15% 0%, hsl(var(--primary) / 0.12), transparent 16rem);
+    transform-style: preserve-3d;
     transition: box-shadow var(--motion-duration-normal) var(--motion-ease-default),
                 border-color var(--motion-duration-normal) var(--motion-ease-default);
+    will-change: transform, box-shadow;
   }
 
   .portfolio-stage {
@@ -555,6 +557,10 @@
     opacity: 0.72;
   }
 
+  .portfolio-card-media {
+    isolation: isolate;
+  }
+
   .portfolio-card-body {
     position: relative;
     border-top: 1px solid hsl(var(--border) / 0.7);
@@ -564,6 +570,19 @@
     .portfolio-card:hover {
       box-shadow: var(--shadow-hover);
       border-color: hsl(var(--primary) / 0.3);
+    }
+  }
+
+  .portfolio-card:focus-visible {
+    border-color: hsl(var(--primary) / 0.65);
+    box-shadow: var(--shadow-hover);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .portfolio-card,
+    .portfolio-card img {
+      transition: none !important;
+      transform: none !important;
     }
   }
 
