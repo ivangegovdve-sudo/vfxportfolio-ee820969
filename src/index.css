@@ -514,9 +514,20 @@
   .rail-scroll-trap {
     scrollbar-width: none;
     -ms-overflow-style: none;
+    scroll-snap-type: x proximity;
   }
   .rail-scroll-trap::-webkit-scrollbar {
     display: none;
+  }
+
+  .rail-scroll-trap > * {
+    scroll-snap-align: start;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rail-scroll-trap {
+      scroll-behavior: auto;
+    }
   }
 
   /* Portfolio card premium styling */
