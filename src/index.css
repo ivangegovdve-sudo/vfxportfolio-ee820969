@@ -222,8 +222,32 @@
     border: 1px solid rgba(255, 255, 255, 0.045);
   }
 
+  .hero-system-label {
+    position: absolute;
+    right: 1.25rem;
+    top: 1rem;
+    z-index: 1;
+    border: 1px solid hsl(var(--primary) / 0.24);
+    border-radius: 999px;
+    background: hsl(var(--background) / 0.36);
+    color: hsl(var(--primary) / 0.78);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    line-height: 1;
+    padding: 0.45rem 0.7rem;
+    text-transform: uppercase;
+  }
+
+  .hero-command-panel a:focus-visible,
+  .hero-command-panel button:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 4px;
+  }
+
   .hero-title {
     text-shadow: 0 0 26px hsl(var(--primary) / 0.18), 0 16px 48px rgba(0, 0, 0, 0.55);
+    overflow-wrap: anywhere;
   }
 
   .hero-portrait-shell {
@@ -397,6 +421,21 @@
     }
     .hero-avatar-depth:hover {
       transform: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero-command-panel {
+      max-height: none;
+      text-align: center;
+    }
+
+    .hero-system-label {
+      left: 50%;
+      right: auto;
+      top: 0.85rem;
+      transform: translateX(-50%);
+      white-space: nowrap;
     }
   }
 
