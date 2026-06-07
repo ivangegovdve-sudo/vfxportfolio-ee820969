@@ -48,6 +48,7 @@ const HeroParticles = () => {
     let dpr = 1;
     let frameId = 0;
     let start = performance.now();
+    let isVisible = document.visibilityState !== "hidden";
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
@@ -66,6 +67,10 @@ const HeroParticles = () => {
     };
 
     const draw = (now: number) => {
+      if (!isVisible) {
+        return;
+      }
+
       const elapsed = reduceMotion ? 0 : (now - start) / 1000;
       pointer.x += (pointer.tx - pointer.x) * 0.055;
       pointer.y += (pointer.ty - pointer.y) * 0.055;
@@ -77,13 +82,15 @@ const HeroParticles = () => {
       const sphereRadius = Math.min(width, height) * (width < 700 ? 0.28 : 0.36);
       const rotateY = elapsed * 0.18 + pointer.x * 0.45;
       const rotateX = -0.28 + pointer.y * 0.28;
+      const visibleDots = width < 640 ? dots.slice(0, 220) : dots;
+      const visibleRingCount = width < 640 ? 12 : RING_COUNT;
 
       const lightX = width * (0.32 + pointer.x * 0.12);
       const lightY = height * (0.2 + pointer.y * 0.1);
       const light = context.createRadialGradient(lightX, lightY, 0, lightX, lightY, height * 0.9);
-      light.addColorStop(0, "rgba(255,255,255,0.34)");
-      light.addColorStop(0.16, "rgba(255,199,92,0.18)");
-      light.addColorStop(0.5, "rgba(79,172,255,0.08)");
+      light.addColorStop(0, "rgba(255,255,255,0.38)");
+      light.addColorStop(0.14, "rgba(255,199,92,0.22)");
+      light.addColorStop(0.42, "rgba(88,166,255,0.11)");
       light.addColorStop(1, "rgba(2,6,18,0)");
       context.fillStyle = light;
       context.fillRect(0, 0, width, height);
@@ -92,8 +99,8 @@ const HeroParticles = () => {
       context.translate(cx, cy);
       context.rotate(pointer.x * 0.05);
 
-      for (let ring = 0; ring < RING_COUNT; ring += 1) {
-        const t = ring / RING_COUNT;
+      for (let ring = 0; ring < visibleRingCount; ring += 1) {
+        const t = ring / visibleRingCount;
         const radius = sphereRadius * (0.52 + t * 0.95);
         const wave = Math.sin(elapsed * 1.6 - ring * 0.34) * 7;
         context.beginPath();
@@ -103,7 +110,7 @@ const HeroParticles = () => {
         context.stroke();
       }
 
-      dots.forEach((dot) => {
+      visibleDots.forEach((dot) => {
         const theta = dot.theta + rotateY * dot.depth;
         const x0 = Math.cos(theta) * dot.radius;
         const z0 = Math.sin(theta) * dot.radius;
@@ -131,16 +138,33 @@ const HeroParticles = () => {
       }
     };
 
+    const onVisibilityChange = () => {
+      isVisible = document.visibilityState !== "hidden";
+      if (!isVisible) {
+        window.cancelAnimationFrame(frameId);
+        return;
+      }
+
+      if (!reduceMotion) {
+        start = performance.now();
+        frameId = window.requestAnimationFrame(draw);
+      } else {
+        draw(performance.now());
+      }
+    };
+
     resize();
     start = performance.now();
     window.addEventListener("resize", resize);
     window.addEventListener("pointermove", onPointerMove, { passive: true });
+    document.addEventListener("visibilitychange", onVisibilityChange);
     frameId = window.requestAnimationFrame(draw);
 
     return () => {
       window.cancelAnimationFrame(frameId);
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onPointerMove);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [reduceMotion]);
 
