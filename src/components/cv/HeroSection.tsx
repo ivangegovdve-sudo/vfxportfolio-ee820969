@@ -80,6 +80,9 @@ const HeroSection = () => {
       <div className="absolute inset-x-0 top-0 h-screen pt-16 pb-8 flex items-center justify-center pointer-events-none z-10 md:pt-20 md:pb-12">
         <div className="section-container w-full pointer-events-auto">
           <div className="hero-command-panel flex w-full flex-col items-center gap-8 text-center md:grid md:grid-cols-[minmax(12rem,17rem)_1fr] md:items-center md:gap-10 md:text-left">
+            <span aria-hidden="true" className="hero-system-label">
+              Motion field
+            </span>
             <motion.div
               initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
