@@ -11,7 +11,7 @@ const FALLBACK_PHOTO_URL = "/placeholder.svg";
 
 const HeroSection = () => {
   const { data } = useCvData();
-  const { name, subtitle, photoUrl } = data.hero;
+  const { name, title, subtitle, photoUrl } = data.hero;
   const reduceMotion = useReducedMotion();
   const resolvedPrimaryPhotoUrl = useMemo(() => resolvePhotoUrl(photoUrl, fallbackHeroPhoto), [photoUrl]);
   const [currentPhotoUrl, setCurrentPhotoUrl] = useState(resolvedPrimaryPhotoUrl);
@@ -142,7 +142,7 @@ const HeroSection = () => {
                 }
                 className="mt-3 text-lg md:text-xl font-display font-medium text-primary"
               >
-                {"Animation \u00B7 Compositing \u00B7 VFX"}
+                {title}
               </motion.p>
               <motion.p
                 initial={reduceMotion ? false : { opacity: 0, y: 8 }}
