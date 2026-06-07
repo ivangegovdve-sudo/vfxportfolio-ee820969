@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft based on current planning assumptions; awaiting user review:
+Approved by Ivan for implementation planning:
 
 - Scope: portfolio site only.
 - sdforest.site: out of scope for this spec.
@@ -350,6 +350,6 @@ After initial portfolio redesign:
 - HeyGen intro video if it supports, not replaces, portfolio content.
 - sdforest visual-system adaptation as separate spec.
 
-## Approval Needed Before Implementation Plan
+## Approval
 
-User must review this spec and approve before writing implementation plan.
+Approved for implementation planning on 2026-06-07.
