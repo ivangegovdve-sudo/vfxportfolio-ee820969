@@ -1,5 +1,6 @@
 import { useCvData } from "@/contexts/useCvData";
 import AnimatedSection from "./AnimatedSection";
+import SectionMarker from "./SectionMarker";
 import { ExternalLink } from "lucide-react";
 import TrademarkText from "./TrademarkText";
 import { motion, useReducedMotion } from "framer-motion";
@@ -88,15 +89,12 @@ const ExperienceSection = () => {
   return (
     <section id="experience" className="section-spacing bg-card" aria-labelledby="experience-title">
       <div className="section-container">
-        <AnimatedSection>
-          <h2 id="experience-title" className="section-title">
-            Experience
-          </h2>
-        </AnimatedSection>
+        <SectionMarker index="03" title="Experience" headingId="experience-title" />
 
         <div className="space-y-0">
           {data.experience.map((exp, i) => {
             const isRevealed = reduceMotion || revealedEntries.has(i);
+            const isLast = i === data.experience.length - 1;
             return (
               <AnimatedSection key={exp.id} delay={0.05 * i}>
                 <div
@@ -141,15 +139,20 @@ const ExperienceSection = () => {
                     <div className="timeline-dot" />
                   </motion.div>
 
-                  <div>
+                  <div className={isLast ? "" : "border-b border-white/5 pb-10"}>
                     <div className="mb-2 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
-                      <h3 className="font-display text-lg font-semibold text-foreground">{exp.role}</h3>
-                      <span className="text-xs font-medium tracking-wide text-muted-foreground">
+                      <h3 className="font-display text-xl font-bold leading-snug text-foreground">
+                        {exp.role}
+                      </h3>
+                      <span
+                        className="shrink-0 text-[11px] tracking-[0.08em] text-muted-foreground"
+                        style={{ fontFamily: "var(--font-mono)" }}
+                      >
                         {exp.startDate} {"\u2014"} {exp.endDate}
                       </span>
                     </div>
 
-                    <p className="mb-2 text-sm font-medium text-primary">
+                    <p className="mb-3 text-sm font-medium text-primary">
                       {exp.company}
                       {exp.location && (
                         <span className="font-normal text-muted-foreground">
@@ -159,13 +162,19 @@ const ExperienceSection = () => {
                       )}
                     </p>
 
-                    <p className="mb-3 text-sm leading-relaxed text-foreground/75">{exp.description}</p>
+                    <p className="mb-3 max-w-[68ch] text-sm leading-relaxed text-foreground/75">{exp.description}</p>
 
                     {exp.highlights && exp.highlights.length > 0 && (
-                      <ul className="mb-3 space-y-1">
+                      <ul className="mb-4 space-y-1.5">
                         {exp.highlights.map((h, j) => (
-                          <li key={j} className="flex items-start gap-2 text-sm text-foreground/70">
-                            <span className="mt-1.5 text-[6px] text-primary">{"\u2022"}</span>
+                          <li key={j} className="flex items-baseline gap-3 text-sm leading-relaxed text-foreground/70">
+                            <span
+                              aria-hidden="true"
+                              className="select-none text-[10px] text-primary/70"
+                              style={{ fontFamily: "var(--font-mono)" }}
+                            >
+                              {"\u2014"}
+                            </span>
                             <TrademarkText text={h} />
                           </li>
                         ))}

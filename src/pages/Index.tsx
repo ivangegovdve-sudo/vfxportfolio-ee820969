@@ -52,11 +52,18 @@ const Index = () => {
         <EducationSection />
         <ContactSection />
       </main>
-      <footer className="section-container py-8 text-center">
-        <p className="text-xs text-muted-foreground">(c) {new Date().getFullYear()} - Built with care</p>
-        <p className="mt-2 text-xs text-muted-foreground/70 max-w-2xl mx-auto">
-          All trademarks and brand names are the property of their respective owners. Project references are presented for portfolio purposes only.
-        </p>
+      <footer className="border-t border-white/5">
+        <div className="section-container flex flex-col gap-3 py-10 md:flex-row md:items-baseline md:justify-between">
+          <p
+            className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            {"©"} {new Date().getFullYear()} {"—"} Built with care
+          </p>
+          <p className="max-w-xl text-[11px] leading-relaxed text-muted-foreground/60 md:text-right">
+            All trademarks and brand names are the property of their respective owners. Project references are presented for portfolio purposes only.
+          </p>
+        </div>
       </footer>
     </>
   );

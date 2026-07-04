@@ -1,5 +1,5 @@
 import { useCvData } from "@/contexts/useCvData";
-import AnimatedSection from "./AnimatedSection";
+import SectionMarker from "./SectionMarker";
 import { ExternalLink, Play } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { REVEAL, HOVER, HOVER_TRANSITION, SHADOW, GLOW, VIEWPORT, DURATION, EASE_REVEAL } from "@/lib/motion";
@@ -181,16 +181,7 @@ const PortfolioSection = () => {
       <AmbientMotes count={8} seed={221} color="rgba(214,162,64,0.12)" parallaxStrength={10} />
 
       <div className="section-container relative z-10">
-        <AnimatedSection>
-          {/* Section marker */}
-          <div className="flex items-center gap-4 mb-12">
-            <span className="text-muted-foreground/40 text-[10px]" style={{ fontFamily: 'var(--font-mono)' }}>01</span>
-            <div className="h-px flex-1 max-w-[3rem]" style={{ background: "hsl(42 88% 56% / 0.3)" }} />
-            <h2 id="portfolio-title" className="section-title mb-0">
-              Work
-            </h2>
-          </div>
-        </AnimatedSection>
+        <SectionMarker index="01" title="Work" headingId="portfolio-title" />
 
         {/* Featured card — full width showreel */}
         {featuredItem && (
