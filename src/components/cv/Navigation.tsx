@@ -1,14 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import {
-  BriefcaseBusiness,
-  Clapperboard,
-  GraduationCap,
-  House,
-  Mail,
-  SlidersHorizontal,
-  User,
-} from "lucide-react";
 import { useActiveSection } from "@/context/useActiveSection";
 import { ActiveSectionId } from "@/context/activeSectionIds";
 import { useCvData } from "@/contexts/useCvData";
@@ -21,17 +12,13 @@ type SectionNavItem = {
   id: ActiveSectionId;
   href: `#${ActiveSectionId}`;
   label: string;
-  shortLabel: string;
-  Icon: typeof House;
 };
 
 const sectionNavItems: SectionNavItem[] = [
-  { id: "hero", href: "#hero", label: "Home", shortLabel: "Home", Icon: House },
-  { id: "portfolio", href: "#portfolio", label: "Portfolio", shortLabel: "Work", Icon: Clapperboard },
-  { id: "skills", href: "#skills", label: "Skills", shortLabel: "Skills", Icon: SlidersHorizontal },
-  { id: "experience", href: "#experience", label: "Experience", shortLabel: "Exp", Icon: BriefcaseBusiness },
-  { id: "education", href: "#education", label: "Education", shortLabel: "Edu", Icon: GraduationCap },
-  { id: "contact", href: "#contact", label: "Contact", shortLabel: "Contact", Icon: Mail },
+  { id: "portfolio", href: "#portfolio", label: "Work" },
+  { id: "skills", href: "#skills", label: "Skills" },
+  { id: "experience", href: "#experience", label: "Experience" },
+  { id: "contact", href: "#contact", label: "Contact" },
 ];
 
 const PROGRAMMATIC_SCROLL_EVENT = "cv:programmatic-scroll-start";
@@ -46,14 +33,9 @@ const Navigation = () => {
     () => resolvePhotoUrl(data.hero.photoUrl, fallbackHeroPhoto),
     [data.hero.photoUrl]
   );
-  const [avatarCurrentSrc, setAvatarCurrentSrc] = useState(avatarSrc);
 
   useEffect(() => {
-    setAvatarCurrentSrc(avatarSrc);
-  }, [avatarSrc]);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -72,21 +54,23 @@ const Navigation = () => {
     };
   }, []);
 
-  const showAvatar = activeSection !== "hero";
-
   const handleNavClick = (navItem: SectionNavItem) => {
-    // Dispatch programmatic scroll event to suppress tracker during scroll
     window.dispatchEvent(new CustomEvent(PROGRAMMATIC_SCROLL_EVENT));
     setActiveSection(navItem.id);
   };
 
+  const handleHomeClick = () => {
+    window.dispatchEvent(new CustomEvent(PROGRAMMATIC_SCROLL_EVENT));
+    setActiveSection("hero");
+  };
+
   const navStateTransition = reduceMotion
     ? { duration: 0 }
-    : { duration: 0.25, ease: MOTION_TOKENS.easingDefault };
+    : { duration: 0.22, ease: MOTION_TOKENS.easingDefault };
 
   return (
     <motion.nav
-      initial={reduceMotion ? false : { y: -10, opacity: 0 }}
+      initial={reduceMotion ? false : { y: -8, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={
         reduceMotion
@@ -94,90 +78,71 @@ const Navigation = () => {
           : { duration: MOTION_TOKENS.durationMed, ease: MOTION_TOKENS.easingDefault }
       }
       className={cn(
-        "fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[border-color,background-color,box-shadow] duration-300 ease-out",
-        scrolled ? "border-border bg-background/92 backdrop-blur-md shadow-sm" : "bg-transparent"
+        "fixed inset-x-0 top-0 z-50 transition-[border-color,background-color,backdrop-filter] duration-500",
+        scrolled
+          ? "border-b border-white/5 bg-background/90 backdrop-blur-xl"
+          : "bg-transparent"
       )}
+      aria-label="Site navigation"
     >
-      <div className="mx-auto flex h-16 w-full max-w-4xl items-center px-3 sm:px-5 md:h-14 md:px-8">
-        <ul className="flex w-full items-center justify-between gap-1 sm:gap-2">
+      <div className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between px-6 md:px-10">
+
+        {/* Left — Name / Home link */}
+        <a
+          href="#hero"
+          onClick={handleHomeClick}
+          className="group flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          aria-label="Return to top"
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            {activeSection !== "hero" ? (
+              <motion.div
+                key="avatar"
+                initial={reduceMotion ? false : { opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={reduceMotion ? undefined : { opacity: 0, scale: 0.8 }}
+                transition={reduceMotion ? { duration: 0 } : { duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                className="h-7 w-7 overflow-hidden rounded-full border border-white/10"
+              >
+                <img
+                  src={avatarSrc}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-full w-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                  loading="eager"
+                  decoding="async"
+                />
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+          <span
+            className="font-mono text-[11px] font-normal uppercase tracking-[0.18em] text-muted-foreground group-hover:text-foreground transition-colors duration-200"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            Ivan Gegov
+          </span>
+        </a>
+
+        {/* Right — Section links */}
+        <ul className="flex items-center gap-1 md:gap-0.5">
           {sectionNavItems.map((navItem) => {
             const isActive = activeSection === navItem.id;
-            const showAvatarForHome = navItem.id === "hero" && showAvatar;
-
             return (
-              <li key={navItem.id} className="flex min-w-0 flex-1">
-                <motion.a
+              <li key={navItem.id}>
+                <a
                   href={navItem.href}
                   aria-label={navItem.label}
                   aria-current={isActive ? "page" : undefined}
                   onClick={() => handleNavClick(navItem)}
-                  animate={reduceMotion ? undefined : { scale: isActive ? 1.02 : 1 }}
-                  transition={navStateTransition}
                   className={cn(
-                    "relative inline-flex h-12 w-full min-w-[44px] items-center justify-center rounded-2xl border border-transparent px-1 text-muted-foreground transition-all duration-200 ease-out active:bg-secondary/75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:h-11 md:rounded-full md:px-3",
+                    "relative flex items-center px-3 py-2 text-[11px] uppercase tracking-[0.14em] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                     isActive
-                      ? "bg-secondary/90 text-foreground shadow-[inset_0_0_0_1px_hsl(var(--border))]"
-                      : "md:hover:bg-secondary/65 md:hover:text-foreground"
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
                   )}
-                  whileTap={reduceMotion ? undefined : { scale: MOTION_TOKENS.pressScale }}
+                  style={{ fontFamily: 'var(--font-mono)' }}
                 >
-                  <span className="flex flex-col items-center justify-center gap-0.5 md:flex-row md:gap-1.5">
-                    <AnimatePresence mode="wait" initial={false}>
-                      {showAvatarForHome ? (
-                        <motion.span
-                          key="avatar"
-                          initial={reduceMotion ? false : { opacity: 0, scale: 0.85 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={reduceMotion ? undefined : { opacity: 0, scale: 0.85 }}
-                          transition={
-                            reduceMotion
-                              ? { duration: 0 }
-                              : { duration: 0.3, ease: [0.22, 1, 0.36, 1] }
-                          }
-                          className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-border/70 md:h-8 md:w-8"
-                        >
-                          {avatarCurrentSrc ? (
-                            <img
-                              src={avatarCurrentSrc}
-                              alt=""
-                              aria-hidden="true"
-                              className="h-full w-full object-cover"
-                              loading="eager"
-                              decoding="async"
-                              onError={() => setAvatarCurrentSrc(fallbackHeroPhoto)}
-                            />
-                          ) : (
-                            <User className="h-[18px] w-[18px] text-muted-foreground" aria-hidden="true" />
-                          )}
-                        </motion.span>
-                      ) : (
-                        <motion.span
-                          key="icon"
-                          initial={reduceMotion ? false : { opacity: 0, scale: 0.85 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={reduceMotion ? undefined : { opacity: 0, scale: 0.85 }}
-                          transition={
-                            reduceMotion
-                              ? { duration: 0 }
-                              : { duration: 0.3, ease: [0.22, 1, 0.36, 1] }
-                          }
-                          className="flex items-center justify-center"
-                        >
-                          <navItem.Icon
-                            className="h-[17px] w-[17px] shrink-0 md:h-4 md:w-4"
-                            strokeWidth={1.9}
-                            aria-hidden="true"
-                          />
-                        </motion.span>
-                      )}
-                    </AnimatePresence>
-                    <span
-                      aria-hidden="true"
-                      className="hidden whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.08em] md:inline"
-                    >
-                      {navItem.label}
-                    </span>
-                  </span>
+                  {navItem.label}
                   {isActive && (
                     <motion.span
                       layoutId="active-nav-indicator"
@@ -185,17 +150,12 @@ const Navigation = () => {
                       transition={
                         reduceMotion
                           ? { duration: 0 }
-                          : {
-                              type: "spring",
-                              stiffness: 380,
-                              damping: 30,
-                              mass: 0.8,
-                            }
+                          : { type: "spring", stiffness: 350, damping: 28, mass: 0.9 }
                       }
-                      className="pointer-events-none absolute bottom-1.5 left-0 right-0 mx-auto h-0.5 w-5 rounded-full bg-primary"
+                      className="pointer-events-none absolute bottom-0 left-0 right-0 mx-auto h-px w-full bg-primary"
                     />
                   )}
-                </motion.a>
+                </a>
               </li>
             );
           })}

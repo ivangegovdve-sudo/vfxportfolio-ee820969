@@ -136,27 +136,27 @@ export const REVEAL = {
 /* ── Depth / shadow tokens ──────────────────────────────── */
 
 export const SHADOW = {
-  /** Resting card */
-  rest: "0 2px 8px -2px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04)",
-  /** Hovered card */
-  hover: "0 16px 32px -8px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.06)",
+  /** Resting card — dark theme */
+  rest: "0 2px 12px -2px rgba(0,0,0,0.35), 0 1px 3px rgba(0,0,0,0.2)",
+  /** Hovered card — dark theme */
+  hover: "0 20px 48px -8px rgba(0,0,0,0.6), 0 6px 12px rgba(0,0,0,0.3)",
   /** Premium poster hover */
-  posterHover: "0 20px 40px -12px rgba(0,0,0,0.35), 0 0 0 1px rgba(251,191,36,0.15)",
+  posterHover: "0 24px 56px -12px rgba(0,0,0,0.7), 0 0 0 1px rgba(214,162,64,0.2)",
   /** Poster rest */
-  posterRest: "0 4px 12px -4px rgba(0,0,0,0.15)",
+  posterRest: "0 4px 16px -4px rgba(0,0,0,0.4)",
 } as const;
 
 /* ── Glow / highlight tokens ────────────────────────────── */
 
 export const GLOW = {
   /** Primary radial glow overlay */
-  primary: "radial-gradient(circle at 50% 80%, rgba(251,191,36,0.2), transparent 55%)",
-  /** Elliptical card hover glow */
-  card: "radial-gradient(ellipse at center, rgba(251,191,36,0.12), transparent 70%)",
+  primary: "radial-gradient(circle at 50% 80%, rgba(214,162,64,0.18), transparent 55%)",
+  /** Elliptical card hover glow — cinema gold */
+  card: "radial-gradient(ellipse at center, rgba(214,162,64,0.08), transparent 70%)",
   /** Accent bottom edge line */
-  edgeLine: "linear-gradient(to right, transparent, hsl(38 92% 50% / 0.5), transparent)",
+  edgeLine: "linear-gradient(to right, transparent, hsl(42 88% 56% / 0.4), transparent)",
   /** Edge shine sweep */
-  shineSweep: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.06) 45%, transparent 50%)",
+  shineSweep: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 45%, transparent 50%)",
 } as const;
 
 /* ── Reduced-motion helper ──────────────────────────────── */

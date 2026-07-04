@@ -81,7 +81,7 @@ const HeroParticles = () => {
       hero.removeEventListener("pointerenter", onEnter);
       hero.removeEventListener("pointerleave", onLeave);
     };
-  }, []);
+  }, [containerRef]);
 
   /* Reduced-motion: a handful of static, barely-visible dots */
   if (reduceMotion) {
