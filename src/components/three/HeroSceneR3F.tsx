@@ -261,7 +261,7 @@ const ParticleField = ({ count, enableLinks }: { count: number; enableLinks: boo
 
           if (linkIdx < MAX_LINKS) {
             const alpha = (1 - d / LINK_RADIUS);
-            const a1 = alpha * alpha * 0.35;
+            const a1 = alpha * alpha * 0.75;
             const base = linkIdx * 6;
             linkPosArr[base + 0] = a.x;
             linkPosArr[base + 1] = a.y;
@@ -297,7 +297,7 @@ const ParticleField = ({ count, enableLinks }: { count: number; enableLinks: boo
       posArr[i * 3 + 1] = p.y;
       posArr[i * 3 + 2] = 0;
       szArr[i] = BASE_SIZE * Math.sqrt(p.mass) * dpr;
-      alArr[i] = 0.55 + Math.min(p.mass - 1, 5) * 0.06;
+      alArr[i] = 0.85 + Math.min(p.mass - 1, 5) * 0.03;
     }
     pos.needsUpdate = true;
     sz.needsUpdate = true;

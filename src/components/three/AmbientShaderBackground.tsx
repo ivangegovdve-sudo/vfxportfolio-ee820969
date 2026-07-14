@@ -72,11 +72,11 @@ void main() {
   float hueShift = sin(uScroll * 6.2831 + 0.7) * 0.08;
   vec3 tint = clamp(uTint + vec3(hueShift * 0.5, hueShift * 0.15, -hueShift * 0.35), 0.0, 1.5);
 
-  float intensity = n * radial * 0.09; // capped low — never crosses 0.06 after alpha
+  float intensity = n * radial * 0.22;
   vec3 col = tint * intensity;
 
-  // Output as very low alpha so it composites softly over the page
-  float alpha = clamp(intensity * 0.75, 0.0, 0.06);
+  // Output alpha — perceptible but still restrained
+  float alpha = clamp(intensity * 1.1, 0.0, 0.16);
   gl_FragColor = vec4(col, alpha);
 }
 `;
