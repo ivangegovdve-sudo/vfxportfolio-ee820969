@@ -6,7 +6,6 @@ const OBSERVER_THRESHOLDS = [0, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9];
 const PROGRAMMATIC_SCROLL_START_EVENT = "cv:programmatic-scroll-start";
 const PROGRAMMATIC_SCROLL_SETTLE_MS = 400;
 const ACTIVE_TOP_RATIO = 0.38;
-const HERO_ACTIVE_SCROLL_MAX = 180;
 const HYSTERESIS_SCORE_BONUS = 0.12;
 
 const getScore = (entry: IntersectionObserverEntry, viewportHeight: number) => {
@@ -58,7 +57,6 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
         const entry = entriesMap.get(id);
         if (!entry || !entry.isIntersecting) continue;
         if (entry.boundingClientRect.top > activeTopBoundary) continue;
-        if (id === "hero" && scrollY >= HERO_ACTIVE_SCROLL_MAX) continue;
 
         let score = getScore(entry, viewportHeight);
 
@@ -79,7 +77,6 @@ export function useActiveSectionTracker(sectionIds: readonly ActiveSectionId[] =
         let fallbackDistance = Number.POSITIVE_INFINITY;
 
         for (const id of sectionIds) {
-          if (id === "hero" && scrollY >= HERO_ACTIVE_SCROLL_MAX) continue;
           const element = document.getElementById(id);
           if (!element) continue;
 
