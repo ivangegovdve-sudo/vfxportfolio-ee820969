@@ -34,9 +34,6 @@ const Index = () => {
 
   return (
     <>
-      <Suspense fallback={null}>
-        <AmbientShaderBackground />
-      </Suspense>
       {isEditMode && (
         <Suspense fallback={null}>
           <ContentEditor />
