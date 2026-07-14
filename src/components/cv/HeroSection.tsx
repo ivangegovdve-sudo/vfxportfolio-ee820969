@@ -1,11 +1,13 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useCvData } from "@/contexts/useCvData";
 import { User, ChevronDown } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import fallbackHeroPhoto from "@/data/assets/slackPic.webp";
 import { MOTION_TOKENS } from "@/lib/motion";
 import { resolvePhotoUrl } from "@/utils/resolvePhotoUrl";
 import HeroParticles from "./HeroParticles";
+
+const HeroSceneR3F = lazy(() => import("@/components/three/HeroSceneR3F"));
 
 const FALLBACK_PHOTO_URL = "/placeholder.svg";
 
@@ -75,7 +77,9 @@ const HeroSection = () => {
 
   return (
     <section id="hero" className="hero-gradient min-h-screen relative">
-      <HeroParticles />
+      <Suspense fallback={<HeroParticles />}>
+        <HeroSceneR3F />
+      </Suspense>
       <div className="absolute inset-x-0 top-0 h-screen pt-14 md:pt-16 pb-6 md:pb-10 flex items-center justify-center pointer-events-none z-10">
         <div className="section-container w-full pointer-events-auto">
           <div className="flex w-full flex-col items-center text-center md:flex-row md:items-center md:gap-10 md:text-left">
