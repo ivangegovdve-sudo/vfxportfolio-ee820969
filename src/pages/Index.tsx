@@ -10,6 +10,9 @@ import ContactSection from "@/components/cv/ContactSection";
 import { useActiveSectionTracker } from "@/hooks/useActiveSectionTracker";
 
 const ContentEditor = lazy(() => import("@/components/editor/ContentEditor"));
+const AmbientShaderBackground = lazy(
+  () => import("@/components/three/AmbientShaderBackground")
+);
 
 const PROGRAMMATIC_SCROLL_EVENT = "cv:programmatic-scroll-start";
 
@@ -34,6 +37,9 @@ const Index = () => {
 
   return (
     <>
+      <Suspense fallback={null}>
+        <AmbientShaderBackground />
+      </Suspense>
       {isEditMode && (
         <Suspense fallback={null}>
           <ContentEditor />
