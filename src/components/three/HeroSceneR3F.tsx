@@ -27,12 +27,14 @@ import { useMouseNormalized } from "@/hooks/useMouseNormalized";
 /* ── Tunables ─────────────────────────────────────────── */
 
 const DESKTOP_COUNT = 120;
-const MOBILE_COUNT = 35;
+const MOBILE_COUNT = 40;
 const LINK_RADIUS = 0.22;      // in world units (scene spans ~[-1.6, 1.6])
 const MERGE_RADIUS = 0.028;
-const BASE_SIZE = 6.0;          // px, at mass 1
+const BASE_SIZE = 9.0;          // px, at mass 1
 const MAX_LINKS = 260;          // cap: geometry uses fixed-length buffer
-const PRIMARY_COLOR = new THREE.Color("#fbbf24"); // matches --primary amber
+// Deep amber — reads against the light cream background. Normal (not additive)
+// blending is critical: additive on near-white bg makes the colour invisible.
+const PRIMARY_COLOR = new THREE.Color("#a15c07");
 
 /* ── Particle datatype ────────────────────────────────── */
 
@@ -156,7 +158,7 @@ const ParticleField = ({ count, enableLinks }: { count: number; enableLinks: boo
         transparent: true,
         depthTest: false,
         depthWrite: false,
-        blending: THREE.AdditiveBlending,
+        blending: THREE.NormalBlending,
         vertexShader: POINT_VERT,
         fragmentShader: POINT_FRAG,
         uniforms: { uColor: { value: PRIMARY_COLOR } },
@@ -170,7 +172,7 @@ const ParticleField = ({ count, enableLinks }: { count: number; enableLinks: boo
         transparent: true,
         depthTest: false,
         depthWrite: false,
-        blending: THREE.AdditiveBlending,
+        blending: THREE.NormalBlending,
         vertexShader: LINE_VERT,
         fragmentShader: LINE_FRAG,
         uniforms: { uColor: { value: PRIMARY_COLOR } },
@@ -259,7 +261,7 @@ const ParticleField = ({ count, enableLinks }: { count: number; enableLinks: boo
 
           if (linkIdx < MAX_LINKS) {
             const alpha = (1 - d / LINK_RADIUS);
-            const a1 = alpha * alpha * 0.35;
+            const a1 = alpha * alpha * 0.75;
             const base = linkIdx * 6;
             linkPosArr[base + 0] = a.x;
             linkPosArr[base + 1] = a.y;
@@ -295,7 +297,7 @@ const ParticleField = ({ count, enableLinks }: { count: number; enableLinks: boo
       posArr[i * 3 + 1] = p.y;
       posArr[i * 3 + 2] = 0;
       szArr[i] = BASE_SIZE * Math.sqrt(p.mass) * dpr;
-      alArr[i] = 0.55 + Math.min(p.mass - 1, 5) * 0.06;
+      alArr[i] = 0.85 + Math.min(p.mass - 1, 5) * 0.03;
     }
     pos.needsUpdate = true;
     sz.needsUpdate = true;
