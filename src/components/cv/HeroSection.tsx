@@ -1,13 +1,11 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useCvData } from "@/contexts/useCvData";
 import { User, ChevronDown } from "lucide-react";
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import fallbackHeroPhoto from "@/data/assets/slackPic.webp";
 import { MOTION_TOKENS } from "@/lib/motion";
 import { resolvePhotoUrl } from "@/utils/resolvePhotoUrl";
-import HeroParticles from "./HeroParticles";
-
-const HeroSceneR3F = lazy(() => import("@/components/three/HeroSceneR3F"));
+import HeroSceneR3F from "@/components/three/HeroSceneR3F";
 
 const FALLBACK_PHOTO_URL = "/placeholder.svg";
 
