@@ -108,6 +108,7 @@ const AmbientPlane = ({ frozen }: { frozen: boolean }) => {
       uTint: { value: new THREE.Vector3(0.96, 0.66, 0.13) },
     }),
     // size intentionally not a dep here — updated below
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
