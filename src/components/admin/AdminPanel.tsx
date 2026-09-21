@@ -263,8 +263,8 @@ export function AdminPanel({ userEmail }: { userEmail: string | null }) {
             >
               <span className="flex items-center gap-2">
                 <span className="truncate flex-1">{v.name}</span>
-                {v.is_live && <Globe className="w-3.5 h-3.5 shrink-0" title="Live version" />}
-                {publishedIds.has(v.id) && <Check className="w-3.5 h-3.5 shrink-0" title="Published" />}
+                {v.is_live && <Globe className="w-3.5 h-3.5 shrink-0" aria-label="Live version" />}
+                {publishedIds.has(v.id) && <Check className="w-3.5 h-3.5 shrink-0" aria-label="Published" />}
               </span>
               <span className="block text-[10px] opacity-70">/cv/{v.slug}</span>
             </button>
