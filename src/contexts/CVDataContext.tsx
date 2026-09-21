@@ -37,13 +37,20 @@ function loadFromStorage(): CVData {
 export function CVDataProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<CVData>(loadFromStorage);
   const [editorOpen, setEditorOpen] = useState(false);
+  const [persist, setPersist] = useState(true);
 
   useEffect(() => {
+    if (!persist) return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }, [data]);
+  }, [data, persist]);
 
   const updateData = useCallback((updater: (prev: CVData) => CVData) => {
     setData((prev) => updater(prev));
+  }, []);
+
+  const replaceData = useCallback((next: CVData, options?: { persist?: boolean }) => {
+    setPersist(options?.persist ?? true);
+    setData(next);
   }, []);
 
   const resetData = useCallback(() => {
@@ -52,8 +59,8 @@ export function CVDataProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const stableValue = useMemo(
-    () => ({ data, updateData, resetData, editorOpen, setEditorOpen }),
-    [data, updateData, resetData, editorOpen]
+    () => ({ data, updateData, replaceData, resetData, editorOpen, setEditorOpen }),
+    [data, updateData, replaceData, resetData, editorOpen]
   );
 
   return <CVDataContext.Provider value={stableValue}>{children}</CVDataContext.Provider>;
