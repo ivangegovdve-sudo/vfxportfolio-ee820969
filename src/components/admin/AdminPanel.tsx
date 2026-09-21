@@ -142,6 +142,7 @@ export function AdminPanel({ userEmail }: { userEmail: string | null }) {
       .single()
       .then(({ data: row }) => {
         if (cancelled || !row) return;
+        savedRef.current = JSON.stringify(row.data);
         replaceData(row.data as unknown as CVData, { persist: false });
         setDirty(false);
       });
@@ -150,15 +151,16 @@ export function AdminPanel({ userEmail }: { userEmail: string | null }) {
     };
   }, [selectedId, replaceData]);
 
-  // Mark dirty on any edit
+  // Track unsaved changes
   useEffect(() => {
     if (!selectedId) return;
-    setDirty(true);
+    setDirty(JSON.stringify(data) !== savedRef.current);
   }, [data, selectedId]);
 
   const saveDraft = async () => {
     if (!selectedId) return;
     setSaving(true);
+    const snapshot = JSON.stringify(data);
     const { error } = await supabase
       .from("cv_versions")
       .update({ data: data as never })
@@ -168,6 +170,7 @@ export function AdminPanel({ userEmail }: { userEmail: string | null }) {
       toast({ title: "Could not save", description: error.message, variant: "destructive" });
       return;
     }
+    savedRef.current = snapshot;
     setDirty(false);
     toast({ title: "Draft saved" });
   };
