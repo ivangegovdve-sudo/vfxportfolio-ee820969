@@ -1,5 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Lock } from "lucide-react";
 import Navigation from "@/components/cv/Navigation";
 import HeroSection from "@/components/cv/HeroSection";
 import ExperienceSection from "@/components/cv/ExperienceSection";
@@ -8,6 +9,7 @@ import SkillsSection from "@/components/cv/SkillsSection";
 import EducationSection from "@/components/cv/EducationSection";
 import ContactSection from "@/components/cv/ContactSection";
 import { useActiveSectionTracker } from "@/hooks/useActiveSectionTracker";
+import { usePublishedCv } from "@/hooks/usePublishedCv";
 
 const ContentEditor = lazy(() => import("@/components/editor/ContentEditor"));
 
@@ -15,8 +17,10 @@ const PROGRAMMATIC_SCROLL_EVENT = "cv:programmatic-scroll-start";
 
 const Index = () => {
   const [searchParams] = useSearchParams();
+  const { slug } = useParams();
   const isEditMode =
     searchParams.get("edit") === "true" || import.meta.env.VITE_ENABLE_EDITOR === "true";
+  usePublishedCv(slug);
   useActiveSectionTracker();
 
   const [navFading, setNavFading] = useState(false);
