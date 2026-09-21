@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Briefcase,
   Check,
@@ -83,6 +83,7 @@ export function AdminPanel({ userEmail }: { userEmail: string | null }) {
   const [newName, setNewName] = useState("");
   const [profiles, setProfiles] = useState<ProfileRow[]>([]);
   const [adminIds, setAdminIds] = useState<Set<string>>(new Set());
+  const savedRef = useRef<string>("");
 
   const selected = useMemo(
     () => versions.find((v) => v.id === selectedId) ?? null,
@@ -192,6 +193,7 @@ export function AdminPanel({ userEmail }: { userEmail: string | null }) {
       toast({ title: "Could not publish", description: error.message, variant: "destructive" });
       return;
     }
+    savedRef.current = JSON.stringify(data);
     setDirty(false);
     await loadVersions();
     toast({ title: "Published", description: selected.is_live ? "Live on your main page." : "Available at its own link." });
