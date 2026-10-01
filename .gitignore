@@ -25,3 +25,8 @@ test-results/
 *.sw?
 # Binary image assets should not be committed from Codex PRs
 src/data/assets/*.png
+
+# Local visual verification samples are kept out of source control.
+scrollcraft/builds/*/lab/
+artifacts/*-review-*.png
+artifacts/nav-contact-app-state.png

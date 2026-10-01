@@ -1,93 +1,68 @@
+import { useEffect, useRef, useState } from "react";
+import { ArrowUpRight, Play } from "lucide-react";
 import { useCvData } from "@/contexts/useCvData";
-import AnimatedSection from "./AnimatedSection";
-import { ExternalLink } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
-import { REVEAL, HOVER, HOVER_TRANSITION, SHADOW, GLOW, VIEWPORT } from "@/lib/motion";
 import TrademarkText from "./TrademarkText";
 import RedTigerPosterRail from "./RedTigerPosterRail";
-import AmbientMotes from "./AmbientMotes";
 
 const PortfolioSection = () => {
   const { data } = useCvData();
-  const reduceMotion = useReducedMotion();
-  const orderedItems = [...data.portfolio].sort((a, b) => a.order - b.order);
+  const items = [...data.portfolio].sort((a, b) => a.order - b.order);
+  const projects = items.filter((item) => item.type !== "collection");
+  const collections = items.filter((item) => item.type === "collection");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const active = projects.find((item) => item.id === selectedId) ?? projects[0];
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  useEffect(() => { buttonRefs.current = buttonRefs.current.slice(0, projects.length); }, [projects.length]);
 
-  const projectItems = orderedItems.filter((p) => p.type !== "collection");
-  const collectionItems = orderedItems.filter((p) => p.type === "collection");
+  const selectProject = (index: number, moveFocus = false) => {
+    const next = projects[index];
+    if (!next) return;
+    setSelectedId(next.id);
+    if (moveFocus) {
+      buttonRefs.current[index]?.focus({ preventScroll: true });
+      buttonRefs.current[index]?.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" });
+    }
+  };
 
   return (
-    <section id="portfolio" className="section-spacing bg-card relative" aria-labelledby="portfolio-title">
-      <AmbientMotes count={8} seed={221} color="hsl(var(--primary) / 0.18)" parallaxStrength={10} />
-      <div className="section-container relative z-10">
-        <AnimatedSection>
-          <h2 id="portfolio-title" className="section-title">
-            Portfolio
-          </h2>
-        </AnimatedSection>
-
-        <div className="grid gap-5 sm:grid-cols-2 md:gap-6">
-          {projectItems.map((item, i) => (
-            <motion.div
-              key={item.id}
-              custom={i}
-              variants={REVEAL.card}
-              initial="hidden"
-              whileInView="visible"
-              viewport={VIEWPORT.standard}
-              className="portfolio-card-wrapper"
-            >
-              <motion.a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="portfolio-card group block overflow-hidden rounded-xl border border-border bg-background transition-[border-color] duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                whileHover={reduceMotion ? undefined : HOVER.portfolio}
-                whileTap={reduceMotion ? undefined : HOVER.press}
-                transition={reduceMotion ? { duration: 0 } : HOVER_TRANSITION.portfolio}
-              >
-                <div className="aspect-[16/9] bg-secondary/30 flex items-center justify-center relative overflow-hidden">
-                  <img
-                    src={item.thumbnail}
-                    alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-700 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
-                    loading="lazy"
-                    decoding="async"
-                    width={1280}
-                    height={720}
-                  />
-                  {/* Hover overlay */}
-                  <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                    <div className="absolute inset-0" style={{ background: GLOW.card }} />
-                    <div className="absolute inset-0 ring-1 ring-inset ring-primary/15 rounded-t-xl" />
-                    <div className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-out" style={{ background: GLOW.shineSweep }} />
-                  </div>
-                  <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1.5 text-xs font-medium text-primary opacity-100 shadow-sm backdrop-blur-sm transition-all duration-300 sm:opacity-0 sm:translate-y-1 sm:group-hover:opacity-100 sm:group-hover:translate-y-0">
-                    {item.ctaLabel || "View"}
-                    <ExternalLink className="w-3 h-3" />
-                  </span>
+    <section id="portfolio" className="work-section" data-sc-act="flow" aria-labelledby="portfolio-title">
+      <div className="section-container">
+        <div className="work-heading"><h2 id="portfolio-title" className="section-title">Portfolio</h2><span className="work-heading-rule" aria-hidden="true" /></div>
+        {active && (
+          <div className="work-projector">
+            <div className="projector-image-wrap" data-sc-reveal="up" data-sc-reveal-at="0 0.16">
+              <a href={active.url} target="_blank" rel="noopener noreferrer" className="projector-screen" aria-label={`${active.ctaLabel || "Watch"} ${active.title}`}>
+                <img key={active.id} src={active.thumbnail} alt={active.title} width={1280} height={720} loading="lazy" decoding="async" />
+                <span className="projector-play" aria-hidden="true"><Play fill="currentColor" size={24} /></span>
+              </a>
+            </div>
+            <div id="projector-caption" className="projector-caption" aria-live="polite" aria-atomic="true">
+              <div><h3><TrademarkText text={active.title} /></h3><p>{active.descriptor}</p></div>
+              <div className="projector-caption-meta"><span>{[active.category, active.year].filter(Boolean).join(" / ")}</span><a href={active.url} target="_blank" rel="noopener noreferrer" className="text-link">{active.ctaLabel || "View"}<ArrowUpRight size={18} aria-hidden="true" /></a></div>
+            </div>
+            <div className="project-contact-sheet" role="group" aria-label="Select a portfolio project">
+              {projects.map((item, index) => (
+                <div className={`contact-sheet-item${active.id === item.id ? " is-selected" : ""}`} key={item.id}>
+                  <button type="button" ref={(element) => { buttonRefs.current[index] = element; }} className="contact-sheet-select" aria-pressed={active.id === item.id} aria-controls="projector-caption" aria-label={`Select ${item.title}`} onClick={() => selectProject(index)} onKeyDown={(event) => {
+                    let next: number | undefined;
+                    if (event.key === "ArrowRight") next = (index + 1) % projects.length;
+                    if (event.key === "ArrowLeft") next = (index - 1 + projects.length) % projects.length;
+                    if (event.key === "Home") next = 0;
+                    if (event.key === "End") next = projects.length - 1;
+                    if (next !== undefined) { event.preventDefault(); selectProject(next, true); }
+                  }}>
+                    <img src={item.thumbnail} alt="" width={320} height={180} loading="lazy" decoding="async" />
+                    <span className="sheet-selection-mark" aria-hidden="true" />
+                  </button>
+                  <a href={item.url} target="_blank" rel="noopener noreferrer" className="sheet-project-link"><TrademarkText text={item.title} /><ArrowUpRight size={13} aria-hidden="true" /></a>
+                  <p className="sheet-project-meta">{[item.year, item.category].filter(Boolean).join(" / ")}</p>
+                  <p className="sheet-project-description">{item.descriptor}</p>
                 </div>
-
-                <div className="p-5 md:p-6">
-                  <h3 className="font-display text-lg font-bold leading-snug text-foreground transition-colors duration-300 md:text-xl md:group-hover:text-primary">
-                    <TrademarkText text={item.title} />
-                  </h3>
-                  {(item.year || item.category) && (
-                    <p className="mt-1 text-[11px] uppercase tracking-[0.08em] text-muted-foreground/80">
-                      {[item.year, item.category].filter(Boolean).join(" | ")}
-                    </p>
-                  )}
-                  <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{item.descriptor}</p>
-                </div>
-              </motion.a>
-            </motion.div>
-          ))}
-        </div>
-
-        {collectionItems.map((item) => (
-          <div key={item.id}>
-            <RedTigerPosterRail item={item} />
+              ))}
+            </div>
           </div>
-        ))}
+        )}
+        {collections.map((item) => <RedTigerPosterRail item={item} key={item.id} />)}
       </div>
     </section>
   );

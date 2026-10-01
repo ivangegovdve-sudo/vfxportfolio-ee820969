@@ -150,7 +150,7 @@ function EditorPanel({
 
   return (
     <div
-      className="fixed inset-y-0 left-0 z-50 bg-background border-r border-border shadow-xl flex"
+      className="fixed inset-y-0 left-0 z-[80] bg-background border-r border-border shadow-xl flex"
       style={{ width: isCollapsed ? COLLAPSED_WIDTH : panelWidth }}
     >
       <div className="flex flex-col flex-1 min-w-0">
@@ -235,4 +235,3 @@ function EditorPanel({
 }
 
 export default ContentEditor;
-
