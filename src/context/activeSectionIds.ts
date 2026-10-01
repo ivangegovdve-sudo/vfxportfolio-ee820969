@@ -1,8 +1,8 @@
 export const TRACKED_SECTION_IDS = [
   "hero",
   "portfolio",
-  "skills",
   "experience",
+  "skills",
   "education",
   "contact",
 ] as const;
