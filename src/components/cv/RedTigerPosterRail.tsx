@@ -42,7 +42,10 @@ const PosterCard = ({
   onHover: () => void;
   onLeave: () => void;
 }) => {
-  const cardRef = useRef<HTMLElement | null>(null);
+  const cardRef = useRef<HTMLElement & { style: CSSStyleDeclaration } | null>(null);
+  const setCardRef = useCallback((node: HTMLElement | null) => {
+    cardRef.current = node;
+  }, []);
   const rafRef = useRef<number>(0);
 
   const handlePointerMove = useCallback(
@@ -140,7 +143,7 @@ const PosterCard = ({
 
   return game.url ? (
     <motion.a
-      ref={cardRef}
+      ref={setCardRef}
       data-red-tiger-poster
       href={game.url}
       target="_blank"
@@ -161,7 +164,7 @@ const PosterCard = ({
     </motion.a>
   ) : (
     <motion.div
-      ref={cardRef}
+      ref={setCardRef}
       data-red-tiger-poster
       custom={index}
       variants={REVEAL.poster}

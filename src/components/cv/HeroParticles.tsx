@@ -9,11 +9,12 @@ type Dot = {
 };
 
 const DOT_COUNT = 360;
+const MOBILE_DOT_COUNT = 120;
 const RING_COUNT = 22;
 
-const buildSphereDots = () =>
-  Array.from({ length: DOT_COUNT }, (_, index): Dot => {
-    const offset = 2 / DOT_COUNT;
+const buildSphereDots = (count: number) =>
+  Array.from({ length: count }, (_, index): Dot => {
+    const offset = 2 / count;
     const y = index * offset - 1 + offset / 2;
     const radius = Math.sqrt(1 - y * y);
     const theta = index * Math.PI * (3 - Math.sqrt(5));
@@ -41,7 +42,8 @@ const HeroParticles = () => {
       return;
     }
 
-    const dots = buildSphereDots();
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    const dots = buildSphereDots(isMobile ? MOBILE_DOT_COUNT : DOT_COUNT);
     const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
     let width = 0;
     let height = 0;
@@ -49,25 +51,31 @@ const HeroParticles = () => {
     let frameId = 0;
     let start = performance.now();
     let isVisible = document.visibilityState !== "hidden";
+    let isInViewport = true;
+    let rect = { left: 0, top: 0, width: 0, height: 0 };
 
     const resize = () => {
-      const rect = canvas.getBoundingClientRect();
+      rect = canvas.getBoundingClientRect();
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       width = rect.width;
       height = rect.height;
       canvas.width = Math.max(1, Math.floor(width * dpr));
       canvas.height = Math.max(1, Math.floor(height * dpr));
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (reduceMotion) {
+        draw(performance.now());
+      }
     };
 
     const onPointerMove = (event: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      pointer.tx = ((event.clientX - rect.left) / Math.max(rect.width, 1) - 0.5) * 2;
-      pointer.ty = ((event.clientY - rect.top) / Math.max(rect.height, 1) - 0.5) * 2;
+      const txTarget = ((event.clientX - rect.left) / Math.max(rect.width, 1) - 0.5) * 2;
+      const tyTarget = ((event.clientY - rect.top) / Math.max(rect.height, 1) - 0.5) * 2;
+      pointer.tx = Math.max(-1, Math.min(1, txTarget));
+      pointer.ty = Math.max(-1, Math.min(1, tyTarget));
     };
 
     const draw = (now: number) => {
-      if (!isVisible) {
+      if (!isVisible || !isInViewport) {
         return;
       }
 
@@ -103,8 +111,9 @@ const HeroParticles = () => {
         const t = ring / visibleRingCount;
         const radius = sphereRadius * (0.52 + t * 0.95);
         const wave = Math.sin(elapsed * 1.6 - ring * 0.34) * 7;
+        const rx = Math.max(0, radius + wave);
         context.beginPath();
-        context.ellipse(0, 0, radius + wave, (radius + wave) * 0.34, rotateY * 0.45, 0, Math.PI * 2);
+        context.ellipse(0, 0, rx, rx * 0.34, rotateY * 0.45, 0, Math.PI * 2);
         context.strokeStyle = `rgba(88, 166, 255, ${0.018 + (1 - t) * 0.04})`;
         context.lineWidth = 1;
         context.stroke();
@@ -153,17 +162,50 @@ const HeroParticles = () => {
       }
     };
 
+    const scheduleFrame = () => {
+      if (!isVisible || !isInViewport) {
+        return;
+      }
+
+      if (!reduceMotion) {
+        start = performance.now();
+        frameId = window.requestAnimationFrame(draw);
+      } else {
+        draw(performance.now());
+      }
+    };
+
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== "undefined") {
+      observer = new IntersectionObserver(
+        (entries) => {
+          isInViewport = entries.some((entry) => entry.isIntersecting);
+          if (!isInViewport) {
+            window.cancelAnimationFrame(frameId);
+          } else {
+            scheduleFrame();
+          }
+        },
+        { threshold: 0 }
+      );
+      observer.observe(canvas);
+    }
+
+    const hero = canvas.closest("#hero");
+    const pointerTarget = hero ?? window;
+
     resize();
     start = performance.now();
     window.addEventListener("resize", resize);
-    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    pointerTarget.addEventListener("pointermove", onPointerMove, { passive: true });
     document.addEventListener("visibilitychange", onVisibilityChange);
     frameId = window.requestAnimationFrame(draw);
 
     return () => {
       window.cancelAnimationFrame(frameId);
+      observer?.disconnect();
       window.removeEventListener("resize", resize);
-      window.removeEventListener("pointermove", onPointerMove);
+      pointerTarget.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [reduceMotion]);

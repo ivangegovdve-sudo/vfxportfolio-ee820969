@@ -224,6 +224,7 @@
       radial-gradient(circle at 20% 15%, hsl(var(--primary) / 0.16), transparent 18rem);
     box-shadow: 0 30px 90px -42px rgba(0, 0, 0, 0.92), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     padding: clamp(1.35rem, 4vw, 3rem);
+    -webkit-backdrop-filter: blur(22px);
     backdrop-filter: blur(22px);
   }
 
@@ -406,6 +407,10 @@
 
   @media (prefers-reduced-motion: reduce) {
     .hero-breathe {
+      animation: none;
+    }
+
+    .hero-portrait-shell::after {
       animation: none;
     }
   }

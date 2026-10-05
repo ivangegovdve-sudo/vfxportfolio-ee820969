@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import fallbackHeroPhoto from "@/data/assets/slackPic.webp";
 import { MOTION_TOKENS } from "@/lib/motion";
 import { resolvePhotoUrl } from "@/utils/resolvePhotoUrl";
+import HeroParticles from "./HeroParticles";
 
 
 const FALLBACK_PHOTO_URL = "/placeholder.svg";
@@ -74,10 +75,11 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="hero" className="hero-gradient min-h-screen relative overflow-hidden" aria-labelledby="hero-heading">
+    <section id="hero" className="hero-gradient relative min-h-screen overflow-hidden" aria-labelledby="hero-heading">
+      <HeroParticles />
       <div className="pointer-events-none absolute inset-4 z-[1] rounded-[2rem] border border-white/10 md:inset-8" aria-hidden="true" />
       <div className="pointer-events-none absolute inset-x-8 top-24 z-[1] h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" aria-hidden="true" />
-      <div className="absolute inset-x-0 top-0 h-screen pt-16 pb-8 flex items-center justify-center pointer-events-none z-10 md:pt-20 md:pb-12">
+      <div className="absolute inset-x-0 top-0 min-h-screen pt-16 pb-8 flex items-center justify-center pointer-events-none z-10 md:pt-20 md:pb-12">
         <div className="section-container w-full pointer-events-auto">
           <div className="hero-command-panel flex w-full flex-col items-center gap-8 text-center md:grid md:grid-cols-[minmax(12rem,17rem)_1fr] md:items-center md:gap-10 md:text-left">
             <span aria-hidden="true" className="hero-system-label">
