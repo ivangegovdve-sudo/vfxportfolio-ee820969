@@ -42,7 +42,13 @@ const PosterCard = ({
   onHover: () => void;
   onLeave: () => void;
 }) => {
-  const cardRef = useRef<HTMLAnchorElement>(null);
+  const cardRef = useRef<HTMLElement & { style: CSSStyleDeclaration } | null>(null);
+  const setAnchorRef = useCallback((node: HTMLAnchorElement | null) => {
+    cardRef.current = node;
+  }, []);
+  const setDivRef = useCallback((node: HTMLDivElement | null) => {
+    cardRef.current = node;
+  }, []);
   const rafRef = useRef<number>(0);
 
   const handlePointerMove = useCallback(
@@ -82,33 +88,17 @@ const PosterCard = ({
 
   // Dim non-hovered siblings
   const dimmed = isAnyHovered && !isThisHovered;
-
-  return (
-    <motion.a
-      ref={cardRef}
-      data-red-tiger-poster
-      href={game.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      custom={index}
-      variants={REVEAL.poster}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      whileTap={reduceMotion ? undefined : HOVER.press}
-      onPointerEnter={onHover}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
-      className={`poster-card poster-card-3d group relative block w-[11.5rem] shrink-0 overflow-hidden rounded-xl border bg-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:w-[14rem] ${
-        dimmed ? "border-white/[0.03]" : "border-white/[0.08]"
-      }`}
-      style={{
-        opacity: dimmed ? 0.55 : 1,
-        transition: "opacity 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.22,1,0.36,1)",
-        boxShadow: isThisHovered ? SHADOW.posterHover : SHADOW.posterRest,
-        willChange: isThisHovered ? "transform" : "auto",
-      }}
-    >
+  const cardClassName = `poster-card poster-card-3d group relative block w-[11.5rem] shrink-0 overflow-hidden rounded-xl border bg-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:w-[14rem] ${
+    dimmed ? "border-white/[0.03]" : "border-white/[0.08]"
+  }`;
+  const cardStyle = {
+    opacity: dimmed ? 0.55 : 1,
+    transition: "opacity 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.22,1,0.36,1)",
+    boxShadow: isThisHovered ? SHADOW.posterHover : SHADOW.posterRest,
+    willChange: isThisHovered ? "transform" : "auto",
+  };
+  const cardContent = (
+    <>
       <div className="relative aspect-[3/4] overflow-hidden">
         <img
           src={game.posterUrl || fallbackThumb}
@@ -146,10 +136,52 @@ const PosterCard = ({
       </div>
 
       {/* External link badge */}
-      <span className="absolute right-2.5 top-2.5 inline-flex h-7 w-7 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:opacity-100 scale-75 group-hover:scale-100">
-        <ExternalLink className="h-3 w-3" />
-      </span>
+      {game.url && (
+        <span className="absolute right-2.5 top-2.5 inline-flex h-7 w-7 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:opacity-100 scale-75 group-hover:scale-100">
+          <ExternalLink className="h-3 w-3" />
+        </span>
+      )}
+    </>
+  );
+
+  return game.url ? (
+    <motion.a
+      ref={setAnchorRef}
+      data-red-tiger-poster
+      href={game.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      custom={index}
+      variants={REVEAL.poster}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      whileTap={reduceMotion ? undefined : HOVER.press}
+      onPointerEnter={onHover}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+      className={cardClassName}
+      style={cardStyle}
+    >
+      {cardContent}
     </motion.a>
+  ) : (
+    <motion.div
+      ref={setDivRef}
+      data-red-tiger-poster
+      custom={index}
+      variants={REVEAL.poster}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      onPointerEnter={onHover}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+      className={cardClassName}
+      style={cardStyle}
+    >
+      {cardContent}
+    </motion.div>
   );
 };
 

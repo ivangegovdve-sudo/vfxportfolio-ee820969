@@ -40,7 +40,7 @@ const SkillsSection = () => {
         <div className="space-y-12">
           {data.skills.sections.map((section, si) => (
             <AnimatedSection key={section.title} delay={0.08 * si}>
-              <div>
+              <div className="cv-surface-panel rounded-xl p-5 md:p-6">
                 <h3 className="font-display font-semibold text-base text-foreground mb-5 pb-2 border-b border-border">
                   {section.title}
                 </h3>
@@ -122,7 +122,7 @@ const SkillsSection = () => {
           <div className="grid md:grid-cols-2 gap-10">
             {/* Personal */}
             <AnimatedSection delay={0.1}>
-              <div>
+              <div className="cv-surface-panel rounded-xl p-5 md:p-6">
                 <h3 className="font-display font-semibold text-base text-foreground mb-5 pb-2 border-b border-border">
                   Personal
                 </h3>
@@ -155,7 +155,7 @@ const SkillsSection = () => {
 
             {/* Languages */}
             <AnimatedSection delay={0.2}>
-              <div>
+              <div className="cv-surface-panel rounded-xl p-5 md:p-6">
                 <h3 className="font-display font-semibold text-base text-foreground mb-5 pb-2 border-b border-border">
                   Languages
                 </h3>
