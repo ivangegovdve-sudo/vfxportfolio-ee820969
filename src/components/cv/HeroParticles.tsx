@@ -48,7 +48,8 @@ const HeroParticles = () => {
     let width = 0;
     let height = 0;
     let dpr = 1;
-    let frameId = 0;
+    let frameId: number | null = null;
+    let disposed = false;
     let start = performance.now();
     let isVisible = document.visibilityState !== "hidden";
     let isInViewport = true;
@@ -62,7 +63,7 @@ const HeroParticles = () => {
       canvas.width = Math.max(1, Math.floor(width * dpr));
       canvas.height = Math.max(1, Math.floor(height * dpr));
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
-      if (reduceMotion) {
+      if (reduceMotion && !disposed) {
         draw(performance.now());
       }
     };
@@ -74,8 +75,18 @@ const HeroParticles = () => {
       pointer.ty = Math.max(-1, Math.min(1, tyTarget));
     };
 
+    const cancelFrame = () => {
+      if (frameId !== null) {
+        window.cancelAnimationFrame(frameId);
+        frameId = null;
+      }
+    };
+
     const draw = (now: number) => {
-      if (!isVisible || !isInViewport) {
+      // The callback has been consumed. Any next frame is owned by this draw
+      // call, so cleanup and visibility changes can cancel exactly one chain.
+      frameId = null;
+      if (disposed || !isVisible || !isInViewport) {
         return;
       }
 
@@ -142,7 +153,7 @@ const HeroParticles = () => {
 
       context.restore();
 
-      if (!reduceMotion) {
+      if (!reduceMotion && !disposed && isVisible && isInViewport) {
         frameId = window.requestAnimationFrame(draw);
       }
     };
@@ -150,25 +161,26 @@ const HeroParticles = () => {
     const onVisibilityChange = () => {
       isVisible = document.visibilityState !== "hidden";
       if (!isVisible) {
-        window.cancelAnimationFrame(frameId);
+        cancelFrame();
         return;
       }
 
       if (!reduceMotion) {
         start = performance.now();
-        frameId = window.requestAnimationFrame(draw);
+        scheduleFrame();
       } else {
         draw(performance.now());
       }
     };
 
     const scheduleFrame = () => {
-      if (!isVisible || !isInViewport) {
+      if (disposed || !isVisible || !isInViewport) {
         return;
       }
 
       if (!reduceMotion) {
         start = performance.now();
+        cancelFrame();
         frameId = window.requestAnimationFrame(draw);
       } else {
         draw(performance.now());
@@ -181,7 +193,7 @@ const HeroParticles = () => {
         (entries) => {
           isInViewport = entries.some((entry) => entry.isIntersecting);
           if (!isInViewport) {
-            window.cancelAnimationFrame(frameId);
+            cancelFrame();
           } else {
             scheduleFrame();
           }
@@ -199,10 +211,11 @@ const HeroParticles = () => {
     window.addEventListener("resize", resize);
     pointerTarget.addEventListener("pointermove", onPointerMove, { passive: true });
     document.addEventListener("visibilitychange", onVisibilityChange);
-    frameId = window.requestAnimationFrame(draw);
+    scheduleFrame();
 
     return () => {
-      window.cancelAnimationFrame(frameId);
+      disposed = true;
+      cancelFrame();
       observer?.disconnect();
       window.removeEventListener("resize", resize);
       pointerTarget.removeEventListener("pointermove", onPointerMove);
