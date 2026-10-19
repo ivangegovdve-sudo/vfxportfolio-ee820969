@@ -24,7 +24,7 @@ describe("CV personas", () => {
     expect(ai.portfolio.map((project) => project.title)).toEqual(aiResume.projects.map((project) => project.name));
     expect(ai.experience[0].highlights).toEqual(aiResume.work[0].highlights);
     expect(ai.skills.sections).toHaveLength(5);
-    expect(ai.portfolio.find((project) => project.title === "Chloé Council")?.url).toBe("");
+    expect(ai.portfolio.find((project) => project.title === "Chloé Council & Voice Assistant")?.url).toBe("");
     expect(JSON.stringify(defaultCvData)).toBe(before);
   });
 });
