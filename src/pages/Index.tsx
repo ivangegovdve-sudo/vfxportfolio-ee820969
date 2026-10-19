@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { Lock } from "lucide-react";
 import Navigation from "@/components/cv/Navigation";
@@ -10,13 +10,26 @@ import EducationSection from "@/components/cv/EducationSection";
 import ContactSection from "@/components/cv/ContactSection";
 import { useActiveSectionTracker } from "@/hooks/useActiveSectionTracker";
 import { usePublishedCv } from "@/hooks/usePublishedCv";
+import { useCvData } from "@/contexts/useCvData";
+import { CVDataContext } from "@/contexts/cvDataStore";
+import { CvPersonaContext } from "@/contexts/CvPersona";
+import { aiCvData, getCvPersona, personaSearchParams, type CvPersona } from "@/data/cvPersonas";
 
 const ContentEditor = lazy(() => import("@/components/editor/ContentEditor"));
 
 const PROGRAMMATIC_SCROLL_EVENT = "cv:programmatic-scroll-start";
 
 const Index = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const baseContext = useCvData();
+  const persona = getCvPersona(searchParams.get("v"));
+  const selectPersona = useCallback((next: CvPersona) => {
+    setSearchParams((current) => personaSearchParams(current, next), { preventScrollReset: true });
+  }, [setSearchParams]);
+  const displayContext = useMemo(() => ({
+    ...baseContext,
+    data: persona === "ai" ? aiCvData(baseContext.data) : baseContext.data,
+  }), [baseContext, persona]);
   const { slug } = useParams();
   const isEditMode =
     searchParams.get("edit") === "true" || import.meta.env.VITE_ENABLE_EDITOR === "true";
@@ -37,16 +50,18 @@ const Index = () => {
   }, []);
 
   return (
-    <>
+    <CvPersonaContext.Provider value={{ persona, selectPersona }}>
       {isEditMode && (
         <Suspense fallback={null}>
           <ContentEditor />
         </Suspense>
       )}
+      <CVDataContext.Provider value={displayContext}>
+      <div className={persona === "ai" ? "cv-persona-ai" : ""}>
       <Navigation />
       <main
         id="main"
-        className={navFading ? "animate-nav-fadein" : ""}
+        className={`cv-persona-content ${navFading ? "animate-nav-fadein" : ""}`}
         onAnimationEnd={handleAnimationEnd}
       >
         <HeroSection />
@@ -69,7 +84,9 @@ const Index = () => {
           <Lock className="w-3.5 h-3.5" />
         </Link>
       </footer>
-    </>
+      </div>
+      </CVDataContext.Provider>
+    </CvPersonaContext.Provider>
   );
 };
 
