@@ -97,7 +97,7 @@
       "keywords": ["React", "TypeScript", "Vite", "typed contracts", "decision gates", "TTS"]
     },
     {
-      "name": "HypertrophyOS",
+      "name": "gymScholar",
       "description": "Strength- and hypertrophy-science knowledge base built from peer-reviewed papers — extracted, cited, and query-able claims for evidence-based training guidance.",
       "keywords": ["RAG", "claim extraction", "citations", "research corpus", "Python"]
     },
