@@ -1,9 +1,12 @@
 import { useCvData } from "@/contexts/useCvData";
 import AnimatedSection from "./AnimatedSection";
 import { Mail, MapPin, ExternalLink, Download } from "lucide-react";
+import { useCvPersona } from "@/contexts/CvPersona";
+import { aiResume } from "@/data/cvPersonas";
 
 const ContactSection = () => {
   const { data } = useCvData();
+  const { persona } = useCvPersona();
   const { email, location, links } = data.contact;
   const handleDownloadJsonResume = async () => {
     const [{ mapCvDataToJsonResume }, { validateJsonResume }] = await Promise.all([
@@ -11,7 +14,7 @@ const ContactSection = () => {
       import("@/utils/jsonResume/validateJsonResume"),
     ]);
 
-    const jsonResume = mapCvDataToJsonResume(data);
+    const jsonResume = persona === "ai" ? aiResume : mapCvDataToJsonResume(data);
     const validationResult = validateJsonResume(jsonResume);
     if (!validationResult.ok) {
       console.error("JSON Resume validation failed", "errors" in validationResult ? validationResult.errors : []);
@@ -25,7 +28,7 @@ const ContactSection = () => {
     const blobUrl = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = blobUrl;
-    anchor.download = "resume.json";
+    anchor.download = persona === "ai" ? "Ivan_Gegov_AI_CV.json" : "resume.json";
     document.body.appendChild(anchor);
     anchor.click();
     anchor.remove();
@@ -47,8 +50,7 @@ const ContactSection = () => {
               Let's work together
             </h3>
             <p className="text-base text-foreground/75 mb-8">
-              Available for freelance compositing, VFX, and animation projects.
-              Feel free to reach out.
+              {persona === "ai" ? "AI systems, agent orchestration, retrieval and automation. Feel free to reach out." : "Available for freelance compositing, VFX, and animation projects. Feel free to reach out."}
             </p>
 
             <div className="space-y-3 mb-8">

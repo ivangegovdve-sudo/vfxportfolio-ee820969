@@ -26,7 +26,9 @@ const PortfolioSection = () => {
         </AnimatedSection>
 
         <div className="grid gap-5 sm:grid-cols-2 md:gap-6">
-          {projectItems.map((item, i) => (
+          {projectItems.map((item, i) => {
+            const ProjectSurface = item.url ? motion.a : motion.div;
+            return (
             <motion.div
               key={item.id}
               custom={i}
@@ -36,16 +38,14 @@ const PortfolioSection = () => {
               viewport={VIEWPORT.standard}
               className="portfolio-card-wrapper"
             >
-              <motion.a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
+              <ProjectSurface
+                {...(item.url ? { href: item.url, target: "_blank", rel: "noopener noreferrer" } : {})}
                 className="portfolio-card group block overflow-hidden rounded-xl border border-border bg-background transition-[border-color] duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 whileHover={reduceMotion ? undefined : HOVER.portfolio}
                 whileTap={reduceMotion ? undefined : HOVER.press}
                 transition={reduceMotion ? { duration: 0 } : HOVER_TRANSITION.portfolio}
               >
-                <div className="aspect-[16/9] bg-secondary/30 flex items-center justify-center relative overflow-hidden">
+                {item.thumbnail && <div className="aspect-[16/9] bg-secondary/30 flex items-center justify-center relative overflow-hidden">
                   <img
                     src={item.thumbnail}
                     alt={item.title}
@@ -65,7 +65,7 @@ const PortfolioSection = () => {
                     {item.ctaLabel || "View"}
                     <ExternalLink className="w-3 h-3" />
                   </span>
-                </div>
+                </div>}
 
                 <div className="p-5 md:p-6">
                   <h3 className="font-display text-lg font-bold leading-snug text-foreground transition-colors duration-300 md:text-xl md:group-hover:text-primary">
@@ -77,10 +77,20 @@ const PortfolioSection = () => {
                     </p>
                   )}
                   <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{item.descriptor}</p>
+                  {item.keywords && (
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {item.keywords.map((keyword) => <span key={keyword} className="tag">{keyword}</span>)}
+                    </div>
+                  )}
+                  {!item.thumbnail && item.url && (
+                    <span className="mt-5 inline-flex items-center gap-1.5 text-xs font-medium text-primary">
+                      {item.ctaLabel || "View"}<ExternalLink className="h-3 w-3" />
+                    </span>
+                  )}
                 </div>
-              </motion.a>
+              </ProjectSurface>
             </motion.div>
-          ))}
+          );})}
         </div>
 
         {collectionItems.map((item) => (

@@ -56,6 +56,7 @@ export interface PortfolioItem {
   url: string;
   ctaLabel?: string;
   thumbnail: string;
+  keywords?: string[];
   type?: "project" | "collection";
   games?: { name: string; url?: string; year?: string; posterUrl?: string }[];
 }

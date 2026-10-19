@@ -5,12 +5,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import fallbackHeroPhoto from "@/data/assets/slackPic.webp";
 import { MOTION_TOKENS } from "@/lib/motion";
 import { resolvePhotoUrl } from "@/utils/resolvePhotoUrl";
+import { Button } from "@/components/ui/button";
+import { useCvPersona } from "@/contexts/CvPersona";
 
 
 const FALLBACK_PHOTO_URL = "/placeholder.svg";
 
 const HeroSection = () => {
   const { data } = useCvData();
+  const { persona, selectPersona } = useCvPersona();
   const { name, subtitle, photoUrl } = data.hero;
   const reduceMotion = useReducedMotion();
   const resolvedPrimaryPhotoUrl = useMemo(() => resolvePhotoUrl(photoUrl, fallbackHeroPhoto), [photoUrl]);
@@ -139,7 +142,7 @@ const HeroSection = () => {
                 }
                 className="mt-1.5 text-lg md:text-xl font-display font-medium text-primary"
               >
-                {"Animation \u00B7 Compositing \u00B7 VFX"}
+                {persona === "ai" ? data.hero.title : "Animation \u00B7 Compositing \u00B7 VFX"}
               </motion.p>
               <motion.p
                 initial={reduceMotion ? false : { opacity: 0, y: 8 }}
@@ -169,14 +172,21 @@ const HeroSection = () => {
                         ease: MOTION_TOKENS.easingDefault,
                       }
                 }
-                className="mt-3.5 flex w-full flex-col justify-center gap-2.5 sm:flex-row sm:gap-3 md:mt-4 md:w-auto md:justify-start"
+                className="mt-3.5 flex w-full flex-wrap justify-center gap-2.5 sm:gap-3 md:mt-4 md:justify-start"
               >
-                <a
-                  href="#experience"
-                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm transition-[background-color,box-shadow,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:w-auto md:hover:-translate-y-0.5 md:hover:shadow-md"
-                >
-                  View Experience
-                </a>
+                <div className="grid w-full grid-cols-2 gap-2.5" role="group" aria-label="CV experience">
+                  {(["animation", "ai"] as const).map((mode) => (
+                    <Button
+                      key={mode}
+                      variant={persona === mode ? "default" : "outline"}
+                      aria-pressed={persona === mode}
+                      onClick={() => selectPersona(mode)}
+                      className="h-11 rounded-full px-2 text-xs sm:text-sm"
+                    >
+                      {mode === "ai" ? "AI Experience" : "Animation Experience"}
+                    </Button>
+                  ))}
+                </div>
                 <a
                   href="#contact"
                   className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-primary/40 px-5 text-sm font-medium text-foreground transition-[background-color,color,transform] motion-medium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:w-auto md:hover:-translate-y-0.5 md:hover:bg-secondary/80"
