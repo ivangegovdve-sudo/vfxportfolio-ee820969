@@ -1,0 +1,139 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/master/schema.json",
+  "basics": {
+    "name": "Ivan Gegov",
+    "label": "AI Systems Builder · Agent Orchestration · RAG & Automation",
+    "email": "ivangegov.dve@gmail.com",
+    "url": "https://www.sdforest.site/",
+    "summary": "AI systems builder who designs, ships, and operates multi-agent fleets, orchestration and control planes, long-term memory and retrieval systems, and full-stack AI web products. Work combines provider-aware LLM workflows, source-grounded RAG, structured evaluation, automation pipelines, and production-minded delivery across Windows, VPS, Oracle, GCP, Vercel, and private model infrastructure.",
+    "location": {
+      "city": "Sofia",
+      "region": "Bulgaria",
+      "countryCode": "BG"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "url": "https://github.com/ivangegovdve-sudo",
+        "username": "ivangegovdve-sudo"
+      },
+      {
+        "network": "Web",
+        "url": "https://www.sdforest.site/",
+        "username": "sdforest.site"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Independent",
+      "position": "AI Systems Builder / Automation Engineer",
+      "startDate": "2024-01-01",
+      "summary": "Self-directed engineering and operations across agentic software, retrieval, automation, interactive web products, and the infrastructure that keeps them observable and safe.",
+      "highlights": [
+        "Built and operates a multi-agent development fleet (Hermes/Dispatch) with shared project contracts, task routing, evidence receipts, and a local control dashboard.",
+        "Designed source-backed memory and retrieval systems that preserve raw events, expose searchable recall, and keep citations and provenance attached to answers.",
+        "Implemented provider-aware workflows across Claude managed agents, Claude Code, OpenAI-compatible APIs, OpenRouter, Ollama/local routers, and deterministic fallbacks.",
+        "Operates delivery across Vercel, VPS/Oracle, Caddy, systemd, Docker/Compose, GCP Secret Manager, n8n, GitHub Actions, and Windows Task Scheduler."
+      ],
+      "location": "Sofia, Bulgaria"
+    }
+  ],
+  "projects": [
+    {
+      "name": "The Drop",
+      "description": "Editorial AI publication with a daily morning edition and a weekly history series — research, editorial review, structured publication data, narrated audio, and subscriber delivery.",
+      "keywords": ["TanStack Start", "TypeScript", "Supabase", "n8n", "OpenRouter", "TTS / audio"],
+      "url": "https://thedrop.sdforest.site/"
+    },
+    {
+      "name": "Lore Keeper",
+      "description": "Source-grounded continuity knowledge base over a novel trilogy — an LLM answers questions about characters, events, locations, timelines, and contradictions with citations down to chapter.",
+      "keywords": ["RAG", "LangGraph", "Neo4j", "Cytoscape.js", "Python", "provenance"],
+      "url": "https://chloe.blumenkraft.cloud/lore/"
+    },
+    {
+      "name": "MoneyWolf",
+      "description": "Paper-only, read-only multi-agent finance desk turning provider receipts, risk decisions, and local books into source-backed projections — with a hard no-real-orders boundary.",
+      "keywords": ["Python/Node", "SQLite", "risk gates", "idempotency", "paper trading"],
+      "url": "https://moneywolf.sdforest.site/"
+    },
+    {
+      "name": "SD Forest / Forest HUB",
+      "description": "Living project atlas and AI/web product environment — static web atlas plus FastAPI/SQLite services hosting reference tools, AI/LLM indexes, interactive Three.js experiences, and fleet views.",
+      "keywords": ["Three.js", "WebGL2", "FastAPI", "SQLite", "Vercel"],
+      "url": "https://www.sdforest.site/"
+    },
+    {
+      "name": "CaveMem / Glass Mem",
+      "description": "Long-term agent memory and evidence pipeline — append-only raw event capture, searchable recall, and citations attached to the source event (lexical FTS5 + vector retrieval).",
+      "keywords": ["long-term memory", "FTS5", "vector search", "embeddings", "MCP"]
+    },
+    {
+      "name": "Glass PR Solver",
+      "description": "Evidence-first GitHub PR operations system that drains a backlog through independent gather / decide / review / act stages, with explicit abstain/unknown/failure states and honest CI evidence.",
+      "keywords": ["Python", "GitHub API", "SSE", "MCP", "LLM review routing", "git automation"],
+      "url": "https://github.com/ivangegovdve-sudo/glass-pr-solver"
+    },
+    {
+      "name": "Chloé Council",
+      "description": "Private multi-agent decision surface — typed PWA/gateway, four live agent positions, server-side synthesis, model-router preflight, and decision-only system integration.",
+      "keywords": ["React", "TypeScript", "Vite", "typed contracts", "decision gates"]
+    },
+    {
+      "name": "Hermes / Dispatch Fleet",
+      "description": "Multi-agent runtime and dispatch operation built on the Hermes-Agent harness — specialist agents (Chloé, Anderson, Iris, Sheriff), task ledgers, scheduled ingest, and evidence-bearing handoffs.",
+      "keywords": ["Hermes-Agent", "multi-agent fleet", "dispatch", "Python", "Docker"],
+      "url": "https://github.com/ivangegovdve-sudo/hermes_agents"
+    },
+    {
+      "name": "AI Control Plane · SDForest Contribution Gateway · repo-shelf",
+      "description": "A provider-neutral operational control plane joining agent contracts, hooks, project snapshots and review gates; a human-in-the-loop FastAPI research-ingestion gateway; and an interactive 3D repository catalogue (React Three Fiber).",
+      "keywords": ["control plane", "FastAPI", "human-in-the-loop", "React Three Fiber", "Electron"]
+    }
+  ],
+  "skills": [
+    {
+      "name": "AI systems & agent orchestration",
+      "keywords": ["Claude Code", "Claude managed agents", "OpenAI APIs/CLIs", "OpenRouter", "Ollama", "Gemini CLI", "multi-agent delegation", "model routing & fallback", "structured outputs", "prompt engineering", "LLM evaluation", "cost/approval gates"]
+    },
+    {
+      "name": "RAG, memory & knowledge",
+      "keywords": ["RAG", "source-grounded QA", "LangGraph", "Neo4j", "SQLite/FTS5", "vector search", "embeddings", "citations & provenance", "append-only capture", "JSONL ingestion"]
+    },
+    {
+      "name": "Application & automation",
+      "keywords": ["Python", "TypeScript", "JavaScript", "SQL", "PowerShell", "React", "Vite", "TanStack Start", "FastAPI", "Node.js", "REST/SSE", "MCP", "Supabase", "n8n", "GitHub API"]
+    },
+    {
+      "name": "Infrastructure & delivery",
+      "keywords": ["GCP & Secret Manager", "Docker/Compose", "Vercel", "Oracle VM", "KVM2", "Caddy", "systemd", "Windows Task Scheduler", "Tailscale", "GitHub Actions", "self-hosted runners", "rebase/release discipline"]
+    },
+    {
+      "name": "Interactive graphics & web",
+      "keywords": ["Three.js", "WebGL/WebGL2", "React Three Fiber", "WebGPU/TSL", "Cytoscape.js", "responsive UI", "reduced-motion design", "browser verification"]
+    }
+  ],
+  "education": [
+    {
+      "institution": "California Institute of Technology",
+      "area": "Drugs and the Brain (online course)",
+      "studyType": "Course",
+      "startDate": "2012-09-01",
+      "endDate": "2013-01-01"
+    },
+    {
+      "institution": "American University in Bulgaria",
+      "area": "University study",
+      "studyType": "Academic",
+      "startDate": "2008-09-01",
+      "endDate": "2009-05-01"
+    }
+  ],
+  "languages": [
+    { "language": "Bulgarian", "fluency": "Native" },
+    { "language": "English", "fluency": "C1 — Advanced" },
+    { "language": "French", "fluency": "B2 — Upper Intermediate" },
+    { "language": "Spanish", "fluency": "A1 — Beginner" }
+  ]
+}
