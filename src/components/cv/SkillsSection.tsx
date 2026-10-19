@@ -121,7 +121,7 @@ const SkillsSection = () => {
           {/* Personal Skills + Languages side by side */}
           <div className="grid md:grid-cols-2 gap-10">
             {/* Personal */}
-            <AnimatedSection delay={0.1}>
+            {data.skills.personal.length > 0 && <AnimatedSection delay={0.1}>
               <div>
                 <h3 className="font-display font-semibold text-base text-foreground mb-5 pb-2 border-b border-border">
                   Personal
@@ -151,7 +151,7 @@ const SkillsSection = () => {
                   ))}
                 </ul>
               </div>
-            </AnimatedSection>
+            </AnimatedSection>}
 
             {/* Languages */}
             <AnimatedSection delay={0.2}>
