@@ -5,23 +5,11 @@
     "label": "AI Systems Builder · Agent Orchestration · RAG & Automation",
     "email": "ivangegov.dve@gmail.com",
     "url": "https://www.sdforest.site/",
-    "summary": "AI systems builder who designs, ships, and operates multi-agent fleets, orchestration and control planes, long-term memory and retrieval systems, and full-stack AI web products. Work combines provider-aware LLM workflows, source-grounded RAG, structured evaluation, automation pipelines, and production-minded delivery across Windows, VPS, Oracle, GCP, Vercel, and private model infrastructure.",
-    "location": {
-      "city": "Sofia",
-      "region": "Bulgaria",
-      "countryCode": "BG"
-    },
+    "summary": "AI systems builder who designs, ships, and operates multi-agent fleets, orchestration and control planes, long-term memory and retrieval systems, source-grounded research knowledge bases, and full-stack AI web products. Work spans editorial AI publishing, evidence-graded research pipelines, a paper-only multi-agent finance desk, real-time fleet dashboards, and interactive 3D web — combining provider-aware LLM workflows, RAG with citations and provenance, structured evaluation, batch extraction pipelines, local-model tooling, and production-minded delivery across Windows, VPS, Oracle, GCP, Vercel, and private model infrastructure.",
+    "location": { "city": "Sofia", "region": "Bulgaria", "countryCode": "BG" },
     "profiles": [
-      {
-        "network": "GitHub",
-        "url": "https://github.com/ivangegovdve-sudo",
-        "username": "ivangegovdve-sudo"
-      },
-      {
-        "network": "Web",
-        "url": "https://www.sdforest.site/",
-        "username": "sdforest.site"
-      }
+      { "network": "GitHub", "url": "https://github.com/ivangegovdve-sudo", "username": "ivangegovdve-sudo" },
+      { "network": "Web", "url": "https://www.sdforest.site/", "username": "sdforest.site" }
     ]
   },
   "work": [
@@ -29,12 +17,13 @@
       "name": "Independent",
       "position": "AI Systems Builder / Automation Engineer",
       "startDate": "2024-01-01",
-      "summary": "Self-directed engineering and operations across agentic software, retrieval, automation, interactive web products, and the infrastructure that keeps them observable and safe.",
+      "summary": "Self-directed engineering and operations across agentic software, retrieval, research pipelines, automation, interactive web products, and the infrastructure that keeps them observable and safe.",
       "highlights": [
-        "Built and operates a multi-agent development fleet (Hermes/Dispatch) with shared project contracts, task routing, evidence receipts, and a local control dashboard.",
+        "Built and operates a multi-agent development fleet (Hermes/Dispatch) with shared project contracts, task routing, evidence receipts, and a live control dashboard.",
         "Designed source-backed memory and retrieval systems that preserve raw events, expose searchable recall, and keep citations and provenance attached to answers.",
+        "Built multi-corpus research ingestion pipelines with batch claim-extraction (Anthropic Message Batches + OpenAI-compatible providers), evidence tiering, and provenance graphs.",
         "Implemented provider-aware workflows across Claude managed agents, Claude Code, OpenAI-compatible APIs, OpenRouter, Ollama/local routers, and deterministic fallbacks.",
-        "Operates delivery across Vercel, VPS/Oracle, Caddy, systemd, Docker/Compose, GCP Secret Manager, n8n, GitHub Actions, and Windows Task Scheduler."
+        "Operates delivery across Vercel, VPS/Oracle, KVM2, Caddy, systemd, Docker/Compose, GCP Secret Manager, n8n, GitHub Actions, Tailscale, and Windows Task Scheduler."
       ],
       "location": "Sofia, Bulgaria"
     }
@@ -42,14 +31,14 @@
   "projects": [
     {
       "name": "The Drop",
-      "description": "Editorial AI publication with a daily morning edition and a weekly history series — research, editorial review, structured publication data, narrated audio, and subscriber delivery.",
-      "keywords": ["TanStack Start", "TypeScript", "Supabase", "n8n", "OpenRouter", "TTS / audio"],
+      "description": "Editorial AI publication with a daily morning edition and a weekly history/interpretability series — research, editorial review, structured publication data, ElevenLabs-narrated audio, multi-language (EN + Bulgarian), and subscriber delivery via web and Telegram.",
+      "keywords": ["TanStack Start", "TypeScript", "Supabase", "n8n", "OpenRouter", "ElevenLabs TTS", "Telegram"],
       "url": "https://thedrop.sdforest.site/"
     },
     {
       "name": "Lore Keeper",
-      "description": "Source-grounded continuity knowledge base over a novel trilogy — an LLM answers questions about characters, events, locations, timelines, and contradictions with citations down to chapter.",
-      "keywords": ["RAG", "LangGraph", "Neo4j", "Cytoscape.js", "Python", "provenance"],
+      "description": "Source-grounded continuity knowledge base over a novel trilogy — an LLM answers questions about characters, events, locations, timelines, and contradictions with citations down to chapter, backed by a compiled world graph.",
+      "keywords": ["RAG", "LangGraph", "Neo4j", "SQLite", "Cytoscape.js", "Python", "provenance"],
       "url": "https://chloe.blumenkraft.cloud/lore/"
     },
     {
@@ -65,7 +54,18 @@
       "url": "https://www.sdforest.site/"
     },
     {
-      "name": "CaveMem / Glass Mem",
+      "name": "Steady Steps (growing-up-os)",
+      "description": "Evidence-graded parenting-guidance web app over a research corpus — surfaces cited claims with study design, effect sizes, source quotes, and honest caveats, and separates validated clinical interventions from weaker-evidence approaches.",
+      "keywords": ["RAG", "evidence tiering", "citations", "claim extraction", "FastAPI", "SQLite"],
+      "url": "https://growingapp.sdforest.site/"
+    },
+    {
+      "name": "Research Ingestion Pipeline",
+      "description": "Multi-corpus claim-extraction and knowledge-base pipeline — ingests papers and documents into chunked, cited, evidence-tiered claims with provenance triples and embeddings, running batch jobs through the Anthropic Message Batches API and OpenAI-compatible providers across domains (parenting, ADHD, strength science, and more).",
+      "keywords": ["Anthropic Batches API", "embeddings", "provenance graph", "evidence grading", "Python", "JSONL ingestion"]
+    },
+    {
+      "name": "Glass Mem",
       "description": "Long-term agent memory and evidence pipeline — append-only raw event capture, searchable recall, and citations attached to the source event (lexical FTS5 + vector retrieval).",
       "keywords": ["long-term memory", "FTS5", "vector search", "embeddings", "MCP"]
     },
@@ -76,15 +76,36 @@
       "url": "https://github.com/ivangegovdve-sudo/glass-pr-solver"
     },
     {
-      "name": "Chloé Council",
-      "description": "Private multi-agent decision surface — typed PWA/gateway, four live agent positions, server-side synthesis, model-router preflight, and decision-only system integration.",
-      "keywords": ["React", "TypeScript", "Vite", "typed contracts", "decision gates"]
-    },
-    {
       "name": "Hermes / Dispatch Fleet",
-      "description": "Multi-agent runtime and dispatch operation built on the Hermes-Agent harness — specialist agents (Chloé, Anderson, Iris, Sheriff), task ledgers, scheduled ingest, and evidence-bearing handoffs.",
+      "description": "Multi-agent runtime and dispatch operation built on the Hermes-Agent harness — specialist agents, task ledgers, scheduled ingest, evidence-bearing handoffs, and a mobile dispatch surface that routes work to isolated coding sessions.",
       "keywords": ["Hermes-Agent", "multi-agent fleet", "dispatch", "Python", "Docker"],
       "url": "https://github.com/ivangegovdve-sudo/hermes_agents"
+    },
+    {
+      "name": "Fleet / Dispatch Dashboard",
+      "description": "Real-time local control surface for the fleet — aggregates current workstreams, decisions, sessions, project-health probes, verification state, research items, and expiring-credit horizons from a shared JSON board; persistent service with phone access over Tailscale.",
+      "keywords": ["FastAPI", "real-time", "Tailscale", "auth", "evidence receipts", "scheduled task"]
+    },
+    {
+      "name": "Fleet Automation Spine",
+      "description": "n8n workflow backbone on a self-hosted node wiring the dashboard → n8n → managed-agent loop — scheduled ingest, approval gates, and publishing automation for the fleet's recurring jobs.",
+      "keywords": ["n8n", "KVM2", "webhooks", "automation", "approval gates", "scheduling"]
+    },
+    {
+      "name": "Chloé Council & Voice Assistant",
+      "description": "Private multi-agent decision surface (typed PWA/gateway, four live agent positions, server-side synthesis, model-router preflight) plus a proactive voice assistant wired to the fleet with local/low-cost TTS.",
+      "keywords": ["React", "TypeScript", "Vite", "typed contracts", "decision gates", "TTS"]
+    },
+    {
+      "name": "HypertrophyOS",
+      "description": "Strength- and hypertrophy-science knowledge base built from peer-reviewed papers — extracted, cited, and query-able claims for evidence-based training guidance.",
+      "keywords": ["RAG", "claim extraction", "citations", "research corpus", "Python"]
+    },
+    {
+      "name": "Kids Library",
+      "description": "Curated children's film and book library with original AI-generated artwork and honest parent guidance — theme/age filtering, country-aware streaming availability, and poster-to-IMDb linking, built as original art rather than reproduced posters.",
+      "keywords": ["React", "Vite", "image generation", "content design", "static web"],
+      "url": "https://www.sdforest.site/web/kids-library-preview/"
     },
     {
       "name": "AI Control Plane · SDForest Contribution Gateway · repo-shelf",
@@ -95,11 +116,11 @@
   "skills": [
     {
       "name": "AI systems & agent orchestration",
-      "keywords": ["Claude Code", "Claude managed agents", "OpenAI APIs/CLIs", "OpenRouter", "Ollama", "Gemini CLI", "multi-agent delegation", "model routing & fallback", "structured outputs", "prompt engineering", "LLM evaluation", "cost/approval gates"]
+      "keywords": ["Claude Code", "Claude managed agents", "OpenAI APIs/CLIs", "Anthropic Message Batches", "OpenRouter", "Ollama", "Gemini CLI", "multi-agent delegation", "model routing & fallback", "structured outputs", "prompt engineering", "LLM evaluation", "cost/approval gates"]
     },
     {
       "name": "RAG, memory & knowledge",
-      "keywords": ["RAG", "source-grounded QA", "LangGraph", "Neo4j", "SQLite/FTS5", "vector search", "embeddings", "citations & provenance", "append-only capture", "JSONL ingestion"]
+      "keywords": ["RAG", "source-grounded QA", "LangGraph", "Neo4j", "SQLite/FTS5", "vector search", "embeddings", "citations & provenance", "evidence tiering", "append-only capture", "JSONL ingestion"]
     },
     {
       "name": "Application & automation",
