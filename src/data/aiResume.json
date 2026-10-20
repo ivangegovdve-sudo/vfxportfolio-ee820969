@@ -2,10 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/master/schema.json",
   "basics": {
     "name": "Ivan Gegov",
-    "label": "AI Systems Builder · Orchestration and Infrastructure",
+    "label": "AI systems builder, orchestration and infrastructure",
     "email": "ivangegov.dve@gmail.com",
     "url": "https://www.sdforest.site/",
-    "summary": "AI systems builder who designs, ships, and operates multi-agent fleets, orchestration and control planes, long-term memory and retrieval systems, source-grounded research knowledge bases, and full-stack AI web products. Work spans editorial AI publishing, evidence-graded research pipelines, a paper-only multi-agent finance desk, real-time fleet dashboards, and interactive 3D web — combining provider-aware LLM workflows, RAG with citations and provenance, structured evaluation, batch extraction pipelines, local-model tooling, and production-minded delivery across Windows, VPS, Oracle, GCP, Vercel, and private model infrastructure.",
+    "summary": "AI systems builder who designs, ships, and operates agentic software, orchestration and control planes, source-grounded research pipelines, retrieval and long-term memory, provider-aware model workflows, voice interfaces, and full-stack public products. Work spans editorial AI publishing, evidence-graded knowledge bases, a paper-only multi-agent finance desk, repository intelligence, typed decision systems, local-model tooling, and interactive web — with delivery across Windows, VPS/Oracle, GCP, Vercel, Supabase, n8n, and private model infrastructure.",
     "location": { "city": "Sofia", "region": "Bulgaria", "countryCode": "BG" },
     "profiles": [
       { "network": "GitHub", "url": "https://github.com/ivangegovdve-sudo", "username": "ivangegovdve-sudo" },
@@ -17,13 +17,17 @@
       "name": "Independent",
       "position": "AI Systems Builder / Automation Engineer",
       "startDate": "2024-01-01",
-      "summary": "Self-directed engineering and operations across agentic software, retrieval, research pipelines, automation, interactive web products, and the infrastructure that keeps them observable and safe.",
+      "summary": "Self-directed engineering and operations across AI products, agent orchestration, research systems, retrieval, automation, voice, and delivery infrastructure.",
       "highlights": [
-        "Built and operates a multi-agent development fleet (Hermes/Dispatch) with shared project contracts, task routing, evidence receipts, and a live control dashboard.",
-        "Designed source-backed memory and retrieval systems that preserve raw events, expose searchable recall, and keep citations and provenance attached to answers.",
-        "Built multi-corpus research ingestion pipelines with batch claim-extraction (Anthropic Message Batches + OpenAI-compatible providers), evidence tiering, and provenance graphs.",
-        "Implemented provider-aware workflows across Claude managed agents, Claude Code, OpenAI-compatible APIs, OpenRouter, Ollama/local routers, and deterministic fallbacks.",
-        "Operates delivery across Vercel, VPS/Oracle, KVM2, Caddy, systemd, Docker/Compose, GCP Secret Manager, n8n, GitHub Actions, Tailscale, and Windows Task Scheduler."
+        "Built and operated multi-agent development/orchestration systems with typed contracts, task routing, evidence receipts, review gates, provider-aware fallback, and explicit unknown/abstain states.",
+        "Built source-backed memory and retrieval systems with append-only raw-event capture, SQLite/FTS5 lexical search, vector retrieval, embeddings, citations, and provenance attached to source events.",
+        "Built multi-corpus research ingestion pipelines that turn papers and documents into chunks, extracted claims, evidence tiers, provenance triples, embeddings, and cited knowledge bases across parenting, ADHD, strength science, and women's health.",
+        "Used Anthropic Message Batches and OpenAI-compatible providers for batch extraction while retaining JSONL evidence and refusing to turn missing sources into confident answers.",
+        "Built evidence-first GitHub PR operations with independent gather/decide/review/act stages, GitHub API/SSE/MCP integration, model routing, honest CI evidence, and escalate-don't-guess behavior.",
+        "Built provider-neutral routing and local-model tooling: typed OpenAI-compatible decisions, model refusal/unknown outcomes, Ollama/local GGUF serving, and a hardware-aware no-cloud launcher.",
+        "Delivered public AI products including The Drop, MoneyWolf, Steady Steps, GymScholar, Open Dashboard, the public Council, OpenRouter GitHub Dashboard, and the wider SD Forest / Forest HUB.",
+        "Built voice and multimodal experiments with OpenAI Realtime, Gemini Live, ElevenLabs, Google TTS, Pocket TTS, Hume Octave 2, MCP, messaging surfaces, and car-mode constraints.",
+        "Operated delivery across Windows/PowerShell, Vercel, Oracle/VPS, KVM2, Docker/Compose, Caddy, systemd, GCP Secret Manager, n8n, GitHub Actions, Tailscale, and Windows Task Scheduler."
       ],
       "location": "Sofia, Bulgaria"
     }
@@ -31,115 +35,190 @@
   "projects": [
     {
       "name": "The Drop",
-      "description": "Editorial AI publication with a daily morning edition and a weekly history/interpretability series — research, editorial review, structured publication data, ElevenLabs-narrated audio, multi-language (EN + Bulgarian), and subscriber delivery via web and Telegram.",
-      "keywords": ["TanStack Start", "TypeScript", "Supabase", "n8n", "OpenRouter", "ElevenLabs TTS", "Telegram"],
+      "startDate": "2026-01-01",
+      "description": "Editorial AI publication with daily and weekly editions, research and editorial review, structured publication data, EN/BG delivery, ElevenLabs narration, and Telegram subscribers.",
+      "keywords": ["TanStack Start", "TypeScript", "Supabase", "n8n", "OpenRouter", "ElevenLabs TTS", "Telegram", "Live"],
       "url": "https://thedrop.sdforest.site/"
     },
     {
-      "name": "MoneyWolf",
-      "description": "Paper-only, read-only multi-agent finance desk turning provider receipts, risk decisions, and local books into source-backed projections — with a hard no-real-orders boundary.",
-      "keywords": ["Python/Node", "SQLite", "risk gates", "idempotency", "paper trading"],
-      "url": "https://moneywolf.sdforest.site/"
-    },
-    {
       "name": "SD Forest / Forest HUB",
-      "description": "Living project atlas and AI/web product environment — static web atlas plus FastAPI/SQLite services hosting reference tools, AI/LLM indexes, interactive Three.js experiences, and fleet views.",
-      "keywords": ["Three.js", "WebGL2", "FastAPI", "SQLite", "Vercel"],
+      "startDate": "2024-01-01",
+      "description": "Living public atlas and AI/web product environment: static atlas plus FastAPI/SQLite services, interactive 3D surfaces, AI/LLM indexes, learning tools, research pages, and public product routes.",
+      "keywords": ["Static HTML/JS", "FastAPI", "SQLite", "Three.js/WebGL2", "Vercel", "14-mini-project family", "Live"],
       "url": "https://www.sdforest.site/"
     },
     {
-      "name": "Steady Steps (growing-up-os)",
-      "description": "Evidence-graded parenting-guidance web app over a research corpus — surfaces cited claims with study design, effect sizes, source quotes, and honest caveats, and separates validated clinical interventions from weaker-evidence approaches.",
-      "keywords": ["RAG", "evidence tiering", "citations", "claim extraction", "FastAPI", "SQLite"],
+      "name": "GymScholar",
+      "startDate": "2026-01-01",
+      "description": "Peer-reviewed strength and hypertrophy research turned into extracted, cited, queryable claims and evidence-based training context.",
+      "keywords": ["RAG", "Claim extraction", "Citations", "Research corpus", "Live"],
+      "url": "https://gymscholar.lovable.app/"
+    },
+    {
+      "name": "Open Dashboard / open-dashboard-mcp",
+      "startDate": "2026-01-01",
+      "description": "Public model capability, cost, and evidence dashboard plus a free MCP for live model pricing; the repository description records 16 sources and 5,000+ model IDs.",
+      "keywords": ["OpenRouter/provider data", "MCP", "npm", "TypeScript/JavaScript", "16 sources", "5,000+ model IDs", "Live"],
+      "url": "https://opendashboard.sdforest.site/"
+    },
+    {
+      "name": "3D Repo Shelf / Explore Repos",
+      "startDate": "2026-01-01",
+      "description": "Repository intelligence presented as a 3D bookshelf plus search, category, shelf, graphified, and capability-card browsing modes.",
+      "keywords": ["React Three Fiber", "Three.js", "GitHub/catalogue data", "GitHub Pages", "Static web", "Live"],
+      "url": "https://ivangegovdve-sudo.github.io/repo-shelf/"
+    },
+    {
+      "name": "Steady Steps / GrowingApp",
+      "startDate": "2025-01-01",
+      "description": "Evidence-graded parenting guidance with study designs, effect sizes, source quotes, caveats, citations, and claim-level evidence boundaries.",
+      "keywords": ["RAG", "Evidence tiering", "Claim extraction", "FastAPI", "SQLite", "Live"],
       "url": "https://growingapp.sdforest.site/"
     },
     {
-      "name": "Research Ingestion Pipeline",
-      "description": "Multi-corpus claim-extraction and knowledge-base pipeline — ingests papers and documents into chunked, cited, evidence-tiered claims with provenance triples and embeddings, running batch jobs through the Anthropic Message Batches API and OpenAI-compatible providers across domains (parenting, ADHD, strength science, and more).",
-      "keywords": ["Anthropic Batches API", "embeddings", "provenance graph", "evidence grading", "Python", "JSONL ingestion"]
+      "name": "MoneyWolf",
+      "startDate": "2026-01-01",
+      "description": "Read-only paper-only multi-agent finance desk combining provider receipts, risk decisions, local books, source-backed projections, risk gates, and idempotency; no real orders.",
+      "keywords": ["Python/Node", "SQLite", "Paper trading", "Risk gates", "Idempotency", "Live"],
+      "url": "https://moneywolf.sdforest.site/"
+    },
+    {
+      "name": "Cognitive Autonomy / Firsthand",
+      "startDate": "2026-01-01",
+      "description": "Record-first training instrument for cognitive autonomy: capture a person's own evidence before a model interprets it.",
+      "keywords": ["Python/web", "Structured records", "Human-before-model boundary", "WIP"],
+      "url": "https://github.com/ivangegovdve-sudo/firsthand"
+    },
+    {
+      "name": "Research Ingestion & Evidence Knowledge Bases",
+      "startDate": "2025-01-01",
+      "description": "Multi-corpus paper/document pipeline for chunking, batch claim extraction, evidence tiers, citations, provenance triples, embeddings, JSONL ingestion, and cited retrieval.",
+      "keywords": ["Python", "Anthropic Message Batches", "OpenAI-compatible providers", "Embeddings", "SQLite/FTS5", "Neo4j", "WIP"]
     },
     {
       "name": "Glass Mem",
-      "description": "Long-term agent memory and evidence pipeline — append-only raw event capture, searchable recall, and citations attached to the source event (lexical FTS5 + vector retrieval).",
-      "keywords": ["long-term memory", "FTS5", "vector search", "embeddings", "MCP"]
+      "startDate": "2026-01-01",
+      "description": "Append-only long-term agent memory and evidence recall with source-linked citations.",
+      "keywords": ["Python", "SQLite/FTS5", "Vector retrieval", "Embeddings", "MCP", "WIP"],
+      "url": "https://github.com/ivangegovdve-sudo/glass-mem"
     },
     {
       "name": "Glass PR Solver",
-      "description": "Evidence-first GitHub PR operations system that drains a backlog through independent gather / decide / review / act stages, with explicit abstain/unknown/failure states and honest CI evidence.",
-      "keywords": ["Python", "GitHub API", "SSE", "MCP", "LLM review routing", "git automation"],
+      "startDate": "2026-01-01",
+      "description": "Evidence-first GitHub PR operations: independent gather/decide/review/act, honest CI evidence, abstain/unknown/failure states, model routing, and human escalation.",
+      "keywords": ["Python", "GitHub API", "SSE", "MCP", "LLM review routing", "Git automation", "WIP"],
       "url": "https://github.com/ivangegovdve-sudo/glass-pr-solver"
     },
     {
-      "name": "Hermes / Dispatch Fleet",
-      "description": "Multi-agent runtime and dispatch operation built on the Hermes-Agent harness — specialist agents, task ledgers, scheduled ingest, evidence-bearing handoffs, and a mobile dispatch surface that routes work to isolated coding sessions.",
-      "keywords": ["Hermes-Agent", "multi-agent fleet", "dispatch", "Python", "Docker"],
-      "url": "https://github.com/ivangegovdve-sudo/hermes_agents"
+      "name": "AI Control Plane / SDForest Contribution Gateway",
+      "startDate": "2026-01-01",
+      "description": "Typed agent contracts, hooks, project snapshots, review gates, and a human-in-the-loop paper contribution path with a Windows LlamaParse companion.",
+      "keywords": ["Python/FastAPI", "Typed contracts", "Hooks", "Review gates", "Windows", "LlamaParse", "WIP"]
     },
     {
-      "name": "Fleet / Dispatch Dashboard",
-      "description": "Real-time local control surface for the fleet — aggregates current workstreams, decisions, sessions, project-health probes, verification state, research items, and expiring-credit horizons from a shared JSON board; persistent service with phone access over Tailscale.",
-      "keywords": ["FastAPI", "real-time", "Tailscale", "auth", "evidence receipts", "scheduled task"]
+      "name": "Model Router",
+      "startDate": "2026-01-01",
+      "description": "OpenAI-compatible proxy that makes typed model/provider decisions and returns refusal/unknown outcomes instead of guessing.",
+      "keywords": ["Python", "OpenAI-compatible HTTP", "Ollama", "OpenRouter", "Typed refusal", "WIP"],
+      "url": "https://github.com/ivangegovdve-sudo/model-router"
     },
     {
-      "name": "Fleet Automation Spine",
-      "description": "n8n workflow backbone on a self-hosted node wiring the dashboard → n8n → managed-agent loop — scheduled ingest, approval gates, and publishing automation for the fleet's recurring jobs.",
-      "keywords": ["n8n", "KVM2", "webhooks", "automation", "approval gates", "scheduling"]
+      "name": "Any Company LLM / AnyCloudLLM",
+      "startDate": "2026-01-01",
+      "description": "Local-first model and document tooling: hardware-aware GGUF serving with a no-cloud OpenAI-compatible API plus AnythingLLM/RAG/retrieval work.",
+      "keywords": ["Python", "GGUF", "AnythingLLM", "Local retrieval", "OpenAI-compatible API", "WIP"],
+      "url": "https://github.com/ivangegovdve-sudo/any-company-llm"
     },
     {
-      "name": "Chloé Council & Voice Assistant",
-      "description": "Private multi-agent decision surface (typed PWA/gateway, four live agent positions, server-side synthesis, model-router preflight) plus a proactive voice assistant wired to the fleet with local/low-cost TTS.",
-      "keywords": ["React", "TypeScript", "Vite", "typed contracts", "decision gates", "TTS"]
+      "name": "System One Bench",
+      "startDate": "2026-01-01",
+      "description": "Benchmark harness for typed decision models that separates model time from network time and reports UNAVAILABLE when a provider is missing.",
+      "keywords": ["Python", "Latency", "Cost", "Provider adapters", "Explicit unavailable state", "WIP"],
+      "url": "https://github.com/ivangegovdve-sudo/system-one-bench"
     },
     {
-      "name": "gymScholar",
-      "description": "Strength- and hypertrophy-science knowledge base built from peer-reviewed papers — extracted, cited, and query-able claims for evidence-based training guidance.",
-      "keywords": ["RAG", "claim extraction", "citations", "research corpus", "Python"]
+      "name": "Voice2Voice Buddy",
+      "startDate": "2025-01-01",
+      "description": "Browser-first PWA voice assistant with realtime providers, messaging, memory/RAG, MCP, and car mode.",
+      "keywords": ["PWA", "OpenAI Realtime", "Gemini Live", "ElevenLabs", "Google TTS", "Discord/Telegram/WhatsApp", "MCP", "Live"],
+      "url": "https://dist-omega-lyart-23.vercel.app/"
     },
     {
-      "name": "Kids Library",
-      "description": "Curated children's film and book library with original AI-generated artwork and honest parent guidance — theme/age filtering, country-aware streaming availability, and poster-to-IMDb linking, built as original art rather than reproduced posters.",
-      "keywords": ["React", "Vite", "image generation", "content design", "static web"],
-      "url": "https://www.sdforest.site/web/kids-library-preview/"
+      "name": "Open Voice Playground / Kokoro Training",
+      "startDate": "2026-01-01",
+      "description": "Provenance-aware open voice generation and an environment-driven Kokoro-82M/StyleTTS2 training runner for local and serverless GPU paths.",
+      "keywords": ["Python", "Kokoro-82M", "StyleTTS2", "Local/serverless GPU", "Akash-ready", "WIP"],
+      "url": "https://github.com/ivangegovdve-sudo/open-voice-playground"
     },
     {
-      "name": "AI Control Plane · SDForest Contribution Gateway · repo-shelf",
-      "description": "A provider-neutral operational control plane joining agent contracts, hooks, project snapshots and review gates; a human-in-the-loop FastAPI research-ingestion gateway; and an interactive 3D repository catalogue (React Three Fiber).",
-      "keywords": ["control plane", "FastAPI", "human-in-the-loop", "React Three Fiber", "Electron"]
+      "name": "Women's Health OS / Parenting Platform / Hyper Trophy OS",
+      "startDate": "2025-01-01",
+      "description": "Evidence-product family spanning women's health, parenting, and hypertrophy research with paper ingestion, claim extraction, retrieval, and review gates.",
+      "keywords": ["FastAPI", "LlamaParse", "Groq", "Iris retrieval", "SQLite", "Evidence review", "WIP"],
+      "url": "https://www.sdforest.site/web/womens-health-os/"
+    },
+    {
+      "name": "Audiobook Studio / Dyslexia Reading Platform",
+      "startDate": "2025-01-01",
+      "description": "Public reading and audio surfaces combining accessible reading workflows, EPUB/PDF handling, and multiple TTS backends.",
+      "keywords": ["Edge TTS", "Pocket TTS", "Hume Octave 2", "EPUB/PDF", "Accessibility", "Live/WIP"],
+      "url": "https://chloe.blumenkraft.cloud/audiobook/"
+    },
+    {
+      "name": "The LLM Council / TinyLM Council",
+      "startDate": "2025-01-01",
+      "description": "Multi-LLM planning and development-agent framework with typed role contracts, local TinyLM paths, and transparent public council surfaces.",
+      "keywords": ["Claude Code", "Multi-agent orchestration", "Typed roles", "TinyLM", "Structured synthesis", "WIP"],
+      "url": "https://github.com/ivangegovdve-sudo/the-llm-council"
+    },
+    {
+      "name": "Morning News Companion / RepoIndex & Graphify",
+      "startDate": "2025-01-01",
+      "description": "Android WorkManager pipeline for Gmail/RSS ingestion, dedup, and TTS delivery, plus Python/GitHub/SQLite repository indexing that feeds the Forest catalogue.",
+      "keywords": ["Android", "WorkManager", "Gmail/RSS", "TTS", "Python", "SQLite", "GitHub API", "WIP"]
     }
   ],
   "skills": [
     {
-      "name": "AI systems & agent orchestration",
-      "keywords": ["Claude Code", "Claude managed agents", "OpenAI APIs/CLIs", "Anthropic Message Batches", "OpenRouter", "Ollama", "Gemini CLI", "multi-agent delegation", "model routing & fallback", "structured outputs", "prompt engineering", "LLM evaluation", "cost/approval gates"]
+      "name": "AI systems and orchestration",
+      "keywords": ["Claude Code", "Managed agents", "OpenAI APIs/CLIs", "Anthropic Message Batches", "OpenRouter", "Ollama", "Gemini CLI", "Multi-agent delegation", "Typed contracts", "Model routing/fallback", "Structured outputs", "LLM evaluation", "Cost and approval gates"]
     },
     {
-      "name": "RAG, memory & knowledge",
-      "keywords": ["RAG", "source-grounded QA", "LangGraph", "Neo4j", "SQLite/FTS5", "vector search", "embeddings", "citations & provenance", "evidence tiering", "append-only capture", "JSONL ingestion"]
+      "name": "RAG, memory, and knowledge",
+      "keywords": ["Source-grounded QA", "LangGraph", "Neo4j", "SQLite", "FTS5", "Vector retrieval", "Embeddings", "Citations", "Provenance", "Evidence tiering", "Append-only capture", "JSONL ingestion", "MCP"]
     },
     {
-      "name": "Application & automation",
-      "keywords": ["Python", "TypeScript", "JavaScript", "SQL", "PowerShell", "React", "Vite", "TanStack Start", "FastAPI", "Node.js", "REST/SSE", "MCP", "Supabase", "n8n", "GitHub API"]
+      "name": "Research and evidence systems",
+      "keywords": ["Paper/document ingestion", "Claim extraction", "Study design", "Effect sizes", "Evidence grades", "Provenance triples", "Batch extraction", "Corpus freshness", "Rederivation", "Abstention", "Source quotes and caveats"]
     },
     {
-      "name": "Infrastructure & delivery",
-      "keywords": ["GCP & Secret Manager", "Docker/Compose", "Vercel", "Oracle VM", "KVM2", "Caddy", "systemd", "Windows Task Scheduler", "Tailscale", "GitHub Actions", "self-hosted runners", "rebase/release discipline"]
+      "name": "Product and application engineering",
+      "keywords": ["Python", "TypeScript", "JavaScript", "SQL", "PowerShell", "React", "Vite", "TanStack Start", "FastAPI", "Node.js", "REST", "SSE", "MCP", "Supabase", "n8n", "GitHub API"]
     },
     {
-      "name": "Interactive graphics & web",
-      "keywords": ["Three.js", "WebGL/WebGL2", "React Three Fiber", "WebGPU/TSL", "Cytoscape.js", "responsive UI", "reduced-motion design", "browser verification"]
+      "name": "Infrastructure and delivery",
+      "keywords": ["GCP Secret Manager", "Docker", "Compose", "Vercel", "Oracle VM", "VPS", "KVM2", "Caddy", "systemd", "Windows Task Scheduler", "Tailscale", "GitHub Actions", "Self-hosted runners", "Git fetch/rebase and release discipline"]
+    },
+    {
+      "name": "Voice and multimodal systems",
+      "keywords": ["OpenAI Realtime", "Gemini Live", "ElevenLabs", "Google TTS", "Pocket TTS", "Hume Octave 2", "OpenAI-compatible voice providers", "PWA/audio-reactive interfaces", "Car-mode constraints", "Messaging integrations"]
+    },
+    {
+      "name": "Interactive graphics and delivery quality",
+      "keywords": ["Three.js", "WebGL", "WebGL2", "React Three Fiber", "WebGPU/TSL", "Cytoscape.js", "Responsive UI", "Reduced-motion design", "Browser verification", "Public status honesty"]
     }
   ],
   "education": [
     {
       "institution": "California Institute of Technology",
-      "area": "Drugs and the Brain (online course)",
+      "area": "Neuroscience of drugs and their effects on the brain",
       "studyType": "Course",
       "startDate": "2012-09-01",
       "endDate": "2013-01-01"
     },
     {
       "institution": "American University in Bulgaria",
-      "area": "University study",
+      "area": "First Academic Year",
       "studyType": "Academic",
       "startDate": "2008-09-01",
       "endDate": "2009-05-01"

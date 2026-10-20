@@ -20,11 +20,20 @@ describe("CV personas", () => {
   it("uses uploaded AI content without mutating or borrowing animation achievements", () => {
     const before = JSON.stringify(defaultCvData);
     const ai = aiCvData(defaultCvData);
-    expect(ai.hero.title).toBe("AI Systems Builder · Orchestration and Infrastructure");
+    expect(ai.hero.title).toBe("AI systems builder, orchestration and infrastructure");
     expect(ai.portfolio.map((project) => project.title)).toEqual(aiResume.projects.map((project) => project.name));
     expect(ai.experience[0].highlights).toEqual(aiResume.work[0].highlights);
-    expect(ai.skills.sections).toHaveLength(5);
-    expect(ai.portfolio.find((project) => project.title === "Chloé Council & Voice Assistant")?.url).toBe("");
+    expect(ai.skills.sections).toHaveLength(7);
     expect(JSON.stringify(defaultCvData)).toBe(before);
+  });
+
+  it("keeps the AI portfolio honest and complete per the content rules", () => {
+    const ai = aiCvData(defaultCvData);
+    const titles = ai.portfolio.map((project) => project.title);
+    expect(titles).toHaveLength(21);
+    expect(titles.some((title) => title.includes("Lore Keeper"))).toBe(false);
+    expect(titles).toContain("GymScholar");
+    expect(ai.portfolio.find((project) => project.title === "Research Ingestion & Evidence Knowledge Bases")?.url).toBe("");
+    expect(ai.portfolio.find((project) => project.title === "GymScholar")?.year).toBe("2026");
   });
 });
