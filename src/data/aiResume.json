@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/master/schema.json",
   "basics": {
     "name": "Ivan Gegov",
-    "label": "AI Systems Builder · Agent Orchestration · RAG & Automation",
+    "label": "AI Systems Builder · Orchestration and Infrastructure",
     "email": "ivangegov.dve@gmail.com",
     "url": "https://www.sdforest.site/",
     "summary": "AI systems builder who designs, ships, and operates multi-agent fleets, orchestration and control planes, long-term memory and retrieval systems, source-grounded research knowledge bases, and full-stack AI web products. Work spans editorial AI publishing, evidence-graded research pipelines, a paper-only multi-agent finance desk, real-time fleet dashboards, and interactive 3D web — combining provider-aware LLM workflows, RAG with citations and provenance, structured evaluation, batch extraction pipelines, local-model tooling, and production-minded delivery across Windows, VPS, Oracle, GCP, Vercel, and private model infrastructure.",

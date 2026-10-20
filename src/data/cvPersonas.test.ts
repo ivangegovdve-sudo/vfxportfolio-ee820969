@@ -20,7 +20,7 @@ describe("CV personas", () => {
   it("uses uploaded AI content without mutating or borrowing animation achievements", () => {
     const before = JSON.stringify(defaultCvData);
     const ai = aiCvData(defaultCvData);
-    expect(ai.hero.title).toBe("AI Systems Builder · Agent Orchestration · RAG & Automation");
+    expect(ai.hero.title).toBe("AI Systems Builder · Orchestration and Infrastructure");
     expect(ai.portfolio.map((project) => project.title)).toEqual(aiResume.projects.map((project) => project.name));
     expect(ai.experience[0].highlights).toEqual(aiResume.work[0].highlights);
     expect(ai.skills.sections).toHaveLength(5);
