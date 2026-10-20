@@ -37,6 +37,7 @@ export function aiCvData(animation: CVData): CVData {
       id: `ai-project-${index}`, order: index, title: project.name,
       descriptor: project.description, url: "url" in project ? project.url : "",
       thumbnail: "", ctaLabel: "View project", keywords: project.keywords,
+      year: "startDate" in project && project.startDate ? project.startDate.slice(0, 4) : "",
     })),
     skills: {
       sections: aiResume.skills.map((skill) => ({
