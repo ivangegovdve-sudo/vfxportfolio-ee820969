@@ -36,12 +36,6 @@
       "url": "https://thedrop.sdforest.site/"
     },
     {
-      "name": "Lore Keeper",
-      "description": "Source-grounded continuity knowledge base over a novel trilogy — an LLM answers questions about characters, events, locations, timelines, and contradictions with citations down to chapter, backed by a compiled world graph.",
-      "keywords": ["RAG", "LangGraph", "Neo4j", "SQLite", "Cytoscape.js", "Python", "provenance"],
-      "url": "https://chloe.blumenkraft.cloud/lore/"
-    },
-    {
       "name": "MoneyWolf",
       "description": "Paper-only, read-only multi-agent finance desk turning provider receipts, risk decisions, and local books into source-backed projections — with a hard no-real-orders boundary.",
       "keywords": ["Python/Node", "SQLite", "risk gates", "idempotency", "paper trading"],
