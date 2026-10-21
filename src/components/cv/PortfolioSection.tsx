@@ -6,10 +6,14 @@ import { REVEAL, HOVER, HOVER_TRANSITION, SHADOW, GLOW, VIEWPORT } from "@/lib/m
 import TrademarkText from "./TrademarkText";
 import RedTigerPosterRail from "./RedTigerPosterRail";
 import AmbientMotes from "./AmbientMotes";
+import { useCvPersona } from "@/contexts/CvPersona";
+import { AiPortfolioSection } from "./AiPortfolioSection";
 
 const PortfolioSection = () => {
   const { data } = useCvData();
   const reduceMotion = useReducedMotion();
+  const { persona } = useCvPersona();
+  if (persona === "ai") return <AiPortfolioSection />;
   const orderedItems = [...data.portfolio].sort((a, b) => a.order - b.order);
 
   const projectItems = orderedItems.filter((p) => p.type !== "collection");
