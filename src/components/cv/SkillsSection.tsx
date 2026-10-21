@@ -2,6 +2,7 @@ import { useCvData } from "@/contexts/useCvData";
 import AnimatedSection from "./AnimatedSection";
 import { motion, useReducedMotion } from "framer-motion";
 import { MOTION_TOKENS } from "@/lib/motion";
+import { useCvPersona } from "@/contexts/CvPersona";
 
 const IS_TAG_THRESHOLD = 45;
 const FEATURED_SECTION_TITLE = "Animation & VFX";
@@ -9,6 +10,7 @@ const FEATURED_SECTION_TITLE = "Animation & VFX";
 const SkillsSection = () => {
   const { data } = useCvData();
   const reduceMotion = useReducedMotion();
+  const { persona } = useCvPersona();
 
   const getEntryTransition = (index: number) =>
     reduceMotion
@@ -47,7 +49,7 @@ const SkillsSection = () => {
                 <div className="space-y-5">
                   {section.groups.map((group, gi) => {
                     const isFeatured = section.title === FEATURED_SECTION_TITLE;
-                    const allShort = group.skills.every((s) => s.length < IS_TAG_THRESHOLD);
+                    const allShort = persona === "ai" || group.skills.every((s) => s.length < IS_TAG_THRESHOLD);
                     return (
                       <div key={`${section.title}-${gi}`}>
                         {group.category && (
@@ -78,7 +80,7 @@ const SkillsSection = () => {
                                         ease: MOTION_TOKENS.easingDefault,
                                       }
                                 }
-                                className={isFeatured ? "tag text-sm px-4 py-1.5 font-semibold" : "tag"}
+                                className={isFeatured ? "tag text-sm px-4 py-1.5 font-semibold" : persona === "ai" ? "tag max-w-full whitespace-normal break-words" : "tag"}
                               >
                                 {skill}
                               </motion.span>

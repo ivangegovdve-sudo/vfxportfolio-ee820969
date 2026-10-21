@@ -2,7 +2,7 @@ import { useCvData } from "@/contexts/useCvData";
 import AnimatedSection from "./AnimatedSection";
 import { Mail, MapPin, ExternalLink, Download } from "lucide-react";
 import { useCvPersona } from "@/contexts/CvPersona";
-import { aiResume } from "@/data/cvPersonas";
+import { aiResumeExport } from "@/data/aiProjects";
 
 const ContactSection = () => {
   const { data } = useCvData();
@@ -14,7 +14,7 @@ const ContactSection = () => {
       import("@/utils/jsonResume/validateJsonResume"),
     ]);
 
-    const jsonResume = persona === "ai" ? aiResume : mapCvDataToJsonResume(data);
+    const jsonResume = persona === "ai" ? aiResumeExport : mapCvDataToJsonResume(data);
     const validationResult = validateJsonResume(jsonResume);
     if (!validationResult.ok) {
       console.error("JSON Resume validation failed", "errors" in validationResult ? validationResult.errors : []);

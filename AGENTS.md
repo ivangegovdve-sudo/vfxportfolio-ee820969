@@ -82,6 +82,8 @@ This repository is the personal portfolio and CV site for Ivan Gegov. Treat it a
 
 - Public CV personas override the presentation context without replacing the published animation data; this prevents asynchronous published reads and persona switches from overwriting each other.
 - Adapt JSON Resume inputs to the existing CVData model at the data boundary; shared sections remain the single rendering path for both personas.
+- AI project evidence uses an isolated AI card renderer and a source-to-public presentation adapter; this preserves animator cards while filtering private links and mapping uploaded screenshot asset pointers by original filename.
+- Export AI resumes through the public-content adapter, excluding internal provenance and withheld-URL audit records; canonical uploaded data may contain private local paths and nullable URLs that are not public CV content.
 
 - keep Node 20 usage repo-scoped
 - do not require global Node version mutation

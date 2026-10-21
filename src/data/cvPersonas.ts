@@ -1,5 +1,6 @@
 import aiResume from "./aiResume.json";
 import type { CVData } from "./cvData";
+import { aiProjects } from "./aiProjects";
 
 export type CvPersona = "animation" | "ai";
 
@@ -24,7 +25,7 @@ export function aiCvData(animation: CVData): CVData {
     hero: {
       name: aiResume.basics.name,
       title: aiResume.basics.label,
-      subtitle: aiResume.work[0].summary,
+      subtitle: aiResume.meta.heroSubtext,
       photoUrl: animation.hero.photoUrl,
     },
     about: { paragraphs: [aiResume.basics.summary] },
@@ -33,12 +34,7 @@ export function aiCvData(animation: CVData): CVData {
       location: work.location, startDate: formatDate(work.startDate), endDate: "Present",
       description: work.summary, highlights: work.highlights,
     })),
-    portfolio: aiResume.projects.map((project, index) => ({
-      id: `ai-project-${index}`, order: index, title: project.name,
-      descriptor: project.description, url: "url" in project ? project.url : "",
-      thumbnail: "", ctaLabel: "View project", keywords: project.keywords,
-      year: "startDate" in project && project.startDate ? project.startDate.slice(0, 4) : "",
-    })),
+    portfolio: aiProjects,
     skills: {
       sections: aiResume.skills.map((skill) => ({
         title: skill.name, groups: [{ category: "", skills: skill.keywords }],
