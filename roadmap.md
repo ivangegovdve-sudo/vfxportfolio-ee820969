@@ -1,5 +1,5 @@
 # Tasks
-- [ ] Rename Flexy Read and tighten AI project descriptions/highlights; verify cards and tests without changing animation.
+- [x] Rename Flexy Read and tighten AI project descriptions/highlights; verify cards and tests without changing animation.
 - [x] Remove DreamGraph, correct Firsthand's live link, simplify AI descriptions, and remove animator AI skills; verify both views and tests.
 - [x] Add URL-driven Animation / AI selection with shared CV sections.
 - [x] Map uploaded AI resume faithfully without changing the existing animation source.
