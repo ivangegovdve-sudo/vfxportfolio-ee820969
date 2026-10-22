@@ -177,7 +177,8 @@
         "3D Repo Shelf",
         "MoneyWolf",
         "Avatar Playground / Voice Playground",
-        "Unified Reader + Audiobook Studio",
+        "Audiobook Studio",
+        "Dyslexia Reading Platform",
         "Women's Health OS",
         "Glass Mem",
         "Glass Council",
@@ -204,10 +205,6 @@
         {
           "project": "Voice2Voice Buddy",
           "reason": "Live URL returned HTTP 200 but rendered zero body characters and no headings."
-        },
-        {
-          "project": "Separate Audiobook Studio and Dyslexia pages",
-          "reason": "Unified into the verified Health pool route."
         },
         {
           "project": "Explore Repos",
