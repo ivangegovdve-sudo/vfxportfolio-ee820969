@@ -14,6 +14,17 @@ export function personaSearchParams(current: URLSearchParams, persona: CvPersona
   return next;
 }
 
+// Apply content exclusions to cached and published snapshots as well as defaults.
+export function animationCvData(data: CVData): CVData {
+  return {
+    ...data,
+    skills: {
+      ...data.skills,
+      sections: data.skills.sections.filter((section) => section.title !== "AI & Emerging Tools"),
+    },
+  };
+}
+
 const formatDate = (value: string) => {
   const [year, month] = value.split("-");
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

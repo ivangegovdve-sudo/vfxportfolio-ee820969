@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import defaultCvData from "./cvData";
-import { aiCvData, aiResume, getCvPersona, personaSearchParams } from "./cvPersonas";
+import { aiCvData, animationCvData, aiResume, getCvPersona, personaSearchParams } from "./cvPersonas";
 import { aiProjects, aiResumeExport } from "./aiProjects";
 import { validateJsonResume } from "@/utils/jsonResume/validateJsonResume";
+import { mapCvDataToJsonResume } from "@/utils/jsonResume/mapCvDataToJsonResume";
 
 describe("CV personas", () => {
   it("defaults to animation and opens AI only for v=ai", () => {
@@ -96,6 +97,18 @@ describe("CV personas", () => {
     for (const skill of ["Stable Diffusion", "ComfyUI", "ControlNet", "RAG", "LLMs", "Claude Code", "Ollama"]) {
       expect(skills).not.toContain(skill);
     }
+  });
+
+  it("excludes animator AI skills from old snapshots and their public exports without changing stored data", () => {
+    const oldSnapshot = structuredClone(defaultCvData);
+    oldSnapshot.skills.sections.push({ title: "AI & Emerging Tools", groups: [{ category: "", skills: ["ComfyUI", "RAG"] }] });
+    const displayed = animationCvData(oldSnapshot);
+    expect(displayed.skills.sections.some((s) => s.title === "AI & Emerging Tools")).toBe(false);
+    expect(mapCvDataToJsonResume(displayed).skills?.some((s) => s.name === "AI & Emerging Tools")).toBe(false);
+    expect(oldSnapshot.skills.sections.some((s) => s.title === "AI & Emerging Tools")).toBe(true);
+    expect(displayed.experience).toEqual(defaultCvData.experience);
+    expect(displayed.portfolio).toEqual(defaultCvData.portfolio);
+    expect(aiCvData(oldSnapshot).skills.sections.flatMap((s) => s.groups.flatMap((g) => g.skills))).toContain("RunPod serverless GPU / ComfyUI");
   });
 
   it("preserves the concrete implementation tools in v4 skills", () => {
