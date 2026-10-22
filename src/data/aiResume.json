@@ -308,13 +308,13 @@
       "name": "GymScholar",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "A training research app for reading papers, looking up facts and comparing the evidence behind training decisions. Answers and facts link back to their sources.",
+      "description": "A training app for building workout routines, setting custom schedules and rest/break intervals, and targeting specific muscle groups. What sets it apart is that its training engine is built entirely on peer-reviewed exercise science papers turned into evidence-based claims, rather than gym lore or bro-science.",
       "highlights": [
-        "RAG",
-        "Paper corpus",
-        "Evidence-linked retrieval",
-        "Citations",
-        "Training decisions"
+        "Workout routine builder",
+        "Custom schedules",
+        "Rest/break intervals",
+        "Muscle group targeting",
+        "Peer-reviewed evidence base"
       ],
       "url": "https://gymscholar.lovable.app/",
       "urlType": "live",
