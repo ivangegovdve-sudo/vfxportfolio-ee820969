@@ -33,6 +33,13 @@ export const aiProjects = aiResume.projects.map((project, index) => {
   };
 });
 
+export const isDeployedStatus = (status: string) => status === "deployed" || status === "deployed route";
+
+export const aiProjectGroups = [
+  { id: "ai-projects-live", label: "Deployed and live", projects: aiProjects.filter((p) => isDeployedStatus(p.status)) },
+  { id: "ai-projects-dev", label: "In development", projects: aiProjects.filter((p) => !isDeployedStatus(p.status)) },
+];
+
 // Download only public CV content, not local source paths or withheld URL audit records.
 export const aiResumeExport = {
   $schema: aiResume.$schema,

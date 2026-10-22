@@ -26,14 +26,14 @@ describe("CV personas", () => {
     expect(ai.hero.title).toBe("AI systems builder, orchestration and infrastructure");
     expect(ai.portfolio.map((project) => project.title)).toEqual(aiResume.projects.map((project) => project.name));
     expect(ai.experience[0].highlights).toEqual(aiResume.work[0].highlights);
-    expect(ai.skills.sections).toHaveLength(8);
+    expect(ai.skills.sections).toHaveLength(7);
     expect(JSON.stringify(defaultCvData)).toBe(before);
   });
 
   it("keeps the AI portfolio honest and complete per the content rules", () => {
     const ai = aiCvData(defaultCvData);
     const titles = ai.portfolio.map((project) => project.title);
-    expect(titles).toHaveLength(13);
+    expect(titles).toHaveLength(14);
     expect(titles.some((title) => title.includes("Lore Keeper"))).toBe(false);
     expect(titles).toContain("GymScholar");
     expect(ai.portfolio.find((project) => project.title === "GymScholar")?.year).toBe("2026");
@@ -126,11 +126,11 @@ describe("CV personas", () => {
     expect(aiCvData(defaultCvData).hero.subtitle).toBe("AI systems builder shipping agent orchestration, source-grounded research, retrieval and memory, voice interfaces, and full-stack public products.");
   });
 
-  it("curates the remaining thirteen project identities in source order", () => {
+  it("curates the fourteen project identities in source order", () => {
     expect(aiProjects.map((p) => p.title)).toEqual([
       "The Drop", "SD Forest / Forest HUB", "GymScholar", "Open Dashboard", "3D Repo Shelf",
-      "MoneyWolf", "Avatar Playground / Voice Playground", "Unified Reader + Audiobook Studio",
-      "Women's Health OS", "Glass Mem", "Glass Council", "Glass PR Solver", "Cognitive Autonomy / Firsthand",
+      "MoneyWolf", "Avatar Playground / Voice Playground", "Audiobook Studio",
+      "Dyslexia Reading Platform", "Women's Health OS", "Glass Mem", "Glass Council", "Glass PR Solver", "Cognitive Autonomy / Firsthand",
     ]);
     expect(aiResume.projects.filter((p) => p.screenshot)).toHaveLength(9);
   });
@@ -155,7 +155,25 @@ describe("CV personas", () => {
 
   it("uses the current voice and combined reader routes exactly", () => {
     expect(aiProjects.find((p) => p.title === "Avatar Playground / Voice Playground")?.url).toBe("https://www.sdforest.site/web/avatar-playground/");
-    expect(aiProjects.find((p) => p.title === "Unified Reader + Audiobook Studio")?.url).toBe("https://www.sdforest.site/web/pools/health/");
+    expect(aiProjects.find((p) => p.title === "Audiobook Studio")?.url).toBe("https://chloe.blumenkraft.cloud/audiobook/");
+    expect(aiProjects.find((p) => p.title === "Dyslexia Reading Platform")?.url).toBe("https://chloe.blumenkraft.cloud/dyslexia/");
+    expect(aiProjects.some((p) => p.title.includes("Unified Reader"))).toBe(false);
+  });
+
+  it("groups deployed products before in-development systems", () => {
+    const [live, dev] = aiProjectGroups;
+    expect(live.projects.every((p) => p.status === "deployed" || p.status === "deployed route")).toBe(true);
+    expect(live.projects).toHaveLength(9);
+    expect(dev.projects.map((p) => p.title)).toEqual(["Women's Health OS", "Glass Mem", "Glass Council", "Glass PR Solver", "Cognitive Autonomy / Firsthand"]);
+  });
+
+  it("folds research skills into memory and drops filler and CaveMem", () => {
+    const names = aiResume.skills.map((s) => s.name);
+    expect(names).not.toContain("Research and knowledge products");
+    const memory = aiResume.skills.find((s) => s.name === "Memory, retrieval and data systems")!.keywords;
+    for (const k of ["PDF/EPUB document ingestion", "LlamaParse", "Evidence-linked retrieval", "Glass Mem", "SQLite FTS5", "LanceDB", "RAG"]) expect(memory).toContain(k);
+    const publicText = JSON.stringify([aiResume.skills, aiResume.work]);
+    for (const k of ["CaveMem", "Corpus freshness checks", "Health knowledge products", "Training knowledge products"]) expect(publicText).not.toContain(k);
   });
 
   it("removes DreamGraph from source data, portfolio and public resume", () => {
