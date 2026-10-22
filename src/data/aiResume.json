@@ -324,13 +324,14 @@
       "name": "Open Dashboard",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "A dashboard for comparing AI models, their capabilities and provider costs. It shows the provider data behind comparisons and includes an MCP service for accessing that information.",
+      "description": "An MCP server published on npm as open-dashboard-mcp, with thousands of downloads, that gives AI agents direct, up-to-date knowledge of model capabilities, provider pricing and adapters. It is built for decision models and integrates with the Model Router, so an agent can compare models and route to the one that is most capable and cost-effective for a task. The web dashboard is the companion interface for people to inspect the same data.",
       "highlights": [
-        "TypeScript/JavaScript",
-        "MCP",
-        "OpenRouter/provider data",
-        "Model catalog",
-        "Readable receipts"
+        "npm: open-dashboard-mcp",
+        "Thousands of downloads",
+        "Live model capability and provider pricing data",
+        "Model Router integration",
+        "Agent-side cost and capability routing",
+        "Companion web dashboard"
       ],
       "url": "https://opendashboard.sdforest.site/",
       "urlType": "live",

@@ -57,6 +57,19 @@ describe("CV personas", () => {
     ]);
   });
 
+  it("describes Open Dashboard as an npm MCP server first, with the web dashboard as companion", () => {
+    const project = aiResume.projects.find((p) => p.name === "Open Dashboard");
+    expect(project?.description).toContain("MCP server published on npm as open-dashboard-mcp");
+    expect(project?.description).toContain("thousands of downloads");
+    expect(project?.description).toContain("model capabilities, provider pricing and adapters");
+    expect(project?.description).toContain("integrates with the Model Router");
+    expect(project?.description).toContain("companion interface");
+    expect(project?.highlights).toContain("npm: open-dashboard-mcp");
+    expect(project?.highlights).toContain("Model Router integration");
+    expect(project?.highlights).toContain("Companion web dashboard");
+    expect(project?.url).toBe("https://opendashboard.sdforest.site/");
+  });
+
   it("uses the canonical short hero summary", () => {
     expect(aiCvData(defaultCvData).hero.subtitle).toBe("AI systems builder shipping agent orchestration, source-grounded research, retrieval and memory, voice interfaces, and full-stack public products.");
   });
