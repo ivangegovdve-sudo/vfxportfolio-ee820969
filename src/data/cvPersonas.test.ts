@@ -98,6 +98,30 @@ describe("CV personas", () => {
     expect(project?.url).toBe("https://moneywolf.sdforest.site/");
   });
 
+  it("describes Glass PR Solver as end-to-end PR automation with cross-model agreement before auto-merge", () => {
+    const project = aiResume.projects.find((p) => p.name === "Glass PR Solver");
+    expect(project?.description).toContain("takes a PR all the way to merged");
+    expect(project?.description).toContain("must agree before it is approved");
+    expect(project?.description).toContain("merged automatically");
+    expect(project?.description).toContain("rebases the branch");
+    expect(project?.description).toContain("addresses requested changes");
+    expect(project?.description).toContain("fixes failing CI");
+    expect(project?.description).toContain("looping until the work is done");
+    expect(project?.description).toContain("asks for human help");
+    expect(project?.highlights).toEqual([
+      "End-to-end PR automation",
+      "Cross-model agreement before approval",
+      "Auto-merge",
+      "Rebasing and looping until done",
+      "Addresses requested changes",
+      "Fixes failing CI",
+      "GitHub API",
+      "Human escalation",
+    ]);
+    expect(project?.url).toBeNull();
+    expect(project?.status).toBe("in development");
+  });
+
   it("uses the canonical short hero summary", () => {
     expect(aiCvData(defaultCvData).hero.subtitle).toBe("AI systems builder shipping agent orchestration, source-grounded research, retrieval and memory, voice interfaces, and full-stack public products.");
   });
