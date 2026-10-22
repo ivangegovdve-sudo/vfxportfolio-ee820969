@@ -1,18 +1,22 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { aiProjects } from "@/data/aiProjects";
+import { aiProjectGroups } from "@/data/aiProjects";
 import { HOVER, HOVER_TRANSITION, REVEAL, VIEWPORT } from "@/lib/motion";
 import AnimatedSection from "./AnimatedSection";
 
 export function AiPortfolioSection() {
   const reduceMotion = useReducedMotion();
+  const projectGroups = aiProjectGroups;
   return (
     <section id="portfolio" className="section-spacing bg-card relative" aria-labelledby="portfolio-title">
       <div className="section-container">
         <AnimatedSection><h2 id="portfolio-title" className="section-title">Portfolio</h2></AnimatedSection>
-        <div className="grid items-start gap-5 sm:grid-cols-2 md:gap-6">
-          {aiProjects.map((project, index) => (
+        {projectGroups.map((group) => (
+        <div key={group.id} className="mb-12 last:mb-0">
+        <h3 id={group.id} className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">{group.label}</h3>
+        <div className="grid items-start gap-5 sm:grid-cols-2 md:gap-6" aria-labelledby={group.id}>
+          {group.projects.map((project, index) => (
             <motion.article
               key={project.id} aria-labelledby={`${project.id}-title`}
               custom={index} variants={REVEAL.card} initial={reduceMotion ? false : "hidden"}
@@ -43,6 +47,8 @@ export function AiPortfolioSection() {
             </motion.article>
           ))}
         </div>
+        </div>
+        ))}
       </div>
     </section>
   );
