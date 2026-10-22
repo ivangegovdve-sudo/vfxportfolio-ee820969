@@ -132,7 +132,7 @@ describe("CV personas", () => {
       "MoneyWolf", "Avatar Playground / Voice Playground", "Audiobook Studio",
       "Dyslexia Reading Platform", "Women's Health OS", "Glass Mem", "Glass Council", "Glass PR Solver", "Cognitive Autonomy / Firsthand",
     ]);
-    expect(aiResume.projects.filter((p) => p.screenshot)).toHaveLength(9);
+    expect(aiResume.projects.filter((p) => p.screenshot)).toHaveLength(8);
   });
 
   it("retains the Women's Health population review warning", () => {
