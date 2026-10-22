@@ -13,7 +13,7 @@ import { usePublishedCv } from "@/hooks/usePublishedCv";
 import { useCvData } from "@/contexts/useCvData";
 import { CVDataContext } from "@/contexts/cvDataStore";
 import { CvPersonaContext } from "@/contexts/CvPersona";
-import { aiCvData, getCvPersona, personaSearchParams, type CvPersona } from "@/data/cvPersonas";
+import { aiCvData, animationCvData, getCvPersona, personaSearchParams, type CvPersona } from "@/data/cvPersonas";
 
 const ContentEditor = lazy(() => import("@/components/editor/ContentEditor"));
 
@@ -28,7 +28,7 @@ const Index = () => {
   }, [setSearchParams]);
   const displayContext = useMemo(() => ({
     ...baseContext,
-    data: persona === "ai" ? aiCvData(baseContext.data) : baseContext.data,
+    data: persona === "ai" ? aiCvData(baseContext.data) : animationCvData(baseContext.data),
   }), [baseContext, persona]);
   const { slug } = useParams();
   const isEditMode =

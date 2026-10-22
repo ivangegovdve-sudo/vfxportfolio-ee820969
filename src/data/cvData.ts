@@ -437,32 +437,7 @@ const cvData: CVData = {
           },
         ],
       },
-      {
-        title: "AI & Emerging Tools",
-        groups: [
-          {
-            category: "",
-            skills: [
-              "Stable Diffusion",
-              "krea.ai",
-              "CodexGPT",
-              "Replit",
-              "VisualStudioCode",
-              "RAG",
-              "LLMs",
-              "GeminiCodeAssist",
-              "ComfyUI",
-              "Lovable",
-              "Claude Code",
-              "LoRAs",
-              "Antigravity",
-              "Ollama",
-              "ControlNet",
-              "agent2agent",
-            ],
-          },
-        ],
-      },
+
     ],
     personal: [
       "Strong communication and teamwork",

@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import defaultCvData from "./cvData";
-import { aiCvData, aiResume, getCvPersona, personaSearchParams } from "./cvPersonas";
+import { aiCvData, animationCvData, aiResume, getCvPersona, personaSearchParams } from "./cvPersonas";
 import { aiProjects, aiResumeExport } from "./aiProjects";
 import { validateJsonResume } from "@/utils/jsonResume/validateJsonResume";
+import { mapCvDataToJsonResume } from "@/utils/jsonResume/mapCvDataToJsonResume";
 
 describe("CV personas", () => {
   it("defaults to animation and opens AI only for v=ai", () => {
@@ -32,7 +33,7 @@ describe("CV personas", () => {
   it("keeps the AI portfolio honest and complete per the content rules", () => {
     const ai = aiCvData(defaultCvData);
     const titles = ai.portfolio.map((project) => project.title);
-    expect(titles).toHaveLength(14);
+    expect(titles).toHaveLength(13);
     expect(titles.some((title) => title.includes("Lore Keeper"))).toBe(false);
     expect(titles).toContain("GymScholar");
     expect(ai.portfolio.find((project) => project.title === "GymScholar")?.year).toBe("2026");
@@ -42,11 +43,11 @@ describe("CV personas", () => {
     expect(aiCvData(defaultCvData).hero.subtitle).toBe("AI systems builder shipping agent orchestration, source-grounded research, retrieval and memory, voice interfaces, and full-stack public products.");
   });
 
-  it("curates exactly the fourteen specified project identities in source order", () => {
+  it("curates the remaining thirteen project identities in source order", () => {
     expect(aiProjects.map((p) => p.title)).toEqual([
       "The Drop", "SD Forest / Forest HUB", "GymScholar", "Open Dashboard", "3D Repo Shelf",
       "MoneyWolf", "Avatar Playground / Voice Playground", "Unified Reader + Audiobook Studio",
-      "Women's Health OS", "Glass Mem", "Glass Council", "Glass PR Solver", "DreamGraph", "Cognitive Autonomy / Firsthand",
+      "Women's Health OS", "Glass Mem", "Glass Council", "Glass PR Solver", "Cognitive Autonomy / Firsthand",
     ]);
     expect(aiResume.projects.filter((p) => p.screenshot)).toHaveLength(9);
   });
@@ -74,14 +75,40 @@ describe("CV personas", () => {
     expect(aiProjects.find((p) => p.title === "Unified Reader + Audiobook Studio")?.url).toBe("https://www.sdforest.site/web/pools/health/");
   });
 
-  it.each([
-    ["DreamGraph", "https://github.com/ivangegovdve-sudo/dreamgraph"],
-    ["Cognitive Autonomy / Firsthand", "https://github.com/ivangegovdve-sudo/firsthand"],
-  ])("links %s only as an in-development public source", (title, url) => {
-    const project = aiProjects.find((p) => p.title === title);
-    expect(project?.url).toBe(url);
+  it("removes DreamGraph from source data, portfolio and public resume", () => {
+    expect(JSON.stringify(aiResume).toLowerCase()).not.toContain("dreamgraph");
+    expect(aiProjects.some((p) => p.title === "DreamGraph")).toBe(false);
+    expect(aiResumeExport.projects.some((p) => p.name === "DreamGraph")).toBe(false);
+  });
+
+  it("uses Firsthand's supplied live link without changing its development status", () => {
+    const project = aiProjects.find((p) => p.title === "Cognitive Autonomy / Firsthand");
+    expect(project?.url).toBe("https://firsthand.sdforest.site/");
     expect(project?.status).toBe("in development");
-    expect(project?.ctaLabel).toBe("View source");
+    expect(project?.ctaLabel).toBe("View project");
+    expect(aiResumeExport.projects.find((p) => p.name === "Cognitive Autonomy / Firsthand")?.url).toBe("https://firsthand.sdforest.site/");
+  });
+
+  it("keeps the animator's default skills focused on animation and VFX", () => {
+    expect(defaultCvData.skills.sections.map((s) => s.title)).toEqual([
+      "Animation & VFX", "Production & Optimization", "Tools & Workflow", "Additional Software",
+    ]);
+    const skills = defaultCvData.skills.sections.flatMap((s) => s.groups.flatMap((g) => g.skills));
+    for (const skill of ["Stable Diffusion", "ComfyUI", "ControlNet", "RAG", "LLMs", "Claude Code", "Ollama"]) {
+      expect(skills).not.toContain(skill);
+    }
+  });
+
+  it("excludes animator AI skills from old snapshots and their public exports without changing stored data", () => {
+    const oldSnapshot = structuredClone(defaultCvData);
+    oldSnapshot.skills.sections.push({ title: "AI & Emerging Tools", groups: [{ category: "", skills: ["ComfyUI", "RAG"] }] });
+    const displayed = animationCvData(oldSnapshot);
+    expect(displayed.skills.sections.some((s) => s.title === "AI & Emerging Tools")).toBe(false);
+    expect(mapCvDataToJsonResume(displayed).skills?.some((s) => s.name === "AI & Emerging Tools")).toBe(false);
+    expect(oldSnapshot.skills.sections.some((s) => s.title === "AI & Emerging Tools")).toBe(true);
+    expect(displayed.experience).toEqual(defaultCvData.experience);
+    expect(displayed.portfolio).toEqual(defaultCvData.portfolio);
+    expect(aiCvData(oldSnapshot).skills.sections.flatMap((s) => s.groups.flatMap((g) => g.skills))).toContain("RunPod serverless GPU / ComfyUI");
   });
 
   it("preserves the concrete implementation tools in v4 skills", () => {
