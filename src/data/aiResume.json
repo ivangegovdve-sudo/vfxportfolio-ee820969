@@ -593,7 +593,9 @@
         "Kokoro-82M training and fine-tuning",
         "StyleTTS2",
         "Open voice models",
-        "Streaming STT/TTS pipelines",
+        "Voice Activity Detection (VAD)",
+        "STT/TTS dual-streaming harnesses",
+        "Multi-provider fallback chains",
         "Real-time voice loops",
         "Browser audio",
         "Audio-reactive state",
@@ -609,11 +611,8 @@
         "WebGPU/TSL",
         "Cytoscape.js",
         "3D data interfaces",
-        "Responsive interaction",
-        "Accessibility and reduced motion",
         "Playwright",
-        "Headless Chromium",
-        "Screenshot verification"
+        "Headless Chromium"
       ]
     },
     {
@@ -621,13 +620,10 @@
       "keywords": [
         "GitHub API",
         "Git",
-        "PR review gates",
-        "Head-pinned approvals",
-        "CI step evidence",
-        "Provider receipts",
-        "Cost and approval gates",
-        "Explicit unknown states",
-        "Paper-only boundaries",
+        "PR automation & review gates",
+        "CI evidence",
+        "Temporal",
+        "NATS JetStream",
         "Windows/Linux operations"
       ]
     }
