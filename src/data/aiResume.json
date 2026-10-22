@@ -258,7 +258,7 @@
         "Built evidence-first GitHub PR operations with independent gather/decide/review/act stages, head-pinned decisions, CI-step evidence, GitHub API/SSE/MCP integration and human escalation.",
         "Built provider-neutral model workflows using Anthropic, OpenAI, OpenRouter, Ollama, Gemini and local OpenAI-compatible services, with model routing and measured evaluation.",
         "Built public products including The Drop, SD Forest / Forest HUB, GymScholar, Open Dashboard, Repo Shelf, MoneyWolf, Avatar Playground and the combined Health route.",
-        "Built voice and multimodal systems using realtime model APIs, ElevenLabs, Cartesia, Google TTS, Pocket TTS, Kokoro, browser audio and messaging surfaces.",
+        "Built voice and multimodal systems using realtime model APIs, streaming speech pipelines, open voice models, browser audio and messaging surfaces.",
         "Worked across Windows/PowerShell, Vercel, GitHub Pages, Oracle/VPS/KVM2, Docker/Compose, Caddy, systemd, GCP Secret Manager, n8n, GitHub Actions, Tailscale and RunPod.",
         "Built the native Glass Council client surface in Kotlin Compose Multiplatform for Windows and Android alongside its Python engine and MCP server."
       ],
@@ -590,14 +590,11 @@
     {
       "name": "Voice and multimodal systems",
       "keywords": [
-        "ElevenLabs",
-        "Cartesia",
-        "Google TTS",
-        "Pocket TTS",
-        "Hume Octave 2",
-        "Kokoro-82M",
+        "Kokoro-82M training and fine-tuning",
         "StyleTTS2",
-        "OpenAI-compatible voice providers",
+        "Open voice models",
+        "Streaming STT/TTS pipelines",
+        "Real-time voice loops",
         "Browser audio",
         "Audio-reactive state",
         "Telegram/Discord/WhatsApp surfaces"
