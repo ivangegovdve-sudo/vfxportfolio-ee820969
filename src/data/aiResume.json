@@ -8,7 +8,7 @@
     "headline": "AI systems builder, orchestration and infrastructure",
     "heroSubtext": "AI systems builder shipping agent orchestration, source-grounded research, retrieval and memory, voice interfaces, and full-stack public products.",
     "scopeNotes": [
-      "Curated to 14 project cards: 9 verified public surfaces and 5 real in-development systems.",
+      "Curated to 13 project cards: 9 previously verified public surfaces and 4 in-development systems. Firsthand’s live link was supplied by Ivan on 2026-10-22.",
       "Only public URLs that rendered non-empty content were used as deployed project links.",
       "Private source repositories stay linkless in the public-facing CV; their work is still represented with an in-development status.",
       "The native Glass Council UI is the Kotlin Compose Multiplatform Windows/Android client in the council project, not the Claude Code council framework.",
@@ -140,11 +140,6 @@
           "url": "https://ask-the-council-preview.vercel.app/",
           "status": 404,
           "action": "Dropped; no live surface."
-        },
-        {
-          "url": "https://dreamgraph.nofs.ai/",
-          "status": 200,
-          "action": "Not used as Ivan's deployment; the live site is upstream. DreamGraph links to Ivan's public source repository instead."
         }
       ],
       "profileUrls": [
@@ -165,12 +160,6 @@
         }
       ],
       "sourceRepositoryUrls": [
-        {
-          "project": "DreamGraph",
-          "url": "https://github.com/ivangegovdve-sudo/dreamgraph",
-          "status": 200,
-          "renderedBodyChars": 22886
-        },
         {
           "project": "Cognitive Autonomy / Firsthand",
           "url": "https://github.com/ivangegovdve-sudo/firsthand",
@@ -193,7 +182,6 @@
         "Glass Mem",
         "Glass Council",
         "Glass PR Solver",
-        "DreamGraph",
         "Cognitive Autonomy / Firsthand"
       ],
       "droppedOrAbsorbed": [
@@ -285,8 +273,16 @@
       "name": "The Drop",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "Editorial AI publication with daily and weekly editions, structured research and editorial data, EN/BG delivery, Telegram distribution and ElevenLabs narration.",
-      "highlights": ["TanStack Start", "TypeScript", "Supabase", "n8n", "OpenRouter", "ElevenLabs", "Telegram"],
+      "description": "A daily and weekly publication in English and Bulgarian. It organizes research and editorial content, sends editions through Telegram, and offers narration with ElevenLabs.",
+      "highlights": [
+        "TanStack Start",
+        "TypeScript",
+        "Supabase",
+        "n8n",
+        "OpenRouter",
+        "ElevenLabs",
+        "Telegram"
+      ],
       "url": "https://thedrop.sdforest.site/",
       "urlType": "live",
       "screenshot": "CV_SCREENSHOTS/01-the-drop.png"
@@ -295,8 +291,15 @@
       "name": "SD Forest / Forest HUB",
       "status": "deployed",
       "startDate": "2024-01-01",
-      "description": "Living public atlas and product environment: static routes plus FastAPI/SQLite services, interactive 3D surfaces, AI indexes, learning tools and research pages.",
-      "highlights": ["Static HTML/JS", "FastAPI", "SQLite", "Three.js/WebGL2", "Vercel", "Public product environment"],
+      "description": "A public home for my projects, learning tools and research pages. It combines static web pages with FastAPI and SQLite services, including interactive 3D views and AI indexes.",
+      "highlights": [
+        "Static HTML/JS",
+        "FastAPI",
+        "SQLite",
+        "Three.js/WebGL2",
+        "Vercel",
+        "Public product environment"
+      ],
       "url": "https://www.sdforest.site/",
       "urlType": "live",
       "screenshot": "CV_SCREENSHOTS/02-sd-forest-hub.png"
@@ -305,8 +308,14 @@
       "name": "GymScholar",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "Evidence-based training product that turns a research corpus into readable training decisions, paper context, citations and queryable facts.",
-      "highlights": ["RAG", "Paper corpus", "Evidence-linked retrieval", "Citations", "Training decisions"],
+      "description": "A training research app for reading papers, looking up facts and comparing the evidence behind training decisions. Answers and facts link back to their sources.",
+      "highlights": [
+        "RAG",
+        "Paper corpus",
+        "Evidence-linked retrieval",
+        "Citations",
+        "Training decisions"
+      ],
       "url": "https://gymscholar.lovable.app/",
       "urlType": "live",
       "screenshot": "CV_SCREENSHOTS/03-gymscholar.png"
@@ -315,8 +324,14 @@
       "name": "Open Dashboard",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "Public model capability, provider-cost and evidence dashboard plus open-dashboard-mcp, turning live provider data into inspectable model choices and receipts.",
-      "highlights": ["TypeScript/JavaScript", "MCP", "OpenRouter/provider data", "Model catalog", "Readable receipts"],
+      "description": "A dashboard for comparing AI models, their capabilities and provider costs. It shows the provider data behind comparisons and includes an MCP service for accessing that information.",
+      "highlights": [
+        "TypeScript/JavaScript",
+        "MCP",
+        "OpenRouter/provider data",
+        "Model catalog",
+        "Readable receipts"
+      ],
       "url": "https://opendashboard.sdforest.site/",
       "urlType": "live",
       "screenshot": "CV_SCREENSHOTS/04-open-dashboard.png"
@@ -325,8 +340,14 @@
       "name": "3D Repo Shelf",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "Repository intelligence presented as a 3D bookshelf plus search, category, shelf, graphified and capability-card browsing modes. Repo Shelf and Explore Repos are one surface.",
-      "highlights": ["React Three Fiber", "Three.js", "GitHub catalog data", "GitHub Pages", "3D browsing"],
+      "description": "A GitHub repository browser built around an interactive 3D bookshelf. Repositories can also be explored through search, categories, graph views and cards describing what they do. Explore Repos is part of the same project.",
+      "highlights": [
+        "React Three Fiber",
+        "Three.js",
+        "GitHub catalog data",
+        "GitHub Pages",
+        "3D browsing"
+      ],
       "url": "https://ivangegovdve-sudo.github.io/repo-shelf/",
       "urlType": "live",
       "screenshot": "CV_SCREENSHOTS/05-repo-shelf.png"
@@ -335,8 +356,15 @@
       "name": "MoneyWolf",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "Read-only, paper-only multi-agent finance desk combining source receipts, risk decisions, local books, projected outcomes, risk gates and idempotent event handling; no real orders.",
-      "highlights": ["Python/Node", "SQLite", "Multi-agent workflows", "Paper trading", "Risk gates", "Idempotency"],
+      "description": "An experimental finance desk where several agents review sources, assess risk and track simulated trades in a local database. It is read-only and paper-only: it does not place real orders. Repeated events are handled without duplicating actions.",
+      "highlights": [
+        "Python/Node",
+        "SQLite",
+        "Multi-agent workflows",
+        "Paper trading",
+        "Risk gates",
+        "Idempotency"
+      ],
       "url": "https://moneywolf.sdforest.site/",
       "urlType": "live",
       "screenshot": "CV_SCREENSHOTS/06-moneywolf.png"
@@ -345,8 +373,14 @@
       "name": "Avatar Playground / Voice Playground",
       "status": "deployed route",
       "startDate": "2026-01-01",
-      "description": "Current public avatar and voice behaviour lab: audio-reactive state, voice and gesture vocabulary, emotion/connection experiments, and the bridge between Chloe's avatar and runtime. The legacy voice route is absorbed here.",
-      "highlights": ["Browser audio", "Avatar state", "Voice behaviour", "Audio-reactive UI", "Current public route"],
+      "description": "A browser playground for testing how an avatar responds to audio, voice, gestures and connection changes. It connects Chloe’s avatar to its running system and brings the earlier voice experiments into one place.",
+      "highlights": [
+        "Browser audio",
+        "Avatar state",
+        "Voice behaviour",
+        "Audio-reactive UI",
+        "Current public route"
+      ],
       "url": "https://www.sdforest.site/web/avatar-playground/",
       "urlType": "live",
       "screenshot": "CV_SCREENSHOTS/07-avatar-playground.png"
@@ -355,8 +389,14 @@
       "name": "Unified Reader + Audiobook Studio",
       "status": "deployed route",
       "startDate": "2025-01-01",
-      "description": "Combined Health pool surface for accessible reading and audiobook production, presenting the two implementations as one product family with reader controls, audio workflows and multiple narration paths.",
-      "highlights": ["EPUB/PDF", "Accessible reading", "Audiobook production", "TTS backends", "Combined public route"],
+      "description": "Reading and audiobook tools grouped on one public Health page. The tools support EPUB and PDF reading, accessible reader controls, and audiobook creation with several text-to-speech options.",
+      "highlights": [
+        "EPUB/PDF",
+        "Accessible reading",
+        "Audiobook production",
+        "TTS backends",
+        "Combined public route"
+      ],
       "url": "https://www.sdforest.site/web/pools/health/",
       "urlType": "live",
       "screenshot": "CV_SCREENSHOTS/08-unified-reader-audiobook.png"
@@ -365,8 +405,14 @@
       "name": "Women's Health OS",
       "status": "live route / in development",
       "startDate": "2025-01-01",
-      "description": "Research intelligence route for women's-health topics, with paper indexing, evidence-graded facts, rules/claims views and retrieval-backed UI. Keep the data-population warning visible; API online is not the same as a populated corpus.",
-      "highlights": ["Research corpus", "FastAPI/SQLite", "Retrieval UI", "Facts/papers views", "Data-state warning"],
+      "description": "A work-in-progress app for exploring women’s health research through papers, facts and claims linked to evidence. The public page is available, but its data-loading state still needs review: an online API alone does not mean the research data is ready.",
+      "highlights": [
+        "Research corpus",
+        "FastAPI/SQLite",
+        "Retrieval UI",
+        "Facts/papers views",
+        "Data-state warning"
+      ],
       "url": "https://www.sdforest.site/web/womens-health-os/",
       "urlType": "live",
       "screenshot": "CV_SCREENSHOTS/09-womens-health-os.png",
@@ -376,8 +422,15 @@
       "name": "Glass Mem",
       "status": "in development",
       "startDate": "2026-01-01",
-      "description": "Append-only agent memory and evidence recall lane using raw-event capture, SQLite/FTS5, embeddings, vector retrieval and source-linked context through MCP.",
-      "highlights": ["Python", "SQLite/FTS5", "LanceDB/vector retrieval", "Embeddings", "MCP", "Source-linked recall"],
+      "description": "A memory system for agents that keeps original events without overwriting them. It uses SQLite/FTS5 search, embeddings and vector retrieval to find relevant context, with links back to the source events and access through MCP.",
+      "highlights": [
+        "Python",
+        "SQLite/FTS5",
+        "LanceDB/vector retrieval",
+        "Embeddings",
+        "MCP",
+        "Source-linked recall"
+      ],
       "url": null,
       "urlType": "private source only",
       "screenshot": null
@@ -386,8 +439,15 @@
       "name": "Glass Council",
       "status": "in development",
       "startDate": "2026-01-01",
-      "description": "Private multi-lab council with a Python engine, MCP server and a real Kotlin Compose Multiplatform Windows/Android Council Chamber UI. This is the Glass Council project, not the Claude Code planning framework.",
-      "highlights": ["Python engine", "Kotlin", "Compose Multiplatform", "Windows/Android UI", "MCP", "Independent model seats"],
+      "description": "A private, in-development system for comparing input from independent models. It has a Python engine, an MCP server, and a Kotlin Compose Multiplatform client for Windows and Android. It is separate from the Claude Code planning framework.",
+      "highlights": [
+        "Python engine",
+        "Kotlin",
+        "Compose Multiplatform",
+        "Windows/Android UI",
+        "MCP",
+        "Independent model seats"
+      ],
       "url": null,
       "urlType": "private source only",
       "screenshot": null,
@@ -397,30 +457,34 @@
       "name": "Glass PR Solver",
       "status": "in development",
       "startDate": "2026-01-01",
-      "description": "An evidence-first PR operations layer for teams that need merge decisions they can defend: it gathers the diff, CI steps, provider receipts and head SHA, routes independent review, and refuses to call a blocked or stale run approved.",
-      "highlights": ["Python", "GitHub API", "SSE", "MCP", "Head-pinned decisions", "CI evidence", "Review gates", "Human escalation"],
+      "description": "An in-development tool for reviewing GitHub pull requests. It gathers code changes, CI results and model review records, checks which commit was reviewed, and asks for human help when a run is blocked or out of date rather than marking it approved.",
+      "highlights": [
+        "Python",
+        "GitHub API",
+        "SSE",
+        "MCP",
+        "Head-pinned decisions",
+        "CI evidence",
+        "Review gates",
+        "Human escalation"
+      ],
       "url": null,
       "urlType": "private source only",
-      "screenshot": null
-    },
-    {
-      "name": "DreamGraph",
-      "status": "in development",
-      "startDate": "2026-01-01",
-      "description": "Graph-first cognitive daemon with MCP tools, CLI, browser Architect, VS Code integration, Explorer and governed dream cycles for repository understanding.",
-      "highlights": ["TypeScript", "Node.js", "MCP", "CLI", "VS Code extension", "Knowledge graph", "Browser Architect"],
-      "url": "https://github.com/ivangegovdve-sudo/dreamgraph",
-      "urlType": "public source repository",
       "screenshot": null
     },
     {
       "name": "Cognitive Autonomy / Firsthand",
       "status": "in development",
       "startDate": "2026-01-01",
-      "description": "Record-first training instrument for cognitive autonomy: capture a person's own evidence before a model interprets it. The production deployment is intentionally not linked until the current deployment work is complete.",
-      "highlights": ["Python/web", "Structured records", "Human-before-model boundary", "In development"],
-      "url": null,
-      "urlType": "no production URL",
+      "description": "An in-development tool for recording a person’s own observations before asking a model to interpret them. Structured records keep the original evidence separate from the model’s interpretation.",
+      "highlights": [
+        "Python/web",
+        "Structured records",
+        "Human-before-model boundary",
+        "In development"
+      ],
+      "url": "https://firsthand.sdforest.site/",
+      "urlType": "live",
       "repository": "https://github.com/ivangegovdve-sudo/firsthand",
       "repositoryType": "public source repository",
       "screenshot": null
