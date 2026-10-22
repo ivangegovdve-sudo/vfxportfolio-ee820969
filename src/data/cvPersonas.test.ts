@@ -70,6 +70,34 @@ describe("CV personas", () => {
     expect(project?.url).toBe("https://opendashboard.sdforest.site/");
   });
 
+  it("describes 3D Repo Shelf as a hand-curated library of about 1,500 broadly useful repos", () => {
+    const project = aiResume.projects.find((p) => p.name === "3D Repo Shelf");
+    expect(project?.description).toContain("hand-curated catalog of around 1,500 useful GitHub repositories");
+    expect(project?.description).toContain("picked one by one rather than scraped or filtered by topic");
+    expect(project?.description).toContain("not AI-related at all");
+    expect(project?.description).toContain("interactive 3D bookshelf");
+    expect(project?.highlights).toContain("Hand-picked catalog of ~1,500 repos");
+    expect(project?.highlights).toContain("Broadly useful tools, not AI-only");
+    expect(project?.highlights).toContain("Interactive 3D bookshelf");
+    expect(project?.url).toBe("https://ivangegovdve-sudo.github.io/repo-shelf/");
+    expect(project?.description).not.toContain("Explore Repos");
+    expect(aiResumeExport.projects.find((p) => p.name === "3D Repo Shelf")?.description).not.toContain("Explore Repos");
+    expect(JSON.stringify(aiResumeExport).toLowerCase()).not.toContain("explore repos");
+  });
+
+  it("describes MoneyWolf as reading live market data while staying paper-only behind risk gates", () => {
+    const project = aiResume.projects.find((p) => p.name === "MoneyWolf");
+    expect(project?.description).toContain("read live sources");
+    expect(project?.description).toContain("stock market data and crypto market data");
+    expect(project?.description).toContain("Risk gates stay in force");
+    expect(project?.description).toContain("read-only and paper-only");
+    expect(project?.description).toContain("does not place real orders");
+    expect(project?.highlights).toContain("Live stock and crypto market data");
+    expect(project?.highlights).toContain("Risk gates");
+    expect(project?.highlights).toContain("Paper trading");
+    expect(project?.url).toBe("https://moneywolf.sdforest.site/");
+  });
+
   it("uses the canonical short hero summary", () => {
     expect(aiCvData(defaultCvData).hero.subtitle).toBe("AI systems builder shipping agent orchestration, source-grounded research, retrieval and memory, voice interfaces, and full-stack public products.");
   });

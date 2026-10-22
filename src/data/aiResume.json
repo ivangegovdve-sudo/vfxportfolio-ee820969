@@ -211,7 +211,7 @@
         },
         {
           "project": "Explore Repos",
-          "reason": "Absorbed into the single Repo Shelf / Explore Repos surface."
+          "reason": "Not part of the published 3D Repo Shelf catalog; excluded rather than shown as a separate identity."
         },
         {
           "project": "OpenRouter GitHub Dashboard",
@@ -341,13 +341,14 @@
       "name": "3D Repo Shelf",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "A GitHub repository browser built around an interactive 3D bookshelf. Repositories can also be explored through search, categories, graph views and cards describing what they do. Explore Repos is part of the same project.",
+      "description": "A hand-curated catalog of around 1,500 useful GitHub repositories and developer tools, picked one by one rather than scraped or filtered by topic. The selection spans open source and engineering broadly, so many entries are not AI-related at all. The catalog is presented as an interactive 3D bookshelf, and can also be explored through search, categories, graph views and cards describing what each repository does.",
       "highlights": [
+        "Hand-picked catalog of ~1,500 repos",
+        "Broadly useful tools, not AI-only",
+        "Interactive 3D bookshelf",
         "React Three Fiber",
         "Three.js",
-        "GitHub catalog data",
-        "GitHub Pages",
-        "3D browsing"
+        "GitHub Pages"
       ],
       "url": "https://ivangegovdve-sudo.github.io/repo-shelf/",
       "urlType": "live",
@@ -357,14 +358,14 @@
       "name": "MoneyWolf",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "An experimental finance desk where several agents review sources, assess risk and track simulated trades in a local database. It is read-only and paper-only: it does not place real orders. Repeated events are handled without duplicating actions.",
+      "description": "An experimental finance desk where several agents read live sources — current prices, stock market data and crypto market data — then assess risk and record simulated trades in a local database. Risk gates stay in force and the desk remains read-only and paper-only: it does not place real orders. Repeated events are handled without duplicating actions.",
       "highlights": [
-        "Python/Node",
-        "SQLite",
-        "Multi-agent workflows",
+        "Live stock and crypto market data",
+        "Multi-agent research",
         "Paper trading",
         "Risk gates",
-        "Idempotency"
+        "Python/Node",
+        "SQLite"
       ],
       "url": "https://moneywolf.sdforest.site/",
       "urlType": "live",
