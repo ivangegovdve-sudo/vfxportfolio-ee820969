@@ -214,9 +214,22 @@ describe("CV personas", () => {
 
   it("preserves the concrete implementation tools in v4 skills", () => {
     const skills = aiCvData(defaultCvData).skills.sections.flatMap((s) => s.groups.flatMap((g) => g.skills));
-    for (const skill of ["Anthropic SDK", "Claude Agent SDK / CLI delegation", "Kotlin", "Cloudflare Workers module handlers", "RunPod serverless GPU / ComfyUI", "LanceDB", "Cartesia"]) {
+    for (const skill of ["Anthropic SDK", "Claude Agent SDK / CLI delegation", "Kotlin", "Cloudflare Workers module handlers", "RunPod serverless GPU / ComfyUI", "LanceDB"]) {
       expect(skills).toContain(skill);
     }
+  });
+
+  it("keeps voice skills on capabilities and architectures instead of vendor names", () => {
+    const voice = aiCvData(defaultCvData).skills.sections.find((s) => s.title === "Voice and multimodal systems");
+    const skills = voice?.groups.flatMap((g) => g.skills) ?? [];
+    expect(skills.length).toBeGreaterThan(0);
+    for (const skill of ["Kokoro-82M training and fine-tuning", "StyleTTS2", "Open voice models", "Streaming STT/TTS pipelines", "Real-time voice loops", "Browser audio", "Audio-reactive state"]) {
+      expect(skills).toContain(skill);
+    }
+    for (const vendor of ["ElevenLabs", "Cartesia", "Google TTS", "Pocket TTS", "Hume Octave 2", "OpenAI-compatible voice providers"]) {
+      expect(skills).not.toContain(vendor);
+    }
+    expect(JSON.stringify(aiResumeExport)).not.toContain("Hume");
   });
 
   it("exports valid public CV content without private audit paths or withheld URLs", () => {
