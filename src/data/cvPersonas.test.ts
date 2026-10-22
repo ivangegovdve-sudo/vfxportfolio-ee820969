@@ -223,13 +223,33 @@ describe("CV personas", () => {
     const voice = aiCvData(defaultCvData).skills.sections.find((s) => s.title === "Voice and multimodal systems");
     const skills = voice?.groups.flatMap((g) => g.skills) ?? [];
     expect(skills.length).toBeGreaterThan(0);
-    for (const skill of ["Kokoro-82M training and fine-tuning", "StyleTTS2", "Open voice models", "Streaming STT/TTS pipelines", "Real-time voice loops", "Browser audio", "Audio-reactive state"]) {
+    for (const skill of ["Kokoro-82M training and fine-tuning", "StyleTTS2", "Open voice models", "Voice Activity Detection (VAD)", "STT/TTS dual-streaming harnesses", "Multi-provider fallback chains", "Real-time voice loops", "Browser audio", "Audio-reactive state"]) {
       expect(skills).toContain(skill);
     }
     for (const vendor of ["ElevenLabs", "Cartesia", "Google TTS", "Pocket TTS", "Hume Octave 2", "OpenAI-compatible voice providers"]) {
       expect(skills).not.toContain(vendor);
     }
     expect(JSON.stringify(aiResumeExport)).not.toContain("Hume");
+  });
+
+  it("keeps graphics and governance skills concrete instead of generic QA phrases", () => {
+    const sections = aiCvData(defaultCvData).skills.sections;
+    const graphics = sections.find((s) => s.title === "Interactive graphics and browser delivery");
+    const graphicsSkills = graphics?.groups.flatMap((g) => g.skills) ?? [];
+    for (const skill of ["Three.js", "WebGL2", "React Three Fiber", "WebGPU/TSL", "Cytoscape.js", "3D data interfaces", "Playwright", "Headless Chromium"]) {
+      expect(graphicsSkills).toContain(skill);
+    }
+    for (const filler of ["Responsive interaction", "Accessibility and reduced motion", "Screenshot verification"]) {
+      expect(graphicsSkills).not.toContain(filler);
+    }
+    const governance = sections.find((s) => s.title === "Engineering governance and operations");
+    const govSkills = governance?.groups.flatMap((g) => g.skills) ?? [];
+    for (const skill of ["GitHub API", "Git", "PR automation & review gates", "CI evidence", "Temporal", "NATS JetStream", "Windows/Linux operations"]) {
+      expect(govSkills).toContain(skill);
+    }
+    for (const dropped of ["Head-pinned approvals", "Provider receipts", "Cost and approval gates", "Explicit unknown states", "Paper-only boundaries"]) {
+      expect(govSkills).not.toContain(dropped);
+    }
   });
 
   it("exports valid public CV content without private audit paths or withheld URLs", () => {
