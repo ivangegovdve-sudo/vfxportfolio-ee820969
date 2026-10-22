@@ -85,6 +85,19 @@ describe("CV personas", () => {
     expect(JSON.stringify(aiResumeExport).toLowerCase()).not.toContain("explore repos");
   });
 
+  it("describes MoneyWolf as reading live market data while staying paper-only behind risk gates", () => {
+    const project = aiResume.projects.find((p) => p.name === "MoneyWolf");
+    expect(project?.description).toContain("read live sources");
+    expect(project?.description).toContain("stock market data and crypto market data");
+    expect(project?.description).toContain("Risk gates stay in force");
+    expect(project?.description).toContain("read-only and paper-only");
+    expect(project?.description).toContain("does not place real orders");
+    expect(project?.highlights).toContain("Live stock and crypto market data");
+    expect(project?.highlights).toContain("Risk gates");
+    expect(project?.highlights).toContain("Paper trading");
+    expect(project?.url).toBe("https://moneywolf.sdforest.site/");
+  });
+
   it("uses the canonical short hero summary", () => {
     expect(aiCvData(defaultCvData).hero.subtitle).toBe("AI systems builder shipping agent orchestration, source-grounded research, retrieval and memory, voice interfaces, and full-stack public products.");
   });

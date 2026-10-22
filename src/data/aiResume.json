@@ -358,14 +358,14 @@
       "name": "MoneyWolf",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "An experimental finance desk where several agents review sources, assess risk and track simulated trades in a local database. It is read-only and paper-only: it does not place real orders. Repeated events are handled without duplicating actions.",
+      "description": "An experimental finance desk where several agents read live sources — current prices, stock market data and crypto market data — then assess risk and record simulated trades in a local database. Risk gates stay in force and the desk remains read-only and paper-only: it does not place real orders. Repeated events are handled without duplicating actions.",
       "highlights": [
-        "Python/Node",
-        "SQLite",
-        "Multi-agent workflows",
+        "Live stock and crypto market data",
+        "Multi-agent research",
         "Paper trading",
         "Risk gates",
-        "Idempotency"
+        "Python/Node",
+        "SQLite"
       ],
       "url": "https://moneywolf.sdforest.site/",
       "urlType": "live",
