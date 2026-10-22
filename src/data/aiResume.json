@@ -12,7 +12,7 @@
       "Only public URLs that rendered non-empty content were used as deployed project links.",
       "Private source repositories stay linkless in the public-facing CV; their work is still represented with an in-development status.",
       "The native Glass Council UI is the Kotlin Compose Multiplatform Windows/Android client in the council project, not the Claude Code council framework.",
-      "Audiobook Studio and the Dyslexia Reading Platform are separate deployed cards, per Ivan on 2026-10-22."
+      "Audiobook Studio and Flexy Read are separate deployed cards, per Ivan on 2026-10-22."
     ],
     "verification": {
       "verifiedAt": "2026-10-21",
@@ -178,7 +178,7 @@
         "MoneyWolf",
         "Avatar Playground / Voice Playground",
         "Audiobook Studio",
-        "Dyslexia Reading Platform",
+        "Flexy Read",
         "Women's Health OS",
         "Glass Mem",
         "Glass Council",
@@ -270,7 +270,7 @@
       "name": "The Drop",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "A daily and weekly publication in English and Bulgarian. It organizes research and editorial content, sends editions through Telegram, and offers narration with ElevenLabs.",
+      "description": "A daily and weekly publication in English and Bulgarian, with research and editorial content, Telegram delivery and ElevenLabs narration.",
       "highlights": [
         "TanStack Start",
         "TypeScript",
@@ -288,14 +288,13 @@
       "name": "SD Forest / Forest HUB",
       "status": "deployed",
       "startDate": "2024-01-01",
-      "description": "A public home for my projects, learning tools and research pages. It combines static web pages with FastAPI and SQLite services, including interactive 3D views and AI indexes.",
+      "description": "A home for my projects, learning tools and research pages, built with static web pages, FastAPI and SQLite. It includes interactive 3D views and AI indexes.",
       "highlights": [
         "Static HTML/JS",
         "FastAPI",
         "SQLite",
         "Three.js/WebGL2",
-        "Vercel",
-        "Public product environment"
+        "Vercel"
       ],
       "url": "https://www.sdforest.site/",
       "urlType": "live",
@@ -305,7 +304,7 @@
       "name": "GymScholar",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "A training app for building workout routines, setting custom schedules and rest/break intervals, and targeting specific muscle groups. What sets it apart is that its training engine is built entirely on peer-reviewed exercise science papers turned into evidence-based claims, rather than gym lore or bro-science.",
+      "description": "A training app for building workout routines, setting custom schedules and rest/break intervals, and targeting specific muscle groups. Its training engine uses evidence-based claims drawn entirely from peer-reviewed exercise science papers, rather than gym lore or bro-science.",
       "highlights": [
         "Workout routine builder",
         "Custom schedules",
@@ -321,7 +320,7 @@
       "name": "Open Dashboard",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "An MCP server published on npm as open-dashboard-mcp, with thousands of downloads, that gives AI agents direct, up-to-date knowledge of model capabilities, provider pricing and adapters. It is built for decision models and integrates with the Model Router, so an agent can compare models and route to the one that is most capable and cost-effective for a task. The web dashboard is the companion interface for people to inspect the same data.",
+      "description": "An MCP server published on npm as open-dashboard-mcp, with thousands of downloads. It gives agents up-to-date model capabilities, provider pricing and adapters, and integrates with the Model Router to compare and route models by cost and capability. The web dashboard is a companion interface for inspecting the same data.",
       "highlights": [
         "npm: open-dashboard-mcp",
         "Thousands of downloads",
@@ -338,7 +337,7 @@
       "name": "3D Repo Shelf",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "A hand-curated catalog of around 1,500 useful GitHub repositories and developer tools, picked one by one rather than scraped or filtered by topic. The selection spans open source and engineering broadly, so many entries are not AI-related at all. The catalog is presented as an interactive 3D bookshelf, and can also be explored through search, categories, graph views and cards describing what each repository does.",
+      "description": "A hand-curated catalog of around 1,500 useful GitHub repositories and developer tools, picked one by one rather than scraped or filtered by topic. It spans open source and engineering; many entries are not AI-related at all. Browse the interactive 3D bookshelf or use search, categories and graph views.",
       "highlights": [
         "Hand-picked catalog of ~1,500 repos",
         "Broadly useful tools, not AI-only",
@@ -355,7 +354,7 @@
       "name": "MoneyWolf",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "An experimental finance desk where several agents read live sources — current prices, stock market data and crypto market data — then assess risk and record simulated trades in a local database. Risk gates stay in force and the desk remains read-only and paper-only: it does not place real orders. Repeated events are handled without duplicating actions.",
+      "description": "Agents read live sources — current prices, stock market data and crypto market data — assess risk and record simulated trades in SQLite. Risk gates stay in force: it remains read-only and paper-only and does not place real orders. Repeated events do not duplicate actions.",
       "highlights": [
         "Live stock and crypto market data",
         "Multi-agent research",
@@ -372,13 +371,12 @@
       "name": "Avatar Playground / Voice Playground",
       "status": "deployed route",
       "startDate": "2026-01-01",
-      "description": "A browser playground for testing how an avatar responds to audio, voice, gestures and connection changes. It connects Chloe’s avatar to its running system and brings the earlier voice experiments into one place.",
+      "description": "A browser tool for testing how Chloe’s avatar responds to audio, voice, gestures and connection changes, connected to its running system.",
       "highlights": [
         "Browser audio",
         "Avatar state",
         "Voice behaviour",
-        "Audio-reactive UI",
-        "Current public route"
+        "Audio-reactive UI"
       ],
       "url": "https://www.sdforest.site/web/avatar-playground/",
       "urlType": "live",
@@ -388,7 +386,7 @@
       "name": "Audiobook Studio",
       "status": "deployed route",
       "startDate": "2025-01-01",
-      "description": "A listening tool that turns ebooks, EPUB and PDF files into audiobooks. You can pick between several text-to-speech backends and listen in the browser.",
+      "description": "Turns ebooks, EPUB and PDF files into audiobooks, with several text-to-speech backends and browser listening.",
       "highlights": [
         "EPUB/PDF to audio",
         "Multiple TTS backends",
@@ -399,14 +397,14 @@
       "screenshot": null
     },
     {
-      "name": "Dyslexia Reading Platform",
+      "name": "Flexy Read",
       "status": "deployed route",
       "startDate": "2025-01-01",
-      "description": "A reading surface built for dyslexic readers, with accessibility-focused layout and reading controls.",
+      "description": "A dyslexia-focused reading app with reader controls and layout adjustments to adapt how text is displayed.",
       "highlights": [
-        "Accessible reading",
-        "Dyslexia-friendly layout",
-        "Reader controls"
+        "Dyslexia-focused reading",
+        "Reader controls",
+        "Layout adjustments"
       ],
       "url": "https://chloe.blumenkraft.cloud/dyslexia/",
       "urlType": "live",
@@ -416,13 +414,12 @@
       "name": "Women's Health OS",
       "status": "live route / in development",
       "startDate": "2025-01-01",
-      "description": "A work-in-progress app for exploring women’s health research through papers, facts and claims linked to evidence. The public page is available, but its data-loading state still needs review: an online API alone does not mean the research data is ready.",
+      "description": "An app in development for browsing women’s health papers, facts and evidence-linked claims. The public page is available, but its data-loading state needs review: an online API does not mean the research data is ready.",
       "highlights": [
-        "Research corpus",
+        "Evidence-linked research",
         "FastAPI/SQLite",
-        "Retrieval UI",
-        "Facts/papers views",
-        "Data-state warning"
+        "Paper and fact browsing",
+        "Data-loading review"
       ],
       "url": "https://www.sdforest.site/web/womens-health-os/",
       "urlType": "live",
@@ -433,7 +430,7 @@
       "name": "Glass Mem",
       "status": "in development",
       "startDate": "2026-01-01",
-      "description": "A memory system for agents that keeps original events without overwriting them. It uses SQLite/FTS5 search, embeddings and vector retrieval to find relevant context, with links back to the source events and access through MCP.",
+      "description": "Agent memory that stores original events without overwriting them. SQLite/FTS5 search, embeddings and vector retrieval find context linked back to source events, with access through MCP.",
       "highlights": [
         "Python",
         "SQLite/FTS5",
@@ -450,14 +447,14 @@
       "name": "Glass Council",
       "status": "in development",
       "startDate": "2026-01-01",
-      "description": "A private, in-development system for comparing input from independent models. It has a Python engine, an MCP server, and a Kotlin Compose Multiplatform client for Windows and Android. It is separate from the Claude Code planning framework.",
+      "description": "A system for comparing input from independent models, with a Python engine, MCP server and Kotlin Compose Multiplatform client for Windows and Android. It is in development with private source, not the Claude Code planning framework.",
       "highlights": [
         "Python engine",
         "Kotlin",
         "Compose Multiplatform",
         "Windows/Android UI",
         "MCP",
-        "Independent model seats"
+        "Independent model comparison"
       ],
       "url": null,
       "urlType": "private source only",
@@ -468,7 +465,7 @@
       "name": "Glass PR Solver",
       "status": "in development",
       "startDate": "2026-01-01",
-      "description": "Pull request automation that takes a PR all the way to merged rather than only reporting on it. Several models review the change independently and must agree before it is approved, then it is merged automatically. Along the way it rebases the branch, addresses requested changes and fixes failing CI, looping until the work is done, and asks for human help when a run is blocked or out of date rather than marking it approved.",
+      "description": "Automation that takes a PR all the way to merged. Several models review each change independently and must agree before it is approved and merged automatically. It rebases the branch, addresses requested changes and fixes failing CI, looping until the work is done. It asks for human help when a run is blocked or out of date.",
       "highlights": [
         "End-to-end PR automation",
         "Cross-model agreement before approval",
@@ -487,12 +484,11 @@
       "name": "Cognitive Autonomy / Firsthand",
       "status": "in development",
       "startDate": "2026-01-01",
-      "description": "An in-development tool for recording a person’s own observations before asking a model to interpret them. Structured records keep the original evidence separate from the model’s interpretation.",
+      "description": "A tool in development for recording a person’s observations before model interpretation. It stores original evidence separately from the model’s interpretation.",
       "highlights": [
         "Python/web",
-        "Structured records",
-        "Human-before-model boundary",
-        "In development"
+        "Structured observations",
+        "Evidence separate from interpretation"
       ],
       "url": "https://firsthand.sdforest.site/",
       "urlType": "live",
