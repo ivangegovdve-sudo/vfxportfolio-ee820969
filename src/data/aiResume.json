@@ -515,6 +515,7 @@
         "Ollama",
         "LM Studio",
         "MCP",
+        "LangGraph",
         "Multi-agent routing",
         "Typed agent contracts",
         "Structured outputs",

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import defaultCvData from "./cvData";
 import { aiCvData, animationCvData, aiResume, getCvPersona, personaSearchParams } from "./cvPersonas";
-import { aiProjects, aiResumeExport } from "./aiProjects";
+import { aiProjectGroups, aiProjects, aiResumeExport } from "./aiProjects";
 import { validateJsonResume } from "@/utils/jsonResume/validateJsonResume";
 import { mapCvDataToJsonResume } from "@/utils/jsonResume/mapCvDataToJsonResume";
 
