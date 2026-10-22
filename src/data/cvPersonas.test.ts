@@ -80,6 +80,9 @@ describe("CV personas", () => {
     expect(project?.highlights).toContain("Broadly useful tools, not AI-only");
     expect(project?.highlights).toContain("Interactive 3D bookshelf");
     expect(project?.url).toBe("https://ivangegovdve-sudo.github.io/repo-shelf/");
+    expect(project?.description).not.toContain("Explore Repos");
+    expect(aiResumeExport.projects.find((p) => p.name === "3D Repo Shelf")?.description).not.toContain("Explore Repos");
+    expect(JSON.stringify(aiResumeExport).toLowerCase()).not.toContain("explore repos");
   });
 
   it("uses the canonical short hero summary", () => {

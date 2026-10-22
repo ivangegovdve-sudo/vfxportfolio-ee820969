@@ -211,7 +211,7 @@
         },
         {
           "project": "Explore Repos",
-          "reason": "Absorbed into the single Repo Shelf / Explore Repos surface."
+          "reason": "Not part of the published 3D Repo Shelf catalog; excluded rather than shown as a separate identity."
         },
         {
           "project": "OpenRouter GitHub Dashboard",
@@ -341,7 +341,7 @@
       "name": "3D Repo Shelf",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "A hand-curated catalog of around 1,500 useful GitHub repositories and developer tools, picked one by one rather than scraped or filtered by topic. The selection spans open source and engineering broadly, so many entries are not AI-related at all. The catalog is presented as an interactive 3D bookshelf, and can also be explored through search, categories, graph views and cards describing what each repository does. Explore Repos is part of the same project.",
+      "description": "A hand-curated catalog of around 1,500 useful GitHub repositories and developer tools, picked one by one rather than scraped or filtered by topic. The selection spans open source and engineering broadly, so many entries are not AI-related at all. The catalog is presented as an interactive 3D bookshelf, and can also be explored through search, categories, graph views and cards describing what each repository does.",
       "highlights": [
         "Hand-picked catalog of ~1,500 repos",
         "Broadly useful tools, not AI-only",
