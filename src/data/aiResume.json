@@ -8,11 +8,11 @@
     "headline": "AI systems builder, orchestration and infrastructure",
     "heroSubtext": "AI systems builder shipping agent orchestration, source-grounded research, retrieval and memory, voice interfaces, and full-stack public products.",
     "scopeNotes": [
-      "Curated to 13 project cards: 9 previously verified public surfaces and 4 in-development systems. Firsthand’s live link was supplied by Ivan on 2026-10-22.",
+      "Curated to 14 project cards: 9 deployed public surfaces followed by 5 in-development systems. Firsthand’s live link was supplied by Ivan on 2026-10-22.",
       "Only public URLs that rendered non-empty content were used as deployed project links.",
       "Private source repositories stay linkless in the public-facing CV; their work is still represented with an in-development status.",
       "The native Glass Council UI is the Kotlin Compose Multiplatform Windows/Android client in the council project, not the Claude Code council framework.",
-      "The combined Health route is the canonical Reader + Audiobook surface; the two implementation pages are not separate CV cards."
+      "Audiobook Studio and the Dyslexia Reading Platform are separate deployed cards, per Ivan on 2026-10-22."
     ],
     "verification": {
       "verifiedAt": "2026-10-21",
@@ -256,8 +256,8 @@
       "summary": "Self-directed engineering and operations across AI products, agent orchestration, research systems, retrieval, memory, voice and delivery infrastructure.",
       "highlights": [
         "Built and operated multi-agent systems with typed contracts, task routing, provider-aware fallback, evidence receipts, review gates and explicit unknown states.",
-        "Built CaveMem and Glass Mem memory lanes around append-only event capture, SQLite/FTS5, embeddings, vector retrieval, source-linked recall and MCP access.",
-        "Built research and knowledge products for health, training and editorial work, carrying source context into user-facing retrieval and decision surfaces.",
+        "Built the Glass Mem memory system around append-only event capture, SQLite/FTS5, embeddings, vector retrieval, source-linked recall and MCP access.",
+        "Built document ingestion and evidence-linked retrieval for health, training and editorial products, carrying source context into user-facing tools.",
         "Built evidence-first GitHub PR operations with independent gather/decide/review/act stages, head-pinned decisions, CI-step evidence, GitHub API/SSE/MCP integration and human escalation.",
         "Built provider-neutral model workflows using Anthropic, OpenAI, OpenRouter, Ollama, Gemini and local OpenAI-compatible services, with model routing and measured evaluation.",
         "Built public products including The Drop, SD Forest / Forest HUB, GymScholar, Open Dashboard, Repo Shelf, MoneyWolf, Avatar Playground and the combined Health route.",
@@ -388,20 +388,32 @@
       "screenshot": "CV_SCREENSHOTS/07-avatar-playground.png"
     },
     {
-      "name": "Unified Reader + Audiobook Studio",
+      "name": "Audiobook Studio",
       "status": "deployed route",
       "startDate": "2025-01-01",
-      "description": "Reading and audiobook tools grouped on one public Health page. The tools support EPUB and PDF reading, accessible reader controls, and audiobook creation with several text-to-speech options.",
+      "description": "A listening tool that turns ebooks, EPUB and PDF files into audiobooks. You can pick between several text-to-speech backends and listen in the browser.",
       "highlights": [
-        "EPUB/PDF",
-        "Accessible reading",
-        "Audiobook production",
-        "TTS backends",
-        "Combined public route"
+        "EPUB/PDF to audio",
+        "Multiple TTS backends",
+        "Browser listening"
       ],
-      "url": "https://www.sdforest.site/web/pools/health/",
+      "url": "https://chloe.blumenkraft.cloud/audiobook/",
       "urlType": "live",
-      "screenshot": "CV_SCREENSHOTS/08-unified-reader-audiobook.png"
+      "screenshot": null
+    },
+    {
+      "name": "Dyslexia Reading Platform",
+      "status": "deployed route",
+      "startDate": "2025-01-01",
+      "description": "A reading surface built for dyslexic readers, with accessibility-focused layout and reading controls.",
+      "highlights": [
+        "Accessible reading",
+        "Dyslexia-friendly layout",
+        "Reader controls"
+      ],
+      "url": "https://chloe.blumenkraft.cloud/dyslexia/",
+      "urlType": "live",
+      "screenshot": null
     },
     {
       "name": "Women's Health OS",
@@ -516,7 +528,6 @@
     {
       "name": "Memory, retrieval and data systems",
       "keywords": [
-        "CaveMem",
         "Glass Mem",
         "SQLite",
         "SQLite FTS5",
@@ -530,22 +541,9 @@
         "JSONL ingestion",
         "MCP memory tools",
         "Source-linked recall",
-        "Corpus freshness checks"
-      ]
-    },
-    {
-      "name": "Research and knowledge products",
-      "keywords": [
-        "PDF and EPUB pipelines",
+        "PDF/EPUB document ingestion",
         "LlamaParse",
-        "Paper corpus ingestion",
-        "Evidence-linked retrieval",
-        "Citation-aware interfaces",
-        "Research dashboards",
-        "Health knowledge products",
-        "Training knowledge products",
-        "Editorial AI publishing",
-        "Read-only public data flows"
+        "Evidence-linked retrieval"
       ]
     },
     {
