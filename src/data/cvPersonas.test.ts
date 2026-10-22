@@ -39,6 +39,24 @@ describe("CV personas", () => {
     expect(ai.portfolio.find((project) => project.title === "GymScholar")?.year).toBe("2026");
   });
 
+  it("describes GymScholar as a training app, not a paper-reading app", () => {
+    const project = aiResume.projects.find((p) => p.name === "GymScholar");
+    expect(project?.description).toContain("workout routines");
+    expect(project?.description).toContain("custom schedules and rest/break intervals");
+    expect(project?.description).toContain("targeting specific muscle groups");
+    expect(project?.description).toContain("peer-reviewed exercise science papers");
+    expect(project?.description).toContain("rather than gym lore or bro-science");
+    expect(project?.description.toLowerCase()).not.toContain("reading papers");
+    expect(project?.description.toLowerCase()).not.toContain("training research app");
+    expect(project?.highlights).toEqual([
+      "Workout routine builder",
+      "Custom schedules",
+      "Rest/break intervals",
+      "Muscle group targeting",
+      "Peer-reviewed evidence base",
+    ]);
+  });
+
   it("uses the canonical short hero summary", () => {
     expect(aiCvData(defaultCvData).hero.subtitle).toBe("AI systems builder shipping agent orchestration, source-grounded research, retrieval and memory, voice interfaces, and full-stack public products.");
   });
