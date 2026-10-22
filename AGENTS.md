@@ -84,6 +84,7 @@ This repository is the personal portfolio and CV site for Ivan Gegov. Treat it a
 - Apply animator skill-category exclusions at the public persona boundary as well as in defaults, so cached and published snapshots cannot restore excluded categories in the page or resume export without modifying stored versions.
 - Adapt JSON Resume inputs to the existing CVData model at the data boundary; shared sections remain the single rendering path for both personas.
 - AI project evidence uses an isolated AI card renderer and a source-to-public presentation adapter; this preserves animator cards while filtering private links and mapping uploaded screenshot asset pointers by original filename.
+- AI cards use source-provided short summaries with per-card disclosure for full descriptions, highlights and notes; independent-height columns avoid empty grid rows while keeping animator rendering unchanged.
 - Export AI resumes through the public-content adapter, excluding internal provenance and withheld-URL audit records; canonical uploaded data may contain private local paths and nullable URLs that are not public CV content.
 
 - keep Node 20 usage repo-scoped

@@ -25,9 +25,9 @@ export const aiProjects = aiResume.projects.map((project, index) => {
   const link = publicProjectLink(project);
   return {
     id: `ai-project-${index}`, order: index, title: project.name,
-    descriptor: project.description, url: link?.url ?? "", ctaLabel: link?.label,
+    descriptor: project.description, summary: project.summary, url: link?.url ?? "", ctaLabel: link?.label,
     thumbnail: screenshot?.url ?? "", keywords: project.highlights,
-    year: project.startDate.slice(0, 4), status: project.status,
+    year: project.startDate?.slice(0, 4), status: project.status,
     sourceNote: project.urlType === "private source only" || project.urlType === "no production URL" ? project.urlType : "",
     warning: "dataQualityFlag" in project ? project.dataQualityFlag : undefined,
   };
