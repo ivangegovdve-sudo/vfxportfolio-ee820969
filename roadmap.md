@@ -1,4 +1,6 @@
 # Tasks
+- [x] Update AI subtitle, split avatar/open voice cards, add harness skills and validate content tests.
+- [x] Compact AI cards with tighter padding, clearer borders, reduced card gaps and expandable details; verify desktop/mobile and unchanged animation.
 - [x] Rename Flexy Read and tighten AI project descriptions/highlights; verify cards and tests without changing animation.
 - [x] Remove DreamGraph, correct Firsthand's live link, simplify AI descriptions, and remove animator AI skills; verify both views and tests.
 - [x] Add URL-driven Animation / AI selection with shared CV sections.

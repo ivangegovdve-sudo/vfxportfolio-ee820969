@@ -6,9 +6,9 @@
     "source": "D:/projects + GitHub readback + D:/Ivan/cavemem/data.db (read-only) + D:/output/project-registry/project-registry-20261020T152442Z.json + D:/output/IVAN-PROJECT-SCOPE-2026-10-20.md",
     "target": "AI-EXPERIENCE version only",
     "headline": "AI systems builder, orchestration and infrastructure",
-    "heroSubtext": "AI systems builder shipping agent orchestration, source-grounded research, retrieval and memory, voice interfaces, and full-stack public products.",
+    "heroSubtext": "From agent orchestration and local models to working full-stack apps.",
     "scopeNotes": [
-      "Curated to 14 project cards: 9 deployed public surfaces followed by 5 in-development systems. Firsthand’s live link was supplied by Ivan on 2026-10-22.",
+      "Curated to 15 project cards: 9 deployed public surfaces and 6 in-development systems. Avatar Playground and Open Voice Playground are separate projects, per Ivan on 2026-10-22.",
       "Only public URLs that rendered non-empty content were used as deployed project links.",
       "Private source repositories stay linkless in the public-facing CV; their work is still represented with an in-development status.",
       "The native Glass Council UI is the Kotlin Compose Multiplatform Windows/Android client in the council project, not the Claude Code council framework.",
@@ -75,7 +75,7 @@
           "screenshot": "CV_SCREENSHOTS/06-moneywolf.png"
         },
         {
-          "project": "Avatar Playground / Voice Playground",
+          "project": "Avatar Playground",
           "url": "https://www.sdforest.site/web/avatar-playground/",
           "status": 200,
           "finalUrl": "https://www.sdforest.site/web/avatar-playground/",
@@ -176,7 +176,8 @@
         "Open Dashboard",
         "3D Repo Shelf",
         "MoneyWolf",
-        "Avatar Playground / Voice Playground",
+        "Avatar Playground",
+        "Open Voice Playground",
         "Audiobook Studio",
         "Flexy Read",
         "Women's Health OS",
@@ -282,7 +283,8 @@
       ],
       "url": "https://thedrop.sdforest.site/",
       "urlType": "live",
-      "screenshot": "CV_SCREENSHOTS/01-the-drop.png"
+      "screenshot": "CV_SCREENSHOTS/01-the-drop.png",
+      "summary": "English and Bulgarian editions with Telegram delivery and narrated audio."
     },
     {
       "name": "SD Forest / Forest HUB",
@@ -298,7 +300,8 @@
       ],
       "url": "https://www.sdforest.site/",
       "urlType": "live",
-      "screenshot": "CV_SCREENSHOTS/02-sd-forest-hub.png"
+      "screenshot": "CV_SCREENSHOTS/02-sd-forest-hub.png",
+      "summary": "Projects, learning tools and research pages with interactive 3D views."
     },
     {
       "name": "GymScholar",
@@ -314,7 +317,8 @@
       ],
       "url": "https://gymscholar.lovable.app/",
       "urlType": "live",
-      "screenshot": "CV_SCREENSHOTS/03-gymscholar.png"
+      "screenshot": "CV_SCREENSHOTS/03-gymscholar.png",
+      "summary": "Workout routines, schedules and rest intervals powered by peer-reviewed exercise science."
     },
     {
       "name": "Open Dashboard",
@@ -331,7 +335,8 @@
       ],
       "url": "https://opendashboard.sdforest.site/",
       "urlType": "live",
-      "screenshot": "CV_SCREENSHOTS/04-open-dashboard.png"
+      "screenshot": "CV_SCREENSHOTS/04-open-dashboard.png",
+      "summary": "An npm MCP server for agent-side model pricing and capability routing, with a companion dashboard."
     },
     {
       "name": "3D Repo Shelf",
@@ -348,7 +353,8 @@
       ],
       "url": "https://ivangegovdve-sudo.github.io/repo-shelf/",
       "urlType": "live",
-      "screenshot": "CV_SCREENSHOTS/05-repo-shelf.png"
+      "screenshot": "CV_SCREENSHOTS/05-repo-shelf.png",
+      "summary": "Around 1,500 hand-picked repositories and developer tools on an interactive 3D bookshelf."
     },
     {
       "name": "MoneyWolf",
@@ -365,22 +371,40 @@
       ],
       "url": "https://moneywolf.sdforest.site/",
       "urlType": "live",
-      "screenshot": "CV_SCREENSHOTS/06-moneywolf.png"
+      "screenshot": "CV_SCREENSHOTS/06-moneywolf.png",
+      "summary": "Agents assess live stock and crypto data behind risk gates. Paper trading only; no real orders."
     },
     {
-      "name": "Avatar Playground / Voice Playground",
+      "name": "Avatar Playground",
       "status": "deployed route",
       "startDate": "2026-01-01",
-      "description": "A browser tool for testing how Chloe’s avatar responds to audio, voice, gestures and connection changes, connected to its running system.",
+      "description": "A browser tool for testing Chloe’s avatar responsiveness to gestures, audio and connection state.",
       "highlights": [
+        "Avatar responsiveness",
+        "Gestures",
         "Browser audio",
-        "Avatar state",
-        "Voice behaviour",
-        "Audio-reactive UI"
+        "Audio-reactive state",
+        "Connection state"
       ],
       "url": "https://www.sdforest.site/web/avatar-playground/",
       "urlType": "live",
-      "screenshot": "CV_SCREENSHOTS/07-avatar-playground.png"
+      "screenshot": "CV_SCREENSHOTS/07-avatar-playground.png",
+      "summary": "Chloe’s avatar responsiveness to gestures, audio and connection state."
+    },
+    {
+      "name": "Open Voice Playground",
+      "status": "in development",
+      "description": "Open voice generation with Kokoro-82M and StyleTTS2 training and inference harnesses. The code is available in a public repository; it is not a deployed voice app.",
+      "highlights": [
+        "Open voice generation",
+        "Kokoro-82M training and inference",
+        "StyleTTS2 training and inference",
+        "Open-source harnesses"
+      ],
+      "url": "https://github.com/ivangegovdve-sudo/open-voice-playground",
+      "urlType": "public source repository",
+      "screenshot": null,
+      "summary": "Open voice generation and Kokoro-82M / StyleTTS2 training and inference harnesses."
     },
     {
       "name": "Audiobook Studio",
@@ -394,7 +418,8 @@
       ],
       "url": "https://chloe.blumenkraft.cloud/audiobook/",
       "urlType": "live",
-      "screenshot": null
+      "screenshot": null,
+      "summary": "EPUB and PDF audiobooks with multiple TTS backends and browser listening."
     },
     {
       "name": "Flexy Read",
@@ -408,7 +433,8 @@
       ],
       "url": "https://chloe.blumenkraft.cloud/dyslexia/",
       "urlType": "live",
-      "screenshot": null
+      "screenshot": null,
+      "summary": "Dyslexia-focused reading with reader controls and adjustable layouts."
     },
     {
       "name": "Women's Health OS",
@@ -424,7 +450,8 @@
       "url": "https://www.sdforest.site/web/womens-health-os/",
       "urlType": "live",
       "screenshot": "CV_SCREENSHOTS/09-womens-health-os.png",
-      "dataQualityFlag": "The user-reported zero-facts/zero-papers state is retained as a review warning. Fresh async readback on 2026-10-21 eventually showed non-zero counters; do not hide the warning or fix the product in this task."
+      "dataQualityFlag": "The user-reported zero-facts/zero-papers state is retained as a review warning. Fresh async readback on 2026-10-21 eventually showed non-zero counters; do not hide the warning or fix the product in this task.",
+      "summary": "Evidence-linked women’s health papers and facts. Data population still needs review."
     },
     {
       "name": "Glass Mem",
@@ -441,7 +468,8 @@
       ],
       "url": null,
       "urlType": "private source only",
-      "screenshot": null
+      "screenshot": null,
+      "summary": "Agent memory with source-linked recall, SQLite/FTS5 and vector retrieval."
     },
     {
       "name": "Glass Council",
@@ -459,7 +487,8 @@
       "url": null,
       "urlType": "private source only",
       "screenshot": null,
-      "publicSurfaceNote": "No public browser URL was verified; do not substitute the public round-table council route or the Claude Code council repository."
+      "publicSurfaceNote": "No public browser URL was verified; do not substitute the public round-table council route or the Claude Code council repository.",
+      "summary": "Independent model comparison with a Python engine and native Windows/Android client."
     },
     {
       "name": "Glass PR Solver",
@@ -478,7 +507,8 @@
       ],
       "url": null,
       "urlType": "private source only",
-      "screenshot": null
+      "screenshot": null,
+      "summary": "Rebases, addresses changes and fixes CI until models agree to approve and auto-merge."
     },
     {
       "name": "Cognitive Autonomy / Firsthand",
@@ -494,7 +524,8 @@
       "urlType": "live",
       "repository": "https://github.com/ivangegovdve-sudo/firsthand",
       "repositoryType": "public source repository",
-      "screenshot": null
+      "screenshot": null,
+      "summary": "Records personal observations separately from model interpretations."
     }
   ],
   "skills": [
@@ -516,7 +547,8 @@
         "Typed agent contracts",
         "Structured outputs",
         "Provider fallback",
-        "Model evaluation"
+        "Model evaluation",
+        "Open-source harnesses"
       ]
     },
     {

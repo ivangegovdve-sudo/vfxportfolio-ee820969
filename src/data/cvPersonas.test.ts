@@ -33,7 +33,7 @@ describe("CV personas", () => {
   it("keeps the AI portfolio honest and complete per the content rules", () => {
     const ai = aiCvData(defaultCvData);
     const titles = ai.portfolio.map((project) => project.title);
-    expect(titles).toHaveLength(14);
+    expect(titles).toHaveLength(15);
     expect(titles.some((title) => title.includes("Lore Keeper"))).toBe(false);
     expect(titles).toContain("GymScholar");
     expect(ai.portfolio.find((project) => project.title === "GymScholar")?.year).toBe("2026");
@@ -123,13 +123,13 @@ describe("CV personas", () => {
   });
 
   it("uses the canonical short hero summary", () => {
-    expect(aiCvData(defaultCvData).hero.subtitle).toBe("AI systems builder shipping agent orchestration, source-grounded research, retrieval and memory, voice interfaces, and full-stack public products.");
+    expect(aiCvData(defaultCvData).hero.subtitle).toBe("From agent orchestration and local models to working full-stack apps.");
   });
 
-  it("curates the fourteen project identities in source order", () => {
+  it("curates the fifteen project identities in source order", () => {
     expect(aiProjects.map((p) => p.title)).toEqual([
       "The Drop", "SD Forest / Forest HUB", "GymScholar", "Open Dashboard", "3D Repo Shelf",
-      "MoneyWolf", "Avatar Playground / Voice Playground", "Audiobook Studio",
+      "MoneyWolf", "Avatar Playground", "Open Voice Playground", "Audiobook Studio",
       "Flexy Read", "Women's Health OS", "Glass Mem", "Glass Council", "Glass PR Solver", "Cognitive Autonomy / Firsthand",
     ]);
     expect(aiResume.projects.filter((p) => p.screenshot)).toHaveLength(8);
@@ -154,23 +154,38 @@ describe("CV personas", () => {
   });
 
   it("uses the current voice, audiobook and Flexy Read routes exactly", () => {
-    expect(aiProjects.find((p) => p.title === "Avatar Playground / Voice Playground")?.url).toBe("https://www.sdforest.site/web/avatar-playground/");
+    expect(aiProjects.find((p) => p.title === "Avatar Playground")?.url).toBe("https://www.sdforest.site/web/avatar-playground/");
     expect(aiProjects.find((p) => p.title === "Audiobook Studio")?.url).toBe("https://chloe.blumenkraft.cloud/audiobook/");
     expect(aiProjects.find((p) => p.title === "Flexy Read")?.url).toBe("https://chloe.blumenkraft.cloud/dyslexia/");
     expect(aiProjects.some((p) => p.title.includes("Unified Reader"))).toBe(false);
+  });
+
+  it("keeps Open Voice Playground a public-source development project, separate from the deployed avatar", () => {
+    const voice = aiProjects.find((p) => p.title === "Open Voice Playground");
+    expect(voice?.url).toBe("https://github.com/ivangegovdve-sudo/open-voice-playground");
+    expect(voice?.status).toBe("in development");
+    expect(voice?.ctaLabel).toBe("View source");
+    expect(voice?.keywords).toContain("Kokoro-82M training and inference");
+    expect(voice?.keywords).toContain("StyleTTS2 training and inference");
+    expect(aiResumeExport.projects.find((p) => p.name === "Open Voice Playground")?.url).toBe(voice?.url);
+    expect(aiProjects.find((p) => p.title === "Avatar Playground")?.status).toBe("deployed route");
+  });
+
+  it("includes open-source harnesses in agent orchestration", () => {
+    expect(aiResume.skills.find((s) => s.name === "AI runtimes and agent orchestration")?.keywords).toContain("Open-source harnesses");
   });
 
   it("groups deployed products before in-development systems", () => {
     const [live, dev] = aiProjectGroups;
     expect(live.projects.every((p) => p.status === "deployed" || p.status === "deployed route")).toBe(true);
     expect(live.projects).toHaveLength(9);
-    expect(dev.projects.map((p) => p.title)).toEqual(["Women's Health OS", "Glass Mem", "Glass Council", "Glass PR Solver", "Cognitive Autonomy / Firsthand"]);
+    expect(dev.projects.map((p) => p.title)).toEqual(["Open Voice Playground", "Women's Health OS", "Glass Mem", "Glass Council", "Glass PR Solver", "Cognitive Autonomy / Firsthand"]);
   });
 
   it("folds research skills into memory and drops filler and CaveMem", () => {
     const names = aiResume.skills.map((s) => s.name);
     expect(names).not.toContain("Research and knowledge products");
-    const memory = aiResume.skills.find((s) => s.name === "Memory, retrieval and data systems")!.keywords;
+    const memory = aiResume.skills.find((s) => s.name === "Memory, retrieval and data systems")?.keywords ?? [];
     for (const k of ["PDF/EPUB document ingestion", "LlamaParse", "Evidence-linked retrieval", "Glass Mem", "SQLite FTS5", "LanceDB", "RAG"]) expect(memory).toContain(k);
     const publicText = JSON.stringify([aiResume.skills, aiResume.work]);
     for (const k of ["CaveMem", "Corpus freshness checks", "Health knowledge products", "Training knowledge products"]) expect(publicText).not.toContain(k);
