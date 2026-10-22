@@ -341,13 +341,14 @@
       "name": "3D Repo Shelf",
       "status": "deployed",
       "startDate": "2026-01-01",
-      "description": "A GitHub repository browser built around an interactive 3D bookshelf. Repositories can also be explored through search, categories, graph views and cards describing what they do. Explore Repos is part of the same project.",
+      "description": "A hand-curated catalog of around 1,500 useful GitHub repositories and developer tools, picked one by one rather than scraped or filtered by topic. The selection spans open source and engineering broadly, so many entries are not AI-related at all. The catalog is presented as an interactive 3D bookshelf, and can also be explored through search, categories, graph views and cards describing what each repository does. Explore Repos is part of the same project.",
       "highlights": [
+        "Hand-picked catalog of ~1,500 repos",
+        "Broadly useful tools, not AI-only",
+        "Interactive 3D bookshelf",
         "React Three Fiber",
         "Three.js",
-        "GitHub catalog data",
-        "GitHub Pages",
-        "3D browsing"
+        "GitHub Pages"
       ],
       "url": "https://ivangegovdve-sudo.github.io/repo-shelf/",
       "urlType": "live",

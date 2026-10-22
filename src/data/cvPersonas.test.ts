@@ -70,6 +70,18 @@ describe("CV personas", () => {
     expect(project?.url).toBe("https://opendashboard.sdforest.site/");
   });
 
+  it("describes 3D Repo Shelf as a hand-curated library of about 1,500 broadly useful repos", () => {
+    const project = aiResume.projects.find((p) => p.name === "3D Repo Shelf");
+    expect(project?.description).toContain("hand-curated catalog of around 1,500 useful GitHub repositories");
+    expect(project?.description).toContain("picked one by one rather than scraped or filtered by topic");
+    expect(project?.description).toContain("not AI-related at all");
+    expect(project?.description).toContain("interactive 3D bookshelf");
+    expect(project?.highlights).toContain("Hand-picked catalog of ~1,500 repos");
+    expect(project?.highlights).toContain("Broadly useful tools, not AI-only");
+    expect(project?.highlights).toContain("Interactive 3D bookshelf");
+    expect(project?.url).toBe("https://ivangegovdve-sudo.github.io/repo-shelf/");
+  });
+
   it("uses the canonical short hero summary", () => {
     expect(aiCvData(defaultCvData).hero.subtitle).toBe("AI systems builder shipping agent orchestration, source-grounded research, retrieval and memory, voice interfaces, and full-stack public products.");
   });
