@@ -130,7 +130,7 @@ describe("CV personas", () => {
     expect(aiProjects.map((p) => p.title)).toEqual([
       "The Drop", "SD Forest / Forest HUB", "GymScholar", "Open Dashboard", "3D Repo Shelf",
       "MoneyWolf", "Avatar Playground / Voice Playground", "Audiobook Studio",
-      "Dyslexia Reading Platform", "Women's Health OS", "Glass Mem", "Glass Council", "Glass PR Solver", "Cognitive Autonomy / Firsthand",
+      "Flexy Read", "Women's Health OS", "Glass Mem", "Glass Council", "Glass PR Solver", "Cognitive Autonomy / Firsthand",
     ]);
     expect(aiResume.projects.filter((p) => p.screenshot)).toHaveLength(8);
   });
@@ -153,10 +153,10 @@ describe("CV personas", () => {
     }
   });
 
-  it("uses the current voice and combined reader routes exactly", () => {
+  it("uses the current voice, audiobook and Flexy Read routes exactly", () => {
     expect(aiProjects.find((p) => p.title === "Avatar Playground / Voice Playground")?.url).toBe("https://www.sdforest.site/web/avatar-playground/");
     expect(aiProjects.find((p) => p.title === "Audiobook Studio")?.url).toBe("https://chloe.blumenkraft.cloud/audiobook/");
-    expect(aiProjects.find((p) => p.title === "Dyslexia Reading Platform")?.url).toBe("https://chloe.blumenkraft.cloud/dyslexia/");
+    expect(aiProjects.find((p) => p.title === "Flexy Read")?.url).toBe("https://chloe.blumenkraft.cloud/dyslexia/");
     expect(aiProjects.some((p) => p.title.includes("Unified Reader"))).toBe(false);
   });
 
