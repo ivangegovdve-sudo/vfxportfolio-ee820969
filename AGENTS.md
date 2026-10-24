@@ -85,6 +85,7 @@ This repository is the personal portfolio and CV site for Ivan Gegov. Treat it a
 - Adapt JSON Resume inputs to the existing CVData model at the data boundary; shared sections remain the single rendering path for both personas.
 - AI project evidence uses an isolated AI card renderer and a source-to-public presentation adapter; this preserves animator cards while filtering private links and mapping uploaded screenshot asset pointers by original filename.
 - AI cards use source-provided short summaries with per-card disclosure for full descriptions, highlights and notes; independent-height columns avoid empty grid rows while keeping animator rendering unchanged.
+- AI filtering uses presentation-only facets grounded in canonical project evidence and intersects skill, technology and type without changing source order or deployment groups; Radix disclosures and a shared polite status announce interaction without repeating preview highlights.
 - Export AI resumes through the public-content adapter, excluding internal provenance and withheld-URL audit records; canonical uploaded data may contain private local paths and nullable URLs that are not public CV content.
 
 - keep Node 20 usage repo-scoped
