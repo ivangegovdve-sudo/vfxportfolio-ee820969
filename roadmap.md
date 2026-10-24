@@ -1,6 +1,6 @@
 # Tasks
-- [ ] Improve AI card keyboard disclosure and announcements without repeated details.
-- [ ] Add compact skill, technology and project-type filters; test filtering and verify both views.
+- [x] Improve AI card keyboard disclosure and announcements without repeated details.
+- [x] Add compact skill, technology and project-type filters; test filtering and verify both views.
 - [x] Update AI subtitle, split avatar/open voice cards, add harness skills and validate content tests.
 - [x] Compact AI cards with tighter padding, clearer borders, reduced card gaps and expandable details; verify desktop/mobile and unchanged animation.
 - [x] Rename Flexy Read and tighten AI project descriptions/highlights; verify cards and tests without changing animation.
